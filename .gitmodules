@@ -1,0 +1,3 @@
+[submodule "sidecar"]
+	path = sidecar
+	url = https://github.com/stevens-s3lab/sidecar.git
