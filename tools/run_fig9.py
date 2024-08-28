@@ -67,6 +67,14 @@ def setup_directories():
     return next_run_dir
 
 
+def prompt_for_env_var(var_name, prompt_message):
+    value = os.getenv(var_name)
+    if not value:
+        value = input(prompt_message)
+        os.environ[var_name] = value
+    return value
+
+
 # Functions for each benchmark
 def execute_spec17(file_path):
     # Call the bash script and capture its output
@@ -116,8 +124,19 @@ def execute_bind(file_path):
 
 
 def execute_chromium(file_path):
+    # Prompt for the Chromium src and depot_tools if not already set
+    chromium_src = prompt_for_env_var(
+        "CHROMIUM_SRC", "Enter the path to Chromium src directory: "
+    )
+    depot_tools = prompt_for_env_var("DEPOT_TOOLS", "Enter the path to depot_tools: ")
+
     # Call the bash script and capture its output
-    result = subprocess.run(["bash", dromaeo_path], stdout=subprocess.PIPE, text=True)
+    result = subprocess.run(
+        ["bash", file_path], stdout=subprocess.PIPE, text=True, env=os.environ
+    )
+
+    # Print the output from the bash script
+    print(result.stdout)
 
 
 def run_placeholder_tasks(run_dir):

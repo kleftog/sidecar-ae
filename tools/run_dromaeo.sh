@@ -7,8 +7,8 @@ RAW_DIR=${RES_DIR}/raw
 CUR_DIR=$(ls -1 "${RAW_DIR}" | grep -E '^Run[0-9]{3}$' | sort | tail -n 1)
 
 # TODO: move this in sidecar
-CHROMIUM_DIR="/home/kleftog/repos_other/chromium/src"
-DEPOT_DIR="/home/kleftog/repos_other/depot_tools"
+# CHROMIUM_DIR="/home/kleftog/repos_other/chromium/src"
+# DEPOT_DIR="/home/kleftog/repos_other/depot_tools"
 
 RUN_BENCH_DIR=${CHROMIUM_DIR}/tools/perf/run_benchmark
 CHROMIUM_OUT=${CHROMIUM_DIR}/tools/perf/results.csv
