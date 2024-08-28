@@ -93,8 +93,7 @@ python3 tools/build_fig10.py
 
 ### Experiments
 
-1. **[Reproducing Sec. 6.2; verifying claim C1]**  
-   **[5 human-minutes + 1 hour compute-hour]**
+#### **[Reproducing Sec. 6.2; verifying claim C1]** **[5 human-minutes + 1 hour compute-hour]**
 
 - Run the following command:
 
