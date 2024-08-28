@@ -21,7 +21,8 @@ We use a 24-core Intel i9-13900K at 5.20 GHz to evaluate all the experiments to 
 │   │   ├── bind9
 │   │   └── libuv
 │   ├── cpu2017                  # SPEC CPU 2017 items
-│   │   └── config               # Configuration files for SPEC CPU 2017
+│   │   ├── config               # Configuration files for SPEC CPU 2017
+│   │   └── cpu2017-patches      # Patches for SPEC CPU 2017 benchmarks
 │   ├── lighttpd                 # Lighttpd 1.4.76 with OpenSSL 3.0.7
 │   │   ├── lighttpd-1.4.76
 │   │   ├── lighttpd.conf
