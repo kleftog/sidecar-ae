@@ -54,7 +54,7 @@ We use a 24-core Intel i9-13900K at 5.20 GHz to evaluate all the experiments to 
 
 ## Hardware Dependencies
 
-The SideCar system requires specialized hardware to function correctly. For x86 architecture, it leverages Intel Processor Trace (PT) and specifically the x86 PTWRITE instruction. For AArch64 architecture, it requires CoreSight STM. These hardware components are essential for SideCar's operation, ensuring accurate and secure execution monitoring. We provide access to our preconfigured server, which meets these hardware requirements, and reviewers will receive detailed access instructions through HotCRP.
+The SideCar system requires specialized hardware to function correctly. For x86 architecture, it leverages Intel Processor Trace (PT) and specifically the x86 PTWRITE instruction. For AArch64 architecture, it requires CoreSight STM. We provide access to our preconfigured server, which meets these hardware requirements, and reviewers will receive detailed access instructions through HotCRP.
 
 ## Software Dependencies
 
@@ -63,7 +63,7 @@ The evaluation of SideCar also requires specific software components and environ
 ## Installation
 
 - Detailed instructions can be found in the [README.md of our GitHub repository](https://github.com/stevens-s3lab/sidecar).
-- Our server comes with everything prebuilt and preinstalled. There is no need to rebuild anything, but if required, you can run the following commands for building and installing all software dependencies, LLVM 12, testing tools (wrk, memtier_benchmark, etc.):
+- Our server comes with everything prebuilt and preinstalled. There is no need to rebuild anything, but if required, you can run the following commands for building and installing SideCar's LLVM 12, SideCar, benchmarks, all software dependencies and testing tools (wrk, memtier_benchmark, etc.):
 
 ```bash
 ./sidecar/tools/install.sh
