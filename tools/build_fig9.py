@@ -23,6 +23,27 @@ build_scripts = [
     os.path.join(script_dir, "build_memcached.sh"),
 ]
 
+
+def get_spec_tar_path():
+    default_path = os.path.abspath(
+        os.path.join(script_dir, "../benchmarks/cpu2017/cpu2017-patched.tar")
+    )
+    if os.path.exists(default_path):
+        return default_path
+
+    # If the default path doesn't exist, ask for an environment variable
+    spec_tar_path = os.getenv("SPEC_TAR_PATH")
+    if not spec_tar_path or not os.path.exists(spec_tar_path):
+        print(
+            "Error: The tar file does not exist at the default path and SPEC_TAR_PATH is not set or incorrect. Please set SPEC_TAR_PATH environment variable."
+        )
+        sys.exit(1)
+    return spec_tar_path
+
+
+spec_tar_path = get_spec_tar_path()
+
+
 # Loop over each build type and each script
 for build_type in build_types:
     for build_script in build_scripts:
@@ -97,9 +118,6 @@ for command in memtier_commands:
 
 print("Testing-tool builds completed.")
 
-spec_tar_path = os.path.abspath(
-    os.path.join(script_dir, "../benchmarks/cpu2017/cpu2017-patched.tar")
-)
 spec_install_dir = os.path.abspath(os.path.join(script_dir, "../benchmarks/spec2017"))
 
 # Untar and install SPEC2017
