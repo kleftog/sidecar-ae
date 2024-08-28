@@ -24,21 +24,29 @@ build_scripts = [
 ]
 
 
-def get_spec_tar_path():
-    default_path = os.path.abspath(
+spec_install_dir = os.path.abspath(os.path.join(script_dir, "../benchmarks/spec2017"))
+
+
+def get_spec_path():
+    # Check if SPEC2017 is already installed in the default location
+    if os.path.exists(spec_install_dir):
+        return spec_install_dir
+
+    # If not installed, check for the cpu2017-patched.tar file
+    spec_tar_path = os.path.abspath(
         os.path.join(script_dir, "../benchmarks/cpu2017/cpu2017-patched.tar")
     )
-    if os.path.exists(default_path):
-        return default_path
+    if os.path.exists(spec_tar_path):
+        return spec_tar_path
 
-    # If the default path doesn't exist, ask for an environment variable
-    spec_tar_path = os.getenv("SPEC_TAR_PATH")
-    if not spec_tar_path or not os.path.exists(spec_tar_path):
+    # If neither is found, prompt the user to set SPEC17_PATH environment variable
+    spec17_path = os.getenv("SPEC17_PATH")
+    if not spec17_path or not os.path.exists(spec17_path):
         print(
-            "Error: The tar file does not exist at the default path and SPEC_TAR_PATH is not set or incorrect. Please set SPEC_TAR_PATH environment variable."
+            "Error: SPEC2017 is not installed at the default path and the tar file does not exist. Please set the SPEC17_PATH environment variable to the SPEC CPU2017 installation directory."
         )
         sys.exit(1)
-    return spec_tar_path
+    return spec17_path
 
 
 spec_tar_path = get_spec_tar_path()
@@ -117,8 +125,6 @@ for command in memtier_commands:
         print(e.stderr.decode("utf-8"))
 
 print("Testing-tool builds completed.")
-
-spec_install_dir = os.path.abspath(os.path.join(script_dir, "../benchmarks/spec2017"))
 
 # Untar and install SPEC2017
 try:
