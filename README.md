@@ -52,6 +52,14 @@ We use a 24-core Intel i9-13900K at 5.20 GHz to evaluate all the experiments to 
 │   └── run_wrk_lighttpd.sh      # Runs WRK against Lighttpd for benchmarking
 ```
 
+## Hardware Dependencies
+
+The SideCar system requires specialized hardware to function correctly. For x86 architecture, it leverages Intel Processor Trace (PT) and specifically the x86 PTWRITE instruction. For AArch64 architecture, it requires CoreSight STM. These hardware components are essential for SideCar's operation, ensuring accurate and secure execution monitoring. We provide access to our preconfigured server, which meets these hardware requirements, and reviewers will receive detailed access instructions through HotCRP.
+
+## Software Dependencies
+
+The evaluation of SideCar also requires specific software components and environment settings. The installation paths for SPEC CPU2017 and SPEC CPU2006 need to be set, with their respective environment variables configured as `SPEC17_PATH` for SPEC CPU2017 and `SPEC06_PATH` for SPEC CPU2006. Additionally, Google’s depot tools are required, and the environment path should be set to `DEPOT_TOOLS`. The source code for Chromium is also necessary, and its path must be specified in the `CHROMIUM_SRC` environment variable. While these dependencies are critical for the artifact's operation, our server comes with everything preinstalled and ready to use, streamlining the evaluation process for reviewers.
+
 ## Installation
 
 - Detailed instructions can be found in the [README.md of our GitHub repository](https://github.com/stevens-s3lab/sidecar).
