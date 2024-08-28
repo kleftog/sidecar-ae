@@ -1,0 +1,64 @@
+--- cpu2017/benchspec/CPU/500.perlbench_r/src/mg.c	2019-03-27 11:26:46.000000000 -0400
++++ cpu2017/benchspec/CPU/500.perlbench_r/src/mg.c	2021-12-22 18:05:03.252558550 -0500
+@@ -2057,7 +2057,7 @@
+ }
+ 
+ int
+-Perl_magic_getarylen(pTHX_ SV *sv, const MAGIC *mg)
++Perl_magic_getarylen(pTHX_ SV *sv, MAGIC *mg)
+ {
+     AV * const obj = MUTABLE_AV(mg->mg_obj);
+ 
+@@ -3395,7 +3395,7 @@
+ 
+ 
+ static void
+-S_restore_magic(pTHX_ const void *p)
++S_restore_magic(pTHX_ void *p)
+ {
+     MGS* const mgs = SSPTR(PTR2IV(p), MGS*);
+     SV* const sv = mgs->mgs_sv;
+--- cpu2017/benchspec/CPU/500.perlbench_r/src/perly.c	2016-01-06 13:10:29.000000000 -0500
++++ cpu2017/benchspec/CPU/500.perlbench_r/src/perly.c	2021-12-22 16:29:29.052715742 -0500
+@@ -191,8 +191,9 @@
+  * parse stack, thus avoiding leaks if we die  */
+ 
+ static void
+-S_clear_yystack(pTHX_  const yy_parser *parser)
++S_clear_yystack(pTHX_ void *p) 
+ {
++    yy_parser *parser = p;
+     yy_stack_frame *ps     = parser->ps;
+     int i = 0;
+ 
+--- cpu2017/benchspec/CPU/500.perlbench_r/src/proto.h	2015-06-19 16:08:51.000000000 -0400
++++ cpu2017/benchspec/CPU/500.perlbench_r/src/proto.h	2021-12-22 17:46:13.770006486 -0500
+@@ -2376,7 +2376,7 @@
+ #define PERL_ARGS_ASSERT_MAGIC_GET	\
+ 	assert(sv); assert(mg)
+ 
+-PERL_CALLCONV int	Perl_magic_getarylen(pTHX_ SV* sv, const MAGIC* mg)
++PERL_CALLCONV int	Perl_magic_getarylen(pTHX_ SV* sv, MAGIC* mg)
+ 			__attribute__nonnull__(pTHX_1)
+ 			__attribute__nonnull__(pTHX_2);
+ #define PERL_ARGS_ASSERT_MAGIC_GETARYLEN	\
+@@ -6232,7 +6232,7 @@
+ #define PERL_ARGS_ASSERT_MAGIC_METHPACK	\
+ 	assert(sv); assert(mg); assert(meth)
+ 
+-STATIC void	S_restore_magic(pTHX_ const void *p);
++STATIC void	S_restore_magic(pTHX_ void *p);
+ STATIC void	S_save_magic_flags(pTHX_ I32 mgs_ix, SV *sv, U32 flags)
+ 			__attribute__nonnull__(pTHX_2);
+ #define PERL_ARGS_ASSERT_SAVE_MAGIC_FLAGS	\
+--- cpu2017/benchspec/CPU/500.perlbench_r/src/regcomp.c	2016-01-06 13:10:29.000000000 -0500
++++ cpu2017/benchspec/CPU/500.perlbench_r/src/regcomp.c	2021-12-22 17:52:55.083179788 -0500
+@@ -3739,7 +3739,7 @@
+ 
+ 
+ static void
+-S_unwind_scan_frames(pTHX_ const void *p)
++S_unwind_scan_frames(pTHX_ void *p)
+ {
+     scan_frame *f= (scan_frame *)p;
+     do {
