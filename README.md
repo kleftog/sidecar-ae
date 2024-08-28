@@ -6,7 +6,7 @@ We use a 24-core Intel i9-13900K at 5.20 GHz to evaluate all the experiments to 
 ## Installation
 
 - Detailed instructions can be found in the [README.md of our GitHub repository](https://github.com/stevens-s3lab/sidecar).
-- Our server comes with everything prebuilt and preinstalled. There is no need to rebuild anything, but if required, you can run the following commands for building and installing all software dependencies, LLVM 12, testing tools (wrk, memtier_benchmark), SPEC CPU 2006, and SPEC2017:
+- Our server comes with everything prebuilt and preinstalled. There is no need to rebuild anything, but if required, you can run the following commands for building and installing all software dependencies, LLVM 12, testing tools (wrk, memtier_benchmark, etc.):
 
 ```bash
 ./sidecar/tools/install.sh
