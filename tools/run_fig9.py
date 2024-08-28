@@ -2,6 +2,7 @@ import csv
 import math
 import os
 import subprocess
+import sys
 from collections import defaultdict
 from pathlib import Path
 
@@ -46,6 +47,38 @@ RAW_FILES = [
 PARSED_FILES = {"spec": "spec17.csv", "apps": "apps.csv"}
 
 
+def prompt_for_env_var(var_name, prompt_message):
+    value = os.getenv(var_name)
+    if not value:
+        value = input(prompt_message)
+        os.environ[var_name] = value
+    return value
+
+
+# Define the default paths to check first
+default_chromium_src = "/home/kleftog/repos_other/chromium/src"
+default_depot_tools = "/home/kleftog/repos_other/depot_tools"
+
+# Check the default paths first
+if os.path.exists(default_chromium_src):
+    chromium_src = default_chromium_src
+else:
+    print("Error: Default Chromium src directory not found.")
+    print("Please set the CHROMIUM_SRC environment variable and try again.")
+    sys.exit(1)
+
+if os.path.exists(default_depot_tools):
+    depot_tools = default_depot_tools
+else:
+    print("Error: Default depot_tools directory not found.")
+    print("Please set the DEPOT_TOOLS environment variable and try again.")
+    sys.exit(1)
+
+# Export the variables to the environment
+os.environ["CHROMIUM_SRC"] = chromium_src
+os.environ["DEPOT_TOOLS"] = depot_tools
+
+
 def setup_directories():
     # Create base directories if they don't exist
     for dir_path in [RAW_DIR, PARSED_DIR, PLOTS_DIR]:
@@ -65,14 +98,6 @@ def setup_directories():
         (next_run_dir / file_name).touch()
 
     return next_run_dir
-
-
-def prompt_for_env_var(var_name, prompt_message):
-    value = os.getenv(var_name)
-    if not value:
-        value = input(prompt_message)
-        os.environ[var_name] = value
-    return value
 
 
 # Functions for each benchmark
@@ -124,19 +149,10 @@ def execute_bind(file_path):
 
 
 def execute_chromium(file_path):
-    # Prompt for the Chromium src and depot_tools if not already set
-    chromium_src = prompt_for_env_var(
-        "CHROMIUM_SRC", "Enter the path to Chromium src directory: "
-    )
-    depot_tools = prompt_for_env_var("DEPOT_TOOLS", "Enter the path to depot_tools: ")
-
     # Call the bash script and capture its output
     result = subprocess.run(
         ["bash", file_path], stdout=subprocess.PIPE, text=True, env=os.environ
     )
-
-    # Print the output from the bash script
-    print(result.stdout)
 
 
 def run_placeholder_tasks(run_dir):
