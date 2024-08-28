@@ -91,8 +91,8 @@ python3 tools/build_fig10.py
 python3 tools/run_sec6.2.sh
 ```
 
-- The raw results will be saved under `../sidecar-results/ripe64`.
-- The complete RIPE64 logs are stored in `../sidecar-results/ripe64/results.log`, and the final stats can be found in `../sidecar-results/ripe64/stats.log`.
+- The raw results will be saved under `results/ripe64`.
+- The complete RIPE64 logs are stored in `results/ripe64/results.log`, and the final stats can be found in `results/ripe64/stats.log`.
 
 2. **[Reproducing Fig. 9; verifying claim C2]**  
    **[5 human-minutes + 10 hours compute-hour]**
@@ -103,14 +103,14 @@ python3 tools/run_sec6.2.sh
 python3 tools/run_fig9.sh
 ```
 
-- The raw results will be saved under `../sidecar-results/raw`, while the parsed results will be in `../sidecar-results/parsed`.
+- The raw results will be saved under `results/raw`, while the parsed results will be in `results/parsed`.
 - Run the following command to produce Figure 9:
 
 ```bash
 python3 tools/plot_fig9.sh
 ```
 
-- The plot will be saved in `../sidecar-results/plots/figure9.pdf`.
+- The plot will be saved in `results/plots/figure9.pdf`.
 
 3. **[Reproducing Fig. 10; verifying claim C3]**  
    **[5 human-minutes + 2 hours compute-hour]**
@@ -121,14 +121,14 @@ python3 tools/plot_fig9.sh
 python3 tools/run_fig10.sh
 ```
 
-- The raw results will be saved under `../sidecar-results/raw`, while the parsed results will be in `../sidecar-results/parsed`.
+- The raw results will be saved under `results/raw`, while the parsed results will be in `results/parsed`.
 - Run the following command to produce Figure 10:
 
 ```bash
 python3 tools/plot_fig10.sh
 ```
 
-- The plot will be saved in `../sidecar-results/plots/figure10.pdf`.
+- The plot will be saved in `results/plots/figure10.pdf`.
 
 4. **[Reproducing Tab. 2; verifying claim C4]**  
    **[5 human-minutes + 1 hour compute-hour]**
@@ -139,11 +139,11 @@ python3 tools/plot_fig10.sh
 python3 tools/run_tab2.sh
 ```
 
-- The table will be saved under `../sidecar-results/cpu-usage/tab2.csv`.
+- The table will be saved under `results/cpu-usage/tab2.csv`.
 - Run the following command to produce the LaTeX file:
 
 ```bash
 ./parse_tab2.sh
 ```
 
-- The LaTeX file will be saved in `../sidecar-results/cpu-usage/tab2.tex`.
+- The LaTeX file will be saved in `results/cpu-usage/tab2.tex`.
