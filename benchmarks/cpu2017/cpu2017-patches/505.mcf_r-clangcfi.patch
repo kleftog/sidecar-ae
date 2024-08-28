@@ -1,0 +1,57 @@
+--- cpu2017/benchspec/CPU/505.mcf_r/src/implicit.c	2016-11-17 16:57:46.000000000 -0500
++++ cpu2017/benchspec/CPU/505.mcf_r/src/implicit.c	2021-12-21 13:05:55.190266624 -0500
+@@ -27,13 +27,16 @@
+ #include "implicit.h"
+ 
+ #ifdef _PROTO_
+-static int arc_compare( arc_t **a1, arc_t **a2 )
++static int arc_compare( const void *tmp1, const void *tmp2 )
+ #else
+-static int arc_compare( a1, a2 )
+-arc_t **a1;
+-arc_t **a2;
++static int arc_compare( tmp1, tmp2 )
++  const void *tmp1;
++  const void *tmp2;
+ #endif
+ {
++  arc_t **a1 = tmp1;
++  arc_t **a2 = tmp2;
++
+   if( (*a1)->flow > (*a2)->flow )
+     return 1;
+   if( (*a1)->flow < (*a2)->flow )
+--- cpu2017/benchspec/CPU/505.mcf_r/src/pbeampp.c	2016-11-17 16:57:46.000000000 -0500
++++ cpu2017/benchspec/CPU/505.mcf_r/src/pbeampp.c	2021-12-21 13:06:20.642275173 -0500
+@@ -58,13 +58,16 @@
+ 
+ 
+ #ifdef _PROTO_
+-int cost_compare( BASKET **b1, BASKET **b2 )
++int cost_compare( const void *tmp1, const void *tmp2 )
+ #else
+-int cost_compare( b1, b2 )
+-    BASKET **b1;
+-    BASKER **b2;
++int cost_compare( tmp1, tmp2 )
++    const void *tmp1;
++    const void *tmp2;
+ #endif
+ {
++  BASKET **b1 = tmp1;
++  BASKET **b2 = tmp2;
++
+   if( (*b1)->abs_cost < (*b2)->abs_cost )
+     return 1;
+   if( (*b1)->abs_cost > (*b2)->abs_cost )
+--- cpu2017/benchspec/CPU/505.mcf_r/src/pbeampp.h	2015-05-29 16:55:39.000000000 -0400
++++ cpu2017/benchspec/CPU/505.mcf_r/src/pbeampp.h	2021-12-21 13:06:13.048272616 -0500
+@@ -30,7 +30,7 @@
+ 
+ extern BASKET *primal_bea_mpp _PROTO_(( LONG , arc_t *, arc_t *, LONG* , BASKET** , int,  arc_t**, LONG, LONG, LONG ));
+ extern void set_static_vars _PROTO_((network_t *, arc_t*));
+-extern int cost_compare( BASKET **b1, BASKET **b2 );
++extern int cost_compare( const void *tmp1, const void *tmp2 );
+ 
+ 
+ #endif
