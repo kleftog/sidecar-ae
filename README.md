@@ -1,6 +1,6 @@
 # Artifact Evaluation for SideCar - ACSAC'24
 
-_This documentation contains the steps necessary to reproduce the artifacts for our paper titled **SIDECAR: Leveraging Debugging Extensions in Commodity Processors to Secure Software**.
+_This documentation contains the steps necessary to reproduce the artifacts for our paper titled **"SIDECAR: Leveraging Debugging Extensions in Commodity Processors to Secure Software"**.
 We use a 24-core Intel i9-13900K at 5.20 GHz to evaluate all the experiments to which we will provide access through HotCRP._
 
 ## Project Structure
