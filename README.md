@@ -60,6 +60,17 @@ The SideCar system requires specialized hardware to function correctly. For x86 
 
 The evaluation of SideCar also requires specific software components and environment settings. The installation paths for SPEC CPU2017 and SPEC CPU2006 need to be set, with their respective environment variables configured as `SPEC17_PATH` for SPEC CPU2017 and `SPEC06_PATH` for SPEC CPU2006. Additionally, Google’s depot tools are required, and the environment path should be set to `DEPOT_TOOLS`. The source code for Chromium is also necessary, and its path must be specified in the `CHROMIUM_SRC` environment variable. While these dependencies are critical for the artifact's operation, our server comes with everything preinstalled and ready to use, streamlining the evaluation process for reviewers.
 
+## Time Constraints
+
+Due to the time limitations for this artifact evaluation,
+we have opted to reduce the number of iterations for certain benchmarks.
+While our original measurements used 20 iterations to ensure statistical rigor,
+for the purposes of this evaluation, we have reduced the iterations to:
+
+- SPEC CPU2017 and SPEC CPU2006: 3 iterations
+- Real-world applications (e.g., Apache HTTPD, BIND, Lighttpd, Chromium): 10 iterations
+- This adjustment allows for a more feasible evaluation process while still providing reliable results.
+
 ## Installation
 
 - Detailed instructions can be found in the [README.md of our GitHub repository](https://github.com/stevens-s3lab/sidecar).
@@ -95,7 +106,7 @@ python3 tools/run_sec6.2.sh
 - The complete RIPE64 logs are stored in `results/ripe64/results.log`, and the final stats can be found in `results/ripe64/stats.log`.
 
 2. **[Reproducing Fig. 9; verifying claim C2]**  
-   **[5 human-minutes + 10 hours compute-hour]**
+   **[5 human-minutes + 34 hours compute-hour]**
 
 - Run the following command:
 
