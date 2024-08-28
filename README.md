@@ -3,6 +3,54 @@
 _This documentation contains the steps necessary to reproduce the artifacts for our paper titled **SIDECAR: Leveraging Debugging Extensions in Commodity Processors to Secure Software**.
 We use a 24-core Intel i9-13900K at 5.20 GHz to evaluate all the experiments to which we will provide access through HotCRP._
 
+## Project Structure
+
+```bash
+.
+├── README.md                    # Project overview and instructions
+├── benchmarks                   # Benchmark directories and configurations
+│   ├── apache                   # Apache HTTPD 2.4.58 with dependencies
+│   │   ├── apr-1.7.4
+│   │   ├── apr-util-1.6.3
+│   │   ├── expat-2.5.0
+│   │   ├── httpd-2.4.58
+│   │   ├── htdocs
+│   │   ├── openssl-1.1.1
+│   │   └── pcre-8.45
+│   ├── bind                     # BIND 9 DNS server with libuv 1.0.0
+│   │   ├── bind9
+│   │   └── libuv
+│   ├── cpu2017                  # SPEC CPU 2017 items
+│   │   └── config               # Configuration files for SPEC CPU 2017
+│   ├── lighttpd                 # Lighttpd 1.4.76 with OpenSSL 3.0.7
+│   │   ├── lighttpd-1.4.76
+│   │   ├── lighttpd.conf
+│   │   └── openssl-3.0.7
+│   ├── memcached                # Memcached 1.6.9 with libevent 2.2.1
+│   │   ├── memcached-1.6.9
+│   │   └── libevent
+│   ├── memtier_benchmark        # Memtier benchmark 2.0.0
+│   │   └── memtier_benchmark
+│   └── wrk                      # WRK benchmark tool (commit 7f470d1db)
+│       └── wrk
+├── sidecar                      # Submodule containing the SideCar project
+├── tools                        # Scripts and tools for building and running experiments
+│   ├── build_bind.sh            # Builds BIND 9 and its dependencies
+│   ├── build_fig9.py            # Builds and installs everything required for running the Fig. 9 experiments
+│   ├── build_httpd.sh           # Builds Apache HTTPD and its dependencies
+│   ├── build_lighttpd.sh        # Builds Lighttpd and its dependencies
+│   ├── build_memcached.sh       # Builds Memcached and its dependencies
+│   ├── plot_fig9.py             # Plots and recreates Figure 9 based on the results
+│   ├── run_dnsperf_bind.sh      # Runs DNSPerf against BIND for benchmarking
+│   ├── run_dromaeo.sh           # Runs Dromaeo benchmarks for browser performance testing
+│   ├── run_fig9.py              # Runs all experiments for replicating Figure 9
+│   ├── run_memtier_memcached.sh # Runs Memtier against Memcached for benchmarking
+│   ├── run_spec17.sh            # Runs SPEC CPU2017 benchmarks
+│   ├── run_wrk.sh               # Runs WRK for HTTP server benchmarking
+│   ├── run_wrk_httpd.sh         # Runs WRK against Apache HTTPD for benchmarking
+│   └── run_wrk_lighttpd.sh      # Runs WRK against Lighttpd for benchmarking
+```
+
 ## Installation
 
 - Detailed instructions can be found in the [README.md of our GitHub repository](https://github.com/stevens-s3lab/sidecar).
