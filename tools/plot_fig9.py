@@ -115,8 +115,29 @@ def plot_vertical_grouped_barchart(benchmarks, overheads, std_devs, labels, titl
     for i, (overhead, std_dev, label) in enumerate(zip(overheads, std_devs, labels)):
         if any(o > 0 for o in overhead):
             color = get_color(label)
+
+            # Adjust the position for the CFI pink bar only for the specific apps
+            if label == "LLVM-CFI":
+                adjusted_index = index.astype(float).copy()
+                for j, benchmark in enumerate(benchmarks):
+                    if benchmark in [
+                        "httpd",
+                        "memcached",
+                        "bind",
+                        "lighttpd",
+                        "chromium",
+                        "**geomean",
+                    ]:
+                        adjusted_index[j] += bar_width + space_between_groups
+                    else:
+                        adjusted_index[j] = index[
+                            j
+                        ]  # No adjustment for other benchmarks
+            else:
+                adjusted_index = index
+
             bars = ax.bar(
-                index + i * (bar_width + space_between_groups) - offset,
+                adjusted_index + i * (bar_width + space_between_groups) - offset,
                 [o if o > 0 else 0 for o in overhead],
                 bar_width,
                 yerr=std_dev,
