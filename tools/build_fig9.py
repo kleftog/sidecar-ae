@@ -58,7 +58,7 @@ def get_spec_path():
 get_spec_path()
 
 print("spec path is ", spec_install_dir)
-printf("spec tar path is ", spec_tar_path)
+print("spec tar path is ", spec_tar_path)
 sys.exit(1)
 
 # Loop over each build type and each script
