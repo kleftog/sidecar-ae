@@ -159,6 +159,7 @@ apply_httpd_conf_changes() {
 		sed -i 's/^#Include conf\/extra\/httpd-ssl.conf/Include conf\/extra\/httpd-ssl.conf/' "$HTTPD_CONF"
 		sed -i 's/^#Include conf\/extra\/httpd-mpm.conf/Include conf\/extra\/httpd-mpm.conf/' "$HTTPD_CONF"
 		sed -i 's/^LoadModule log_config_module modules\/mod_log_config.so/#LoadModule log_config_module modules\/mod_log_config.so/' "$HTTPD_CONF"
+		sed -i 's/^Listen 80/Listen 8080/' "$HTTPD_CONF"
 		echo "Applied changes to httpd.conf."
 	fi
 }
@@ -170,7 +171,6 @@ apply_ssl_conf_changes() {
 		sed -i '/^ErrorLog/s/^/#/' "$SSL_CONF"
 		sed -i '/^TransferLog/s/^/#/' "$SSL_CONF"
 		sed -i '/^CustomLog/s/^/#/' "$SSL_CONF"
-		# TODO: create new keys if needed
 		sed -i "s|^SSLCertificateFile.*|SSLCertificateFile \"${SRC_DIR}/certs/apache-selfsigned.crt\"|" "$SSL_CONF"
 		sed -i "s|^SSLCertificateKeyFile.*|SSLCertificateKeyFile \"${SRC_DIR}/certs/apache-selfsigned.key\"|" "$SSL_CONF"
 		echo "Applied changes to httpd-ssl.conf."
