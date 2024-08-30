@@ -71,6 +71,10 @@ for the purposes of this evaluation, we have reduced the iterations to:
 - Real-world applications (e.g., Apache HTTPD, BIND, Lighttpd, Chromium): 10 iterations
 - This adjustment allows for a more feasible evaluation process while still providing reliable results.
 
+## Session Management
+
+We recommend using [tmux](https://github.com/tmux/tmux/wiki) when running the experiments. This will save your session and allow the experiments to continue running without needing to stay connected through SSH. Given the length of the experiments, using `tmux` is crucial as it enables you to detach and reattach to your session at any time, ensuring that the process is not interrupted.
+
 ## Installation
 
 - Detailed instructions can be found in the [README.md of our GitHub repository](https://github.com/stevens-s3lab/sidecar).
