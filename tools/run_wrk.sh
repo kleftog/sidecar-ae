@@ -13,7 +13,7 @@ FILE_SIZE="100KB"
 
 # Number of iterations
 iterations=1
-duration=60
+duration=2
 
 # Variables for throughput calculation
 total_throughput=0
@@ -21,7 +21,7 @@ total_throughput=0
 # Run the benchmark and calculate the average throughput
 for i in $(seq 1 $iterations); do
     # Run the workload
-    throughput=$(taskset -c 3-6 $WRK_DIR/wrk -t2 -c4 -d${duration}s --latency https://127.0.0.1:443/$FILE_SIZE | grep 'Requests/sec' | awk '{print $2}')
+    throughput=$(taskset -c 3-6 $WRK_DIR/wrk -t2 -c4 -d${duration}s --latency https://127.0.0.1:8443/$FILE_SIZE | grep 'Requests/sec' | awk '{print $2}')
     total_throughput=$(echo "$total_throughput + $throughput" | bc)
 done
 

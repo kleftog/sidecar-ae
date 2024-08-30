@@ -41,9 +41,9 @@ export ASAN_OPTIONS='detect_leaks=0'
 # Loop through each mode and print the mode and throughput in CSV format
 for mode in "${modes[@]}"; do
     if [ "$mode" == "asan" ]; then
-        llvm_path="$SCRIPT_DIR/../install/llvm-orig"
+        llvm_path="$SCRIPT_DIR/../sidecar/install/llvm-orig"
     else
-        llvm_path="$SCRIPT_DIR/../install/llvm-sidecar"
+        llvm_path="$SCRIPT_DIR/../sidecar/install/llvm-sidecar"
     fi
 
     # Run the spec17 benchmark
