@@ -171,8 +171,8 @@ apply_ssl_conf_changes() {
 		sed -i '/^TransferLog/s/^/#/' "$SSL_CONF"
 		sed -i '/^CustomLog/s/^/#/' "$SSL_CONF"
 		# TODO: create new keys if needed
-		sed -i 's|^SSLCertificateFile.*|SSLCertificateFile "/opt/apache-2.4.58/certs/apache-selfsigned.crt"|' "$SSL_CONF"
-		sed -i 's|^SSLCertificateKeyFile.*|SSLCertificateKeyFile "/opt/apache-2.4.58/certs/apache-selfsigned.key"|' "$SSL_CONF"
+		sed -i "s|^SSLCertificateFile.*|SSLCertificateFile \"${SRC_DIR}/certs/apache-selfsigned.crt\"|" "$SSL_CONF"
+		sed -i "s|^SSLCertificateKeyFile.*|SSLCertificateKeyFile \"${SRC_DIR}/certs/apache-selfsigned.key\"|" "$SSL_CONF"
 		echo "Applied changes to httpd-ssl.conf."
 	fi
 }
