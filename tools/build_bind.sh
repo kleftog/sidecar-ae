@@ -25,9 +25,9 @@ CLEAN_CC="${CLEAN_BIN}/clang"
 CLEAN_CXX="${CLEAN_BIN}/clang++"
 
 # Installation folders
-APP_DIR="/usr/local/bind-${MODE}"
-OPENSSL_DIR="/usr/local/openssl-${MODE}"
-LIBUV_DIR="/usr/local/libuv-${MODE}"
+APP_DIR="${ROOT_DIR}/install/bind-${MODE}"
+OPENSSL_DIR="${ROOT_DIR}/install/openssl-${MODE}"
+LIBUV_DIR="${ROOT_DIR}/install/libuv-${MODE}"
 
 # Conf
 BIND_CONF="${SRC_DIR}/bind9/named.conf"

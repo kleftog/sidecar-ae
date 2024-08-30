@@ -25,9 +25,9 @@ CLEAN_CC="${CLEAN_BIN}/clang"
 CLEAN_CXX="${CLEAN_BIN}/clang++"
 
 # Installation folders
-APP_DIR="/usr/local/memcached-${MODE}"
-OPENSSL_DIR="/usr/local/openssl-${MODE}"
-LIBEVENT_DIR="/usr/local/libevent-${MODE}"
+APP_DIR="${ROOT_DIR}/install/memcached-${MODE}"
+OPENSSL_DIR="${ROOT_DIR}/install/openssl-${MODE}"
+LIBEVENT_DIR="${ROOT_DIR}/install/libevent-${MODE}"
 
 # Flags
 LTO_FLAGS="-fvisibility=default -flto"

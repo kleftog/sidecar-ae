@@ -25,9 +25,9 @@ CLEAN_CC="${CLEAN_BIN}/clang"
 CLEAN_CXX="${CLEAN_BIN}/clang++"
 
 # Installation folders
-APP_DIR="/usr/local/lighttpd-${MODE}"
-OPENSSL_DIR="/usr/local/openssl3-${MODE}"
-PCRE_DIR="/usr/local/pcre-${MODE}"
+APP_DIR="${ROOT_DIR}/install/lighttpd-${MODE}"
+OPENSSL_DIR="${ROOT_DIR}/install/openssl3-${MODE}"
+PCRE_DIR="${ROOT_DIR}/install/pcre-${MODE}"
 
 # Conf
 LIGHTTPD_CONF="${SRC_DIR}/lighttpd.conf"

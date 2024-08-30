@@ -24,11 +24,11 @@ CLEAN_CC="${CLEAN_BIN}/clang"
 CLEAN_CXX="${CLEAN_BIN}/clang++"
 
 # Installation folders
-APP_DIR="/usr/local/httpd-${MODE}"
-OPENSSL_DIR="/usr/local/openssl-${MODE}"
-APR_DIR="/usr/local/apr-${MODE}"
-EXPAT_DIR="/usr/local/expat-${MODE}"
-PCRE_DIR="/usr/local/pcre-${MODE}"
+APP_DIR="${ROOT_DIR}/install/httpd-${MODE}"
+OPENSSL_DIR="${ROOT_DIR}/install/openssl-${MODE}"
+APR_DIR="${ROOT_DIR}/install/apr-${MODE}"
+EXPAT_DIR="${ROOT_DIR}/install/expat-${MODE}"
+PCRE_DIR="${ROOT_DIR}/install/pcre-${MODE}"
 
 # Conf
 HTTPD_CONF="${APP_DIR}/conf/httpd.conf"
