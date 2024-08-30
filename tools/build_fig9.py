@@ -24,21 +24,19 @@ build_scripts = [
     os.path.join(script_dir, "build_memcached.sh"),
 ]
 
-spec17_path = ""
-
 spec_install_dir = os.path.abspath(os.path.join(script_dir, "../benchmarks/spec2017"))
 spec_tar_path = ""
 
-
 def get_spec_path():
+    global spec_install_dir
+    global spec_tar_path
+
     # First, check if SPEC17_PATH environment variable is defined
     spec17_path_l = os.getenv("SPEC17_PATH")
-    if spec17_path_l and os.path.exists(spec17_path_l):
-        spec17_install_dir = spec17_path_l
-        return
-
-    # If SPEC17_PATH is not defined or does not exist, check the default location
-    if os.path.exists(spec_install_dir):
+    if spec17_path_l and os.path.isdir(spec17_path_l):
+        spec_install_dir = spec17_path_l
+        print("here")
+        print(spec17_path_l)
         return
 
     # If not found, check for the cpu2017-patched.tar file
@@ -50,17 +48,12 @@ def get_spec_path():
         return
 
     # If none of the above conditions are met, print an error and exit
-    print(
-        "Error: SPEC2017 is not installed at the default path, the tar file does not exist, and SPEC17_PATH is not set or invalid. Please set the SPEC17_PATH environment variable to the SPEC CPU2017 installation directory."
-    )
+    print("Error: SPEC CPU2017 is not installed at the default path.")
+    print("Please set the SPEC17_PATH environment variable to the SPEC CPU2017 installation directory.")
     sys.exit(1)
 
 
 get_spec_path()
-
-print("spec path is ", spec_install_dir)
-print("spec tar path is ", spec_tar_path)
-sys.exit(1)
 
 # Loop over each build type and each script
 for build_type in build_types:
