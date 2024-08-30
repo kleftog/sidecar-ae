@@ -27,6 +27,7 @@ build_scripts = [
 spec_install_dir = os.path.abspath(os.path.join(script_dir, "../benchmarks/spec2017"))
 spec_tar_path = ""
 
+
 def get_spec_path():
     global spec_install_dir
     global spec_tar_path
@@ -49,7 +50,9 @@ def get_spec_path():
 
     # If none of the above conditions are met, print an error and exit
     print("Error: SPEC CPU2017 is not installed at the default path.")
-    print("Please set the SPEC17_PATH environment variable to the SPEC CPU2017 installation directory.")
+    print(
+        "Please set the SPEC17_PATH environment variable to the SPEC CPU2017 installation directory."
+    )
     sys.exit(1)
 
 
@@ -129,22 +132,24 @@ for command in memtier_commands:
 
 print("Testing-tool builds completed.")
 
-# Untar and install SPEC2017
-try:
-    print(f"Creating installation directory at {spec_install_dir}...")
-    os.makedirs(spec_install_dir, exist_ok=True)
-    print("Untarring and installing SPEC2017...")
-    subprocess.run(
-        f"tar -xvf {spec_tar_path} -C {spec_install_dir} --strip-components=1",
-        shell=True,
-        check=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
-    print("SPEC2017 untarred successfully.")
-except subprocess.CalledProcessError as e:
-    print("An error occurred while untarring SPEC2017.")
-    print(e.stderr.decode("utf-8"))
+# check if spec_tar_path is set and if it is do something
+if spec_tar_path != "":
+    # Untar and install SPEC2017
+    try:
+        print(f"Creating installation directory at {spec_install_dir}...")
+        os.makedirs(spec_install_dir, exist_ok=True)
+        print("Untarring and installing SPEC2017...")
+        subprocess.run(
+            f"tar -xvf {spec_tar_path} -C {spec_install_dir} --strip-components=1",
+            shell=True,
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        print("SPEC2017 untarred successfully.")
+    except subprocess.CalledProcessError as e:
+        print("An error occurred while untarring SPEC2017.")
+        print(e.stderr.decode("utf-8"))
 
 # Copy config files
 spec_configs_src = os.path.abspath(
@@ -152,19 +157,24 @@ spec_configs_src = os.path.abspath(
 )
 spec_configs_dst = os.path.join(spec_install_dir, "config")
 
-try:
-    print("Copying SPEC2017 config files...")
-    subprocess.run(
-        f"cp -r {spec_configs_src}/*.cfg {spec_configs_dst}/",
-        shell=True,
-        check=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
-    print("SPEC2017 config files copied successfully.")
-except subprocess.CalledProcessError as e:
-    print("An error occurred while copying SPEC2017 config files.")
-    print(e.stderr.decode("utf-8"))
+# check if spec_configs_dst includes a config by the name of sidecfi.cfg
+# if it does, then we don't need to copy the config files
+if os.path.exists(os.path.join(spec_configs_dst, "sidecfi.cfg")):
+    print("SPEC2017 config files already exist.")
+else:
+    try:
+        print("Copying SPEC2017 config files...")
+        subprocess.run(
+            f"cp -r {spec_configs_src}/*.cfg {spec_configs_dst}/",
+            shell=True,
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        print("SPEC2017 config files copied successfully.")
+    except subprocess.CalledProcessError as e:
+        print("An error occurred while copying SPEC2017 config files.")
+        print(e.stderr.decode("utf-8"))
 
 print("SPEC2017 installation and configuration completed.")
 
