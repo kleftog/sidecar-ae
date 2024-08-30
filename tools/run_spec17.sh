@@ -11,14 +11,25 @@ modes=("lto" "cfi" "sidecfi" "safestack" "sidestack" "asan" "sideasan")
 size=train
 laps=1
 
+# Spec2017 directory
+spec17_dir="$SCRIPT_DIR/../benchmarks/spec2017"
+
+# check if directory exists
+# if not check env variable $SPEC17_PATH
+if [ ! -d "$spec17_dir" ]; then
+    if [ -z "$SPEC17_PATH" ]; then
+        echo "Please set the SPEC17_PATH environment variable to the path of the SPEC CPU2017 directory"
+        exit 1
+    else
+        spec17_dir="$SPEC17_PATH"
+    fi
+fi
+
 # Define the base directory where the Runxxx directories are located
 base_dir="$SCRIPT_DIR/../results/raw"
 
 # Find the last Runxxx directory
 next_run=$(ls -1 "$base_dir" | grep -E '^Run[0-9]{3}$' | sort | tail -n 1)
-
-# Spec2017 directory
-spec17_dir="$SCRIPT_DIR/../benchmarks/spec2017"
 
 # cd to spec17 directory run ./shrc and then come back
 cd "$spec17_dir" || exit
