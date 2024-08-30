@@ -36,8 +36,10 @@ def get_spec_path():
     spec17_path_l = os.getenv("SPEC17_PATH")
     if spec17_path_l and os.path.isdir(spec17_path_l):
         spec_install_dir = spec17_path_l
-        print("here")
-        print(spec17_path_l)
+        return
+
+    # check default installation
+    if os.path.isdir(spec_install_dir):
         return
 
     # If not found, check for the cpu2017-patched.tar file
@@ -58,6 +60,7 @@ def get_spec_path():
 
 get_spec_path()
 
+'''
 # Loop over each build type and each script
 for build_type in build_types:
     for build_script in build_scripts:
@@ -131,9 +134,10 @@ for command in memtier_commands:
         print(e.stderr.decode("utf-8"))
 
 print("Testing-tool builds completed.")
+'''
 
 # check if spec_tar_path is set and if it is do something
-if spec_tar_path != "":
+if spec_tar_path != "" and not os.path.isdir(spec_install_dir):
     # Untar and install SPEC2017
     try:
         print(f"Creating installation directory at {spec_install_dir}...")
