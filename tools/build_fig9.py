@@ -23,34 +23,43 @@ build_scripts = [
     os.path.join(script_dir, "build_memcached.sh"),
 ]
 
+spec17_path = ""
 
 spec_install_dir = os.path.abspath(os.path.join(script_dir, "../benchmarks/spec2017"))
+spec_tar_path = ""
 
 
 def get_spec_path():
-    # Check if SPEC2017 is already installed in the default location
-    if os.path.exists(spec_install_dir):
-        return spec_install_dir
+    # First, check if SPEC17_PATH environment variable is defined
+    spec17_path_l = os.getenv("SPEC17_PATH")
+    if spec17_path_l and os.path.exists(spec17_path_l):
+        spec17_install_dir = spec17_path_l
+        return
 
-    # If not installed, check for the cpu2017-patched.tar file
-    spec_tar_path = os.path.abspath(
+    # If SPEC17_PATH is not defined or does not exist, check the default location
+    if os.path.exists(spec_install_dir):
+        return
+
+    # If not found, check for the cpu2017-patched.tar file
+    spec_tar_path_l = os.path.abspath(
         os.path.join(script_dir, "../benchmarks/cpu2017/cpu2017-patched.tar")
     )
-    if os.path.exists(spec_tar_path):
-        return spec_tar_path
+    if os.path.exists(spec_tar_path_l):
+        spec_tar_path = spec_tar_path_l
+        return
 
-    # If neither is found, prompt the user to set SPEC17_PATH environment variable
-    spec17_path = os.getenv("SPEC17_PATH")
-    if not spec17_path or not os.path.exists(spec17_path):
-        print(
-            "Error: SPEC2017 is not installed at the default path and the tar file does not exist. Please set the SPEC17_PATH environment variable to the SPEC CPU2017 installation directory."
-        )
-        sys.exit(1)
-    return spec17_path
+    # If none of the above conditions are met, print an error and exit
+    print(
+        "Error: SPEC2017 is not installed at the default path, the tar file does not exist, and SPEC17_PATH is not set or invalid. Please set the SPEC17_PATH environment variable to the SPEC CPU2017 installation directory."
+    )
+    sys.exit(1)
 
 
-spec_tar_path = get_spec_tar_path()
+get_spec_path()
 
+print("spec path is ", spec_install_dir)
+printf("spec tar path is ", spec_tar_path)
+sys.exit(1)
 
 # Loop over each build type and each script
 for build_type in build_types:
