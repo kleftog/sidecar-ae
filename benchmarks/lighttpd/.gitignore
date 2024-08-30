@@ -1,0 +1,25 @@
+# Ignore Makefile.in files
+lighttpd-1.4.76/Makefile.in
+lighttpd-1.4.76/doc/Makefile.in
+lighttpd-1.4.76/doc/config/Makefile.in
+lighttpd-1.4.76/doc/config/conf.d/Makefile.in
+lighttpd-1.4.76/doc/config/vhosts.d/Makefile.in
+lighttpd-1.4.76/doc/outdated/Makefile.in
+lighttpd-1.4.76/doc/scripts/Makefile.in
+lighttpd-1.4.76/doc/systemd/Makefile.in
+lighttpd-1.4.76/src/Makefile.in
+lighttpd-1.4.76/tests/Makefile.in
+lighttpd-1.4.76/tests/docroot/Makefile.in
+
+# Ignore aclocal.m4
+lighttpd-1.4.76/aclocal.m4
+
+# Ignore autom4te.cache directory
+lighttpd-1.4.76/autom4te.cache/
+
+# Ignore configure script
+lighttpd-1.4.76/configure
+
+# Ignore configparser.c
+lighttpd-1.4.76/src/configparser.c
+

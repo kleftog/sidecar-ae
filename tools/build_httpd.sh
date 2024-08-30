@@ -198,6 +198,8 @@ EOL
 }
 
 build_app() {
+	cd $SRC_DIR/httpd-2.4.58/
+	autoreconf -i
 	mkdir -p $BUILD_DIR/apache/${MODE}/httpd-2.4.58
 	cd $BUILD_DIR/apache/${MODE}/httpd-2.4.58
 	make distclean

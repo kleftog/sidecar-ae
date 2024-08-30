@@ -1,0 +1,12 @@
+# Ignore all Makefile.in files
+Makefile.in
+
+# Ignore all aclocal.m4 files
+aclocal.m4
+
+# Ignore all autom4te.cache directories
+autom4te.cache/
+
+# Ignore all configure scripts
+configure
+

@@ -117,6 +117,8 @@ build_libevent() {
 build_app() {
 	export LD_LIBRARY_PATH=$OPENSLL_DIR/lib
 
+	cd $SRC_DIR/memcached-1.6.9
+	autoreconf -i
 	mkdir -p $BUILD_DIR/memcached/${MODE}/memcached-1.6.9
 	cd $BUILD_DIR/memcached/${MODE}/memcached-1.6.9
 	make distclean

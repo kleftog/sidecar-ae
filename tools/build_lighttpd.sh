@@ -103,6 +103,8 @@ build_ssl() {
 }
 
 build_pcre() {
+	cd $HTTPD_DIR/pcre-8.45
+	autoreconf -i
 	mkdir -p $BUILD_DIR/lighttpd/${MODE}/pcre-8.45
 	cd $BUILD_DIR/lighttpd/${MODE}/pcre-8.45
 	make distclean
@@ -116,6 +118,8 @@ build_app() {
 	export LD_LIBRARY_PATH=$OPENSSL_DIR/lib64
 	export LDFLAGS="-fuse-ld=gold -L$OPENSSL_DIR/lib64"
 
+	cd $SRC_DIR/lighttpd-1.4.76/
+	autoreconf -i
 	mkdir -p $BUILD_DIR/lighttpd/${MODE}/lighttpd-1.4.76
 	cd $BUILD_DIR/lighttpd/${MODE}/lighttpd-1.4.76
 	make distclean
