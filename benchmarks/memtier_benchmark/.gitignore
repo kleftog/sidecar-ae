@@ -1,1 +1,7 @@
 autom4te.cache/
+memtier_benchmark-JSON_handler.o
+memtier_benchmark-config_types.o
+memtier_benchmark-file_io.o
+memtier_benchmark-item.o
+memtier_benchmark-obj_gen.o
+memtier_benchmark-shard_connection.o
