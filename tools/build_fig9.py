@@ -60,7 +60,6 @@ def get_spec_path():
 
 get_spec_path()
 
-'''
 # Loop over each build type and each script
 for build_type in build_types:
     for build_script in build_scripts:
@@ -134,7 +133,6 @@ for command in memtier_commands:
         print(e.stderr.decode("utf-8"))
 
 print("Testing-tool builds completed.")
-'''
 
 # check if spec_tar_path is set and if it is do something
 if spec_tar_path != "" and not os.path.isdir(spec_install_dir):
