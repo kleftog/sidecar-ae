@@ -125,14 +125,21 @@ def plot_vertical_grouped_barchart(benchmarks, overheads, std_devs, labels, titl
                         "memcached",
                         "bind",
                         "lighttpd",
-                        "chromium",
-                        "**geomean",
                     ]:
                         adjusted_index[j] += bar_width + space_between_groups
+                    elif benchmark in ["chromium", "**geomean"]:
+                        adjusted_index[j] += 3 * bar_width + space_between_groups
                     else:
                         adjusted_index[j] = index[
                             j
                         ]  # No adjustment for other benchmarks
+            elif label == "SIDECFI":
+                adjusted_index = index.astype(float).copy()
+                for j, benchmark in enumerate(benchmarks):
+                    if benchmark in ["chromium", "**geomean"]:
+                        adjusted_index[j] += 2 * bar_width + space_between_groups
+                    else:
+                        adjusted_index[j] = index[j]
             else:
                 adjusted_index = index
 
