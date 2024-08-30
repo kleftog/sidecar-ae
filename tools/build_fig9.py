@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 
 # Resolve the absolute path to the directory containing this script
 script_dir = os.path.dirname(os.path.abspath(__file__))
