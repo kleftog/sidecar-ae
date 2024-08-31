@@ -5,3 +5,16 @@ memtier_benchmark-file_io.o
 memtier_benchmark-item.o
 memtier_benchmark-obj_gen.o
 memtier_benchmark-shard_connection.o
+Makefile
+Makefile.in
+aclocal.m4
+config.log
+config.status
+configure
+memtier_benchmark
+memtier_benchmark-client.o
+memtier_benchmark-cluster_client.o
+memtier_benchmark-memtier_benchmark.o
+memtier_benchmark-protocol.o
+memtier_benchmark-run_stats.o
+memtier_benchmark-run_stats_types.o
