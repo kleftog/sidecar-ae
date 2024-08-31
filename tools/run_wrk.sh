@@ -13,7 +13,7 @@ FILE_SIZE="100KB"
 
 # Number of iterations
 iterations=1
-duration=2
+duration=3
 
 # Variables for throughput calculation
 total_throughput=0

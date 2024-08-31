@@ -174,6 +174,9 @@ apply_ssl_conf_changes() {
 		sed -i "s|^SSLCertificateFile.*|SSLCertificateFile \"${SRC_DIR}/certs/apache-selfsigned.crt\"|" "$SSL_CONF"
 		sed -i "s|^SSLCertificateKeyFile.*|SSLCertificateKeyFile \"${SRC_DIR}/certs/apache-selfsigned.key\"|" "$SSL_CONF"
 		sed -i 's/^Listen 443/Listen 8443/' "$SSL_CONF"
+		sed -i 's/^<VirtualHost _default_:443>/<VirtualHost _default_:8443>/' "$SSL_CONF"
+		sed -i 's/^ServerName www.example.com:443/ServerName www.example.com:8443/' "$SSL_CONF"
+
 		echo "Applied changes to httpd-ssl.conf."
 	fi
 }
