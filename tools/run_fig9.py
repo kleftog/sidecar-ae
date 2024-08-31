@@ -87,11 +87,11 @@ def setup_directories():
 
     # Determine the next RunXXX directory
     existing_runs = sorted(RAW_DIR.glob("Run*"))
-    next_run_num = len(existing_runs) - 1
+    next_run_num = len(existing_runs)
     next_run_dir = RAW_DIR / f"Run{next_run_num:03d}"
 
     # Create the next RunXXX directory
-    #os.makedirs(next_run_dir)
+    os.makedirs(next_run_dir)
 
     # Touch all the necessary raw files
     for file_name in RAW_FILES + SPEC_MODES:
@@ -157,7 +157,7 @@ def execute_chromium(file_path):
 
 def run_placeholder_tasks(run_dir):
     # Call each benchmark's execution function
-    #execute_spec17(run_dir / "spec17.results.csv")
+    execute_spec17(run_dir / "spec17.results.csv")
     execute_httpd(run_dir / "httpd.csv")
     execute_lighttpd(run_dir / "lighttpd.csv")
     execute_memcached(run_dir / "memcached.csv")
@@ -517,10 +517,10 @@ def parse_results(run_dir):
         os.makedirs(PARSED_DIR)
 
     # Parse the spec results
-    #final_results = parse_spec_results(run_dir)
+    final_results = parse_spec_results(run_dir)
 
     # Save the parsed spec results
-    #save_parsed_spec_results(final_results)
+    save_parsed_spec_results(final_results)
 
     # Parse the apps CSVs and calculate the geomean
     apps_data = parse_apps(run_dir)
