@@ -36,7 +36,7 @@ SIDECFI_FLAGS="-fsanitize-cfi-decouple"
 SCS_FLAGS="-fsanitize=shadow-call-stack"
 SIDESTK_FLAGS="-fsanitize-sidestack"
 ASAN_FLAGS="-fsanitize=address -fsanitize-recover=all"
-SIDEASAN_FLAGS="-mllvm -asan-decouple"
+SIDEASAN_FLAGS="-mllvm -asan-decouple -Qunused-arguments"
 
 # Function for setting up environment variables
 setup_env() {

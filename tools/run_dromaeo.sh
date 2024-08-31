@@ -21,7 +21,7 @@ benchmarks=("dromaeo")
 #story="dom-traverse"
 story="dom-attr"
 
-iterations=3
+iterations=1
 
 export PATH=$DEPOT_DIR:$PATH
 

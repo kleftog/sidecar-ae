@@ -124,7 +124,8 @@ build_app() {
 	make -j24
 	make install -j24
 
-	mkdir -p "/var/cache/bind"
+	mkdir -p "${SRC_DIR}/cache/bind"
+	sed -i "s|^[[:space:]]*directory \".*\"|\tdirectory \"${SRC_DIR}/cache/bind\"|" "$BIND_CONF"
 }
 
 run_server() {

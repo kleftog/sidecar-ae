@@ -17,7 +17,7 @@ throughput=0
 throughput_source="wrk"  # or "rand"
 
 iterations=1
-duration=60
+duration=10
 
 # Function to get the throughput
 get_throughput() {
