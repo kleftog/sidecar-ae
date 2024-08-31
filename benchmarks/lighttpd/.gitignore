@@ -23,3 +23,4 @@ lighttpd-1.4.76/configure
 # Ignore configparser.c
 lighttpd-1.4.76/src/configparser.c
 
+error.log
