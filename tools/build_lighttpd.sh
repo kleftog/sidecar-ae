@@ -129,6 +129,10 @@ build_app() {
 		--with-pcre=$PCRE_DIR --with-libev --without-zlib 
 	make -j24
 	make install -j24
+
+	if grep -q '^var.basedir = ""' "$LIGHTTPD_CONF"; then
+		sed -i "s|^var.basedir = \"\"|var.basedir = \"${ROOT_DIR}/benchmarks\"|" "$LIGHTTPD_CONF"
+	fi
 }
 
 # Function to run the server
