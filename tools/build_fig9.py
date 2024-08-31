@@ -110,11 +110,13 @@ for command in wrk_commands:
     except subprocess.CalledProcessError as e:
         print(f"An error occurred during wrk installation.")
 
+
 memtier_commands = [
-    f"cd {memtier_path} && libtoolize && automake --add-missing && ./configure",
+    f"cd {memtier_path} && autoreconf -fi && ./configure",
     f"make -C {memtier_path}",
     f"cp {os.path.join(memtier_path, 'memtier_benchmark')} {os.path.join(ins_dir, 'memtier_benchmark')}",
 ]
+
 
 # Execute the memtier_benchmark build and installation commands
 for command in memtier_commands:
