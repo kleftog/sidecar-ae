@@ -130,9 +130,7 @@ build_app() {
 	make -j24
 	make install -j24
 
-	if grep -q '^var.basedir = ""' "$LIGHTTPD_CONF"; then
-		sed -i "s|^var.basedir = \"\"|var.basedir = \"${ROOT_DIR}/benchmarks\"|" "$LIGHTTPD_CONF"
-	fi
+	sed -i "s|^var.basedir = \"\"|var.basedir = \"${ROOT_DIR}/benchmarks\"|" "$LIGHTTPD_CONF"
 }
 
 # Function to run the server
