@@ -54,21 +54,25 @@ def prompt_for_env_var(var_name, prompt_message):
         os.environ[var_name] = value
     return value
 
-
 # Define the default paths to check first
 default_chromium_src = "/home/kleftog/repos_other/chromium/src"
 default_depot_tools = "/home/kleftog/repos_other/depot_tools"
 
-# Check the default paths first
+# Check the default Chromium src directory
 if os.path.exists(default_chromium_src):
     chromium_src = default_chromium_src
+elif "CHROMIUM_SRC" in os.environ and os.path.exists(os.environ["CHROMIUM_SRC"]):
+    chromium_src = os.environ["CHROMIUM_SRC"]
 else:
     print("Error: Default Chromium src directory not found.")
     print("Please set the CHROMIUM_SRC environment variable and try again.")
     sys.exit(1)
 
+# Check the default depot_tools directory
 if os.path.exists(default_depot_tools):
     depot_tools = default_depot_tools
+elif "DEPOT_TOOLS" in os.environ and os.path.exists(os.environ["DEPOT_TOOLS"]):
+    depot_tools = os.environ["DEPOT_TOOLS"]
 else:
     print("Error: Default depot_tools directory not found.")
     print("Please set the DEPOT_TOOLS environment variable and try again.")
@@ -77,7 +81,6 @@ else:
 # Export the variables to the environment
 os.environ["CHROMIUM_SRC"] = chromium_src
 os.environ["DEPOT_TOOLS"] = depot_tools
-
 
 def setup_directories():
     # Create base directories if they don't exist
@@ -151,7 +154,7 @@ def execute_bind(file_path):
 def execute_chromium(file_path):
     # Call the bash script and capture its output
     result = subprocess.run(
-        ["bash", file_path], stdout=subprocess.PIPE, text=True, env=os.environ
+        ["bash", dromaeo_path], stdout=subprocess.PIPE, text=True
     )
 
 
