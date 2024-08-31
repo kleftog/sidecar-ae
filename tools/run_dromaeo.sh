@@ -10,8 +10,8 @@ CUR_DIR=$(ls -1 "${RAW_DIR}" | grep -E '^Run[0-9]{3}$' | sort | tail -n 1)
 # CHROMIUM_DIR="/home/kleftog/repos_other/chromium/src"
 # DEPOT_DIR="/home/kleftog/repos_other/depot_tools"
 
-RUN_BENCH_DIR=${CHROMIUM_DIR}/tools/perf/run_benchmark
-CHROMIUM_OUT=${CHROMIUM_DIR}/tools/perf/results.csv
+RUN_BENCH_DIR=${CHROMIUM_SRC}/tools/perf/run_benchmark
+CHROMIUM_OUT=${CHROMIUM_SRC}/tools/perf/results.csv
 OUT_PATH=${RAW_DIR}/${CUR_DIR}/chromium.csv
 
 
@@ -23,14 +23,14 @@ story="dom-attr"
 
 iterations=1
 
-export PATH=$DEPOT_DIR:$PATH
+export PATH=$DEPOT_TOOLS:$PATH
 
 # Loop through each benchmark, label, and path, running the benchmark
 for benchmark in "${benchmarks[@]}"; do
     for i in "${!labels[@]}"; do
         label=${labels[$i]}
         path_suffix=${paths[$i]}
-	BROWSER_PATH=${CHROMIUM_DIR}/out_gn/ra_official${path_suffix}/chrome
+	BROWSER_PATH=${CHROMIUM_SRC}/out_gn/ra_official${path_suffix}/chrome
 
         taskset -c 0 xvfb-run -s "-screen 0 1024x768x24" ${RUN_BENCH_DIR} \
             --browser=exact \
