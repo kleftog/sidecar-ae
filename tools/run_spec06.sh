@@ -36,16 +36,16 @@ cd "$spec06_dir" || exit
 source ./shrc
 cd "$SCRIPT_DIR" || exit
 
-export ASAN_OPTIONS='detect_leaks=0'
+llvm_path="$SCRIPT_DIR/../sidecar/install/llvm-sidecar"
+
+# Check if sideguard.cfg exists under the spec2006 config directory
+if [ ! -f "$spec06_dir/config/sideguard.cfg" ]; then
+    cp "$SCRIPT_DIR/../benchmarks/cpu2006/config/sideguard.cfg" "$spec06_dir/config/"
+    echo "Config files copied to SPEC CPU2006."
+fi
 
 # Loop through each mode and print the mode and throughput in CSV format
 for mode in "${modes[@]}"; do
-    if [ "$mode" == "asan" ]; then
-        llvm_path="$SCRIPT_DIR/../sidecar/install/llvm-orig"
-    else
-        llvm_path="$SCRIPT_DIR/../sidecar/install/llvm-sidecar"
-    fi
-
     # Run the spec06 benchmark
     taskset -c 0 runspec --action=run --config=$mode --size=$size --label=$mode \
       --iterations=${laps} --threads=1 --tune=base -define gcc_dir=${llvm_path} --output_format=csv \
@@ -55,8 +55,8 @@ for mode in "${modes[@]}"; do
     csv_file=$(ls -1t "$spec06_dir/result/"*.csv | head -n 1)
 
     if [ "$size" == "ref" ]; then
-	grep "refspeed(ref)" "$csv_file" > "$base_dir/$next_run/spec06.$mode.csv"
+      grep "refspeed(ref)" "$csv_file" > "$base_dir/$next_run/spec06.$mode.csv"
     else
-	grep "${size} iteration" "$csv_file" > "$base_dir/$next_run/spec06.$mode.csv"
+      grep "${size} iteration" "$csv_file" > "$base_dir/$next_run/spec06.$mode.csv"
     fi
 done
