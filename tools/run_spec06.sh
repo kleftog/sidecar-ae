@@ -47,7 +47,7 @@ fi
 # Loop through each mode and print the mode and throughput in CSV format
 for mode in "${modes[@]}"; do
     # Run the spec06 benchmark
-    taskset -c 0 runspec --action=run --config=$mode --size=$size --label=$mode \
+    taskset -c 0 runcpu --action=run --config=$mode --size=$size --label=$mode \
       --iterations=${laps} --threads=1 --tune=base -define gcc_dir=${llvm_path} --output_format=csv \
       --noreportable speedint
 
