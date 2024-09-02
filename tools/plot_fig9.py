@@ -129,6 +129,8 @@ def plot_vertical_grouped_barchart(benchmarks, overheads, std_devs, labels, titl
                         adjusted_index[j] += bar_width + space_between_groups
                     elif benchmark in ["chromium", "**geomean"]:
                         adjusted_index[j] += 3 * bar_width + space_between_groups
+                    elif benchmark in ["geomean"]:
+                        adjusted_index[j] += bar_width + space_between_groups
                     else:
                         adjusted_index[j] = index[
                             j
@@ -138,6 +140,15 @@ def plot_vertical_grouped_barchart(benchmarks, overheads, std_devs, labels, titl
                 for j, benchmark in enumerate(benchmarks):
                     if benchmark in ["chromium", "**geomean"]:
                         adjusted_index[j] += 2 * bar_width + space_between_groups
+                    elif benchmark in ["geomean"]:
+                        adjusted_index[j] += bar_width + space_between_groups
+                    else:
+                        adjusted_index[j] = index[j]
+            elif label == "FINEIBT":
+                adjusted_index = index.astype(float).copy()
+                for j, benchmark in enumerate(benchmarks):
+                    if benchmark in ["geomean"]:
+                        adjusted_index[j] += bar_width + space_between_groups
                     else:
                         adjusted_index[j] = index[j]
             else:
