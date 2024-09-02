@@ -129,6 +129,10 @@ python3 tools/plot_fig9.sh
 
 - The plot will be saved in `results/plots/figure9.pdf`.
 
+- Compare the exported figure to the following one (Figure 9 in the paper):
+
+![Description of the image](expected/expected_figure9.png)
+
 #### **(E2): [Reproducing Fig. 10; verifying claim C3] [5 human-minutes + 2 hours compute-hour]**
 
 - Run the following command:
@@ -145,6 +149,10 @@ python3 tools/plot_fig10.sh
 ```
 
 - The plot will be saved in `results/plots/figure10.pdf`.
+
+- Compare the exported figure to the following one (Figure 10 in the paper):
+
+![Description of the image](expected/expected_figure10.png)
 
 #### **(E2): [Reproducing Tab. 2; verifying claim C4] [5 human-minutes + 1 hour compute-hour]**
 
