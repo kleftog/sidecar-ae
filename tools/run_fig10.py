@@ -8,6 +8,7 @@ from pathlib import Path
 import numpy as np
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
+spec06_path = Path(script_dir) / "run_spec06.sh"
 
 # Constants for directory structure
 BASE_DIR = Path(script_dir) / "../results"
@@ -151,6 +152,10 @@ def save_parsed_spec_results(final_results):
 
         # Write geomean row
         writer.writerow(["geomean", griffin_geomean, sideguard_geomean])
+
+def execute_spec06(file_path):
+    # Call the bash script and capture its output
+    result = subprocess.run(["bash", spec06_path], stdout=subprocess.PIPE, text=True)
 
 
 def main():
