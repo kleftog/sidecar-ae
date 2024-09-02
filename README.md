@@ -36,6 +36,9 @@ We use a 24-core Intel i9-13900K at 5.20 GHz to evaluate all the experiments to 
 │   │   └── memtier_benchmark
 │   └── wrk                      # WRK benchmark tool (commit 7f470d1db)
 │       └── wrk
+├── expected                     # Expected results for comparison
+│   ├── expected_figure10.png    # Expected Figure 10
+│   └── expected_figure9.png     # Expected Figure 9
 ├── sidecar                      # Submodule containing the SideCar project
 ├── tools                        # Scripts and tools for building and running experiments
 │   ├── build_bind.sh            # Builds BIND 9 and its dependencies
