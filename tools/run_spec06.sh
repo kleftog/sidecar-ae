@@ -7,7 +7,7 @@ modes=("lto" "sideguard")
 
 # Choose size of inputs
 size=train
-laps=1
+laps=3
 
 # Spec2006 directory
 spec06_dir="$SCRIPT_DIR/../benchmarks/spec2006"
