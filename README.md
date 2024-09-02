@@ -104,7 +104,7 @@ python3 tools/build_fig9.py
 
 ### Experiments
 
-#### **(E1): [Reproducing Sec. 6.2; verifying claim C1] [5 human-minutes + 1 hour compute-hour]**
+#### **(E1): [Reproducing Sec. 6.2; verifying claim C1] [5 human-minutes + 1 compute-hour]**
 
 - Run the following command:
 
@@ -115,7 +115,7 @@ python3 tools/run_sec6.2.sh
 - The raw results will be saved under `results/ripe64`.
 - The complete RIPE64 logs are stored in `results/ripe64/results.log`, and the final stats can be found in `results/ripe64/stats.log`.
 
-#### **(E2): [Reproducing Fig. 9; verifying claim C2] [5 human-minutes + 34 hours compute-hour]**
+#### **(E2): [Reproducing Fig. 9; verifying claim C2] [5 human-minutes + 34 compute-hours]**
 
 - Run the following command:
 
@@ -136,7 +136,7 @@ python3 tools/plot_fig9.sh
 
 ![Description of the image](expected/expected_figure9.png)
 
-#### **(E2): [Reproducing Fig. 10; verifying claim C3] [5 human-minutes + 2 hours compute-hour]**
+#### **(E2): [Reproducing Fig. 10; verifying claim C3] [5 human-minutes + 40 compute-minutes]**
 
 - Run the following command:
 
@@ -157,7 +157,7 @@ python3 tools/plot_fig10.sh
 
 ![Description of the image](expected/expected_figure10.png)
 
-#### **(E2): [Reproducing Tab. 2; verifying claim C4] [5 human-minutes + 1 hour compute-hour]**
+#### **(E2): [Reproducing Tab. 2; verifying claim C4] [5 human-minutes + 1 compute-hour]**
 
 - Run the following command:
 
