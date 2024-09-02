@@ -6,8 +6,6 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 modes=("lto" "sideguard")
 
 # Choose size of inputs
-#size="ref"
-#size="test"
 size=train
 laps=1
 
@@ -48,9 +46,9 @@ fi
 # Loop through each mode and print the mode and throughput in CSV format
 for mode in "${modes[@]}"; do
     # Run the spec06 benchmark
-    taskset -c 0 runspec --action=run --config=$mode --size=$size \
-      --iterations=${laps} --threads=1 --tune=base -define gcc_dir=${llvm_path} --output_format=csv \
-      int
+    taskset -c 0 runspec --action run --config $mode --size $size \
+      --iterations ${laps} --threads 1 --tune base -define gcc_dir=${llvm_path} --output_format csv \
+      --noreportable int
 
     # Find the latest csv file in spec06 directory under result
     csv_file=$(ls -1t "$spec06_dir/result/"*.csv | head -n 1)
