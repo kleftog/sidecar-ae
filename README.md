@@ -20,9 +20,11 @@ We use a 24-core Intel i9-13900K at 5.20 GHz to evaluate all the experiments to 
 │   ├── bind                     # BIND 9 DNS server with libuv 1.0.0
 │   │   ├── bind9
 │   │   └── libuv
-│   ├── cpu2017                  # SPEC CPU 2017 items
-│   │   ├── config               # Configuration files for SPEC CPU 2017
-│   │   └── cpu2017-patches      # Patches for SPEC CPU 2017 benchmarks
+│   ├── cpu2006                  # SPEC CPU2006 items
+│   │   ├── config               # Configuration files for SPEC CPU2006
+│   ├── cpu2017                  # SPEC CPU2017 items
+│   │   ├── config               # Configuration files for SPECCPU 2017
+│   │   └── cpu2017-patches      # Patches for SPEC CPU2017 benchmarks
 │   ├── lighttpd                 # Lighttpd 1.4.76 with OpenSSL 3.0.7
 │   │   ├── lighttpd-1.4.76
 │   │   ├── lighttpd.conf
@@ -41,11 +43,14 @@ We use a 24-core Intel i9-13900K at 5.20 GHz to evaluate all the experiments to 
 │   ├── build_httpd.sh           # Builds Apache HTTPD and its dependencies
 │   ├── build_lighttpd.sh        # Builds Lighttpd and its dependencies
 │   ├── build_memcached.sh       # Builds Memcached and its dependencies
+│   ├── plot_fig10.py            # Plots and recreates Figure 10 based on the results
 │   ├── plot_fig9.py             # Plots and recreates Figure 9 based on the results
 │   ├── run_dnsperf_bind.sh      # Runs DNSPerf against BIND for benchmarking
 │   ├── run_dromaeo.sh           # Runs Dromaeo benchmarks for browser performance testing
+│   ├── run_fig10.py             # Runs all experiments for replicating Figure 10
 │   ├── run_fig9.py              # Runs all experiments for replicating Figure 9
 │   ├── run_memtier_memcached.sh # Runs Memtier against Memcached for benchmarking
+│   ├── run_spec06.sh            # Runs SPEC CPU2006 benchmarks
 │   ├── run_spec17.sh            # Runs SPEC CPU2017 benchmarks
 │   ├── run_wrk.sh               # Runs WRK for HTTP server benchmarking
 │   ├── run_wrk_httpd.sh         # Runs WRK against Apache HTTPD for benchmarking
@@ -83,7 +88,6 @@ We recommend using [tmux](https://github.com/tmux/tmux/wiki) when running the ex
 ```bash
 ./sidecar/tools/install.sh
 python3 tools/build_fig9.py
-python3 tools/build_fig10.py
 ```
 
 ## Evaluation Workflow
