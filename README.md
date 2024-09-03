@@ -167,22 +167,22 @@ python3 tools/plot_fig10.py
 ```
 
 - The results will be saved under `results/parsed/cpu-usage.csv` and `results/parsed/cpu-usage.txt` in a more human-readable format.
-- Compare the results to the following table (Table 2 in the paper):
+- Compare the table in `results/parsed/cpu-usage.txt` to the following table (Table 2 in the paper):
 
 | **Benchmark** | **SideCFI** | **SideStack** |
 | ------------- | ----------- | ------------- |
-| perlbench     | 90%         | 70%           |
-| bzip2         | 85%         | 65%           |
-| gcc           | 92%         | 75%           |
-| mcf           | 88%         | 68%           |
-| gobmk         | 89%         | 69%           |
-| hmmer         | 91%         | 72%           |
-| sjeng         | 87%         | 67%           |
-| libquantum    | 93%         | 76%           |
-| h264ref       | 90%         | 70%           |
-| omnetpp       | 86%         | 66%           |
-| astar         | 88%         | 68%           |
-| xalancbmk     | 92%         | 74%           |
-| **geomean**   | **90%**     | **70%**       |
+| perlbench     | 97.02%      | 52.81%        |
+| bzip2         | 0.48%       | 6.31%         |
+| gcc           | 16.83%      | 49.85%        |
+| mcf           | 0.57%       | 1.53%         |
+| gobmk         | 16.42%      | 28.15%        |
+| hmmer         | 0.48%       | 0.50%         |
+| sjeng         | 18.14%      | 12.75%        |
+| libquantum    | 0.48%       | 4.66%         |
+| h264ref       | 44.96%      | 11.17%        |
+| omnetpp       | 99.93%      | 46.63%        |
+| astar         | 8.61%       | 8.15%         |
+| xalancbmk     | 98.96%      | 61.96%        |
+| **geomean**   | **8.36%**   | **11.54%**    |
 
 - Note: The results have been updated to reflect the SPEC CPU2006 benchmarks instead of the SPEC CPU2017 benchmarks shown in the paper. These results will be included in the final version of the paper.
