@@ -166,8 +166,8 @@ python3 tools/plot_fig10.py
 ./tools/run_tab2.sh
 ```
 
-- The results will be saved under `results/parsed/cpu-usage.csv` and `results/parsed/cpu-usage.txt` in a more human-readable format.
-- Compare the table in `results/parsed/cpu-usage.txt` to the following table (Table 2 in the paper):
+- The results will be saved under `results/parsed/cpu-usage.csv` and `results/parsed/cpu-usage.md` in a more human-readable format.
+- Compare the table in `results/parsed/cpu-usage.md` to the following table (Table 2 in the paper):
 
 | **Benchmark** | **SideCFI** | **SideStack** |
 | ------------- | ----------- | ------------- |
