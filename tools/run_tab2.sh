@@ -47,9 +47,11 @@ for mode in "${modes[@]}"; do
 done
 
 # Compile the monitors
-cd "$SCRIPT_DIR/../benchmarks/cpu-usage/sidecfi" || exit
+sidecfi_dir="$SCRIPT_DIR/../benchmarks/cpu-usage/sidecfi"
+sidestack_dir="$SCRIPT_DIR/../benchmarks/cpu-usage/sidestack"
+cd "$sidecfi_dir" || exit
 make clean all
-cd "$SCRIPT_DIR/../benchmarks/cpu-usage/sidestack" || exit
+cd "$sidestack_dir" || exit
 make clean all
 cd "$SCRIPT_DIR" || exit
 
@@ -150,13 +152,29 @@ for benchmark in "${int_benchmarks[@]}"; do
             # Modify the command to start with the binary and remove "../run_base_train_$mode.0000/"
             cmd=$(echo "$cmd" | sed "s|\.\./run_base_train_$mode.0000/$binary_name|./$binary_name|")
 
+            # Execute the monitor for the mode
+            if [ "$mode" == "sidecfi" ]; then
+                monitor_cmd="$sidecfi_dir/sidecfi"
+            elif [ "$mode" == "sidestack" ]; then
+                monitor_cmd="$sidestack_dir/sidestack"
+            else
+                echo "Unknown mode: $mode"
+                continue
+            fi
+            echo "$monitor_cmd"
+            #taskset -c 3 $monitor_cmd &
+            #monitor_pid=$!
+
             # Change to the directory and execute the command
             echo "cd $path"
             cd "$path"
             
             # Run the corrected command silently
             echo "$cmd"
-            $cmd > /dev/null 2>&1
+            taskset -c 0 $cmd > /dev/null 2>&1
+
+            # Wait for the monitor to finish using monitor_pid
+            #wait $monitor_pid
             
             echo ""
         fi
