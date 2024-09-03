@@ -180,8 +180,8 @@ for benchmark in "${int_benchmarks[@]}"; do
             cd "$path"
             
             # Run the corrected command silently
-            #echo "$cmd"
-            taskset -c 0 $cmd > /dev/null 2>&1
+            echo "$cmd"
+            taskset -c 0 bash -c "$cmd" > /dev/null 2>&1
 
             # Wait for the monitor to finish using monitor_pid
             wait $monitor_pid
