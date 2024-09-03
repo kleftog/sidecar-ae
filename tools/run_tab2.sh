@@ -168,15 +168,17 @@ for benchmark in "${int_benchmarks[@]}"; do
             # Execute the monitor for the mode
             if [ "$mode" == "sidecfi" ]; then
                 monitor_cmd="$sidecfi_dir/monitor"
+                monitor_output="$sidecfi_dir/monitor_output.txt"
             elif [ "$mode" == "sidestack" ]; then
                 monitor_cmd="$sidestack_dir/monitor"
+                monitor_output="$sidestack_dir/monitor_output.txt"
             else
                 echo "Unknown mode: $mode"
                 continue
             fi
 
             #echo "$monitor_cmd"
-            taskset -c 3 $monitor_cmd  > monitor_output.txt &
+            taskset -c 3 $monitor_cmd  > "$monitor_output" &
             monitor_pid=$!
             sleep 1
 
@@ -192,7 +194,7 @@ for benchmark in "${int_benchmarks[@]}"; do
             wait $monitor_pid
 
             # Extract CPU usage from the monitor output
-            cpu_usage=$(grep "CPU usage" monitor_output.txt | awk '{print $NF}')
+            cpu_usage=$(grep "CPU usage" "$monitor_output" | awk '{print $NF}')
             
             # Store the CPU usage based on the mode
             if [ "$mode" == "sidecfi" ]; then
