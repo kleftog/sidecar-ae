@@ -39,6 +39,7 @@ fi
 
 # Perform a fake run to set up the run directories for each mode
 for mode in "${modes[@]}"; do
+    runspec --action build --config $mode --tune base -define gcc_dir=${llvm_path} int
     taskset -c 0 runspec --action run --fake --config $mode --size $size \
       --iterations ${laps} --threads 1 --tune base -define gcc_dir=${llvm_path} --output_format csv \
       --noreportable int
