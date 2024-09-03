@@ -136,8 +136,13 @@ for benchmark in "${int_benchmarks[@]}"; do
     done
 done
 
+cpu_usage_file="$SCRIPT_DIR/../results/parsed/cpu-usage.csv"
+rm -f "$cpu_usage_file"
+
 # Iterate over benchmarks and run the commands
 for benchmark in "${int_benchmarks[@]}"; do
+    cpu_usage_sidecfi=""
+    cpu_usage_sidestack=""
     for mode in "${modes[@]}"; do
         if [ -n "${benchmark_commands["${benchmark}_${mode}"]}" ]; then
             echo "running $benchmark in $mode mode"
@@ -171,7 +176,7 @@ for benchmark in "${int_benchmarks[@]}"; do
             fi
 
             #echo "$monitor_cmd"
-            taskset -c 3 $monitor_cmd &
+            taskset -c 3 $monitor_cmd  > monitor_output.txt &
             monitor_pid=$!
             sleep 1
 
@@ -185,8 +190,21 @@ for benchmark in "${int_benchmarks[@]}"; do
 
             # Wait for the monitor to finish using monitor_pid
             wait $monitor_pid
+
+            # Extract CPU usage from the monitor output
+            cpu_usage=$(grep "CPU usage" monitor_output.txt | awk '{print $NF}')
+            
+            # Store the CPU usage based on the mode
+            if [ "$mode" == "sidecfi" ]; then
+                cpu_usage_sidecfi="$cpu_usage"
+            elif [ "$mode" == "sidestack" ]; then
+                cpu_usage_sidestack="$cpu_usage"
+            fi
             
         fi
     done
+
+    # Append the results to the CPU usage file
+    echo "$benchmark,$cpu_usage_sidecfi,$cpu_usage_sidestack" >> "$cpu_usage_file"
 done
 
