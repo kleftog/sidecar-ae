@@ -65,8 +65,6 @@ for benchmark in "${int_benchmarks[@]}"; do
         cmd=$(awk '/^-C/ {getline; print; exit} /^-o/ {print; exit}' "$speccmds_file")
         
         if [ -n "$cmd" ]; then
-            benchmark_commands[$benchmark]="path: $latest_run_dir\ncmd: $cmd"
-            
             # Copy the run directory to the target location
             target_dir="$cpu_usage_dir/${benchmark##*.}_$mode"
             cp -r "$latest_run_dir" "$target_dir"
@@ -77,9 +75,15 @@ for benchmark in "${int_benchmarks[@]}"; do
                 typemap_basename=$(basename "$typemap_file")
                 typemap_target_name="${benchmark##*.}_base.$mode.typemap"
                 cp "$build_dir/build_base_$mode".*/"$typemap_basename" "$target_dir/$typemap_target_name"
+                
+                # Change directory to the new folder and run gen_tp.sh
+                cd "$target_dir"
+                ../../../sidecar/tools/gen_tp.sh "$typemap_target_name"
             else
                 echo "No typemap file found for $benchmark in $build_dir/build_base_$mode"
             fi
+            
+            benchmark_commands[$benchmark]="path: $target_dir\ncmd: $cmd"
         else
             echo "No command found in speccmds.cmd for $benchmark"
         fi
