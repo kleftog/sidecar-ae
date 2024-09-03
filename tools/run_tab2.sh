@@ -105,8 +105,8 @@ for benchmark in "${int_benchmarks[@]}"; do
                 
                 cp "$build_dir/build_base_$mode".*/"$typemap_basename" "$target_dir/$typemap_target_name"
                 
-                # Store the binary name for later use
-                benchmark_binaries["$benchmark_$mode"]="$binary_name"
+                # Store the binary name and target directory for later use
+                benchmark_binaries["${benchmark}_${mode}"]="$binary_name"
                 
                 # Change directory to the new folder and run gen_tp.sh
                 cd "$target_dir"
@@ -115,7 +115,7 @@ for benchmark in "${int_benchmarks[@]}"; do
                 echo "No typemap file found for $benchmark in $build_dir/build_base_$mode"
             fi
             
-            benchmark_commands["$benchmark_$mode"]="path: $target_dir\ncmd: $cmd"
+            benchmark_commands["${benchmark}_${mode}"]="path: $target_dir\ncmd: $cmd"
         else
             echo "No command found in speccmds.cmd for $benchmark"
         fi
@@ -125,15 +125,15 @@ done
 # Iterate over benchmarks and run the commands
 for benchmark in "${int_benchmarks[@]}"; do
     for mode in "${modes[@]}"; do
-        if [ -n "${benchmark_commands["$benchmark_$mode"]}" ]; then
+        if [ -n "${benchmark_commands["${benchmark}_${mode}"]}" ]; then
             echo "running $benchmark in $mode mode"
             
             # Extract the path and command from the associative array
-            path=$(echo -e "${benchmark_commands["$benchmark_$mode"]}" | grep "path:" | awk '{print $2}')
-            cmd=$(echo -e "${benchmark_commands["$benchmark_$mode"]}" | grep "cmd:" | cut -d' ' -f2-)
+            path=$(echo -e "${benchmark_commands["${benchmark}_${mode}"]}" | grep "path:" | awk '{print $2}')
+            cmd=$(echo -e "${benchmark_commands["${benchmark}_${mode}"]}" | grep "cmd:" | cut -d' ' -f2-)
             
             # Retrieve the stored binary name
-            binary_name="${benchmark_binaries["$benchmark_$mode"]}"
+            binary_name="${benchmark_binaries["${benchmark}_${mode}"]}"
             
             # Remove -o and -e flags along with their arguments
             cmd=$(echo "$cmd" | sed 's/-o [^ ]*//g' | sed 's/-e [^ ]*//g')
@@ -147,7 +147,7 @@ for benchmark in "${int_benchmarks[@]}"; do
             
             # Run the corrected command silently
             echo "$cmd"
-            #$cmd > /dev/null 2>&1
+            $cmd > /dev/null 2>&1
             
             echo ""
         fi
