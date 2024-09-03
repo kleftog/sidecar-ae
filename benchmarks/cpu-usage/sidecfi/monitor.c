@@ -19,6 +19,8 @@
 #include "../../sidecar-driver/x86-64/ptw.h"
 #include "pt_opcodes.h"
 
+#define CPU_USAGE 1
+
 /* driver defines */
 #define DEVICE_NAME         "/dev/"PTW_DEV_NAME
 #define TRACE_OUT			      "trace.bin"
@@ -639,6 +641,10 @@ main(int argc, char *argv[])
 	struct sigaction sig;
 	sig.sa_sigaction = signal_handler;
 	sig.sa_flags = SA_SIGINFO;
+  #if CPU_USAGE 
+	struct timeval start, stop, diff;
+	struct rusage myusage_start, myusage_end;
+  #endif
 
 	/* set up signal handler */
 	sigaction(SIGUSR1, &sig, NULL);
@@ -650,8 +656,35 @@ main(int argc, char *argv[])
 	/* initialize for trace capturing */
 	pt_init();
 
+  #if CPU_USAGE 
+	getrusage(RUSAGE_SELF, &myusage_start); 
+	gettimeofday(&start, NULL);
+  #endif
+
 	/* extract trace data from etr */
 	read_topa();
+
+  #if CPU_USAGE 
+	gettimeofday(&stop, NULL);
+	getrusage(RUSAGE_SELF, &myusage_end);
+
+	timersub(&stop, &start, &diff);
+
+	struct timeval utime_diff, stime_diff;
+	timersub(&myusage_end.ru_utime, &myusage_start.ru_utime, &utime_diff);
+	timersub(&myusage_end.ru_stime, &myusage_start.ru_stime, &stime_diff);
+
+	printf("time=%lu.%06lu utime=%lu.%06lu stime=%lu.%06lu\n",
+			diff.tv_sec, (unsigned long)diff.tv_usec, 
+			utime_diff.tv_sec, (unsigned long)utime_diff.tv_usec, 
+			stime_diff.tv_sec, (unsigned long)stime_diff.tv_usec); 
+
+	double wall_time = diff.tv_sec + diff.tv_usec / 1000000.0; 
+	double cpu_time = utime_diff.tv_sec + utime_diff.tv_usec / 1000000.0 + stime_diff.tv_sec + stime_diff.tv_usec / 1000000.0; 
+	double cpu_usage = (cpu_time / wall_time) * 100.0; 
+
+	printf("CPU usage = %.2f%%\n", cpu_usage);
+  #endif
 
 	/* cleanup trace capturing */
 	pt_destroy();

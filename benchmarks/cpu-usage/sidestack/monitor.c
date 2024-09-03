@@ -22,7 +22,7 @@
 
 #include "sidestack_decode.h"
 
-#define CPU_USAGE 0
+#define CPU_USAGE 1
 
 /* driver defines */
 #define DEVICE_NAME         "/dev/"PTW_DEV_NAME
