@@ -102,12 +102,17 @@ for benchmark in "${int_benchmarks[@]}"; do
         path=$(echo -e "${benchmark_commands[$benchmark]}" | grep "path:" | awk '{print $2}')
         cmd=$(echo -e "${benchmark_commands[$benchmark]}" | grep "cmd:" | cut -d' ' -f2-)
         
+        # Extract the actual executable name and correct the command
+        executable=$(echo "$cmd" | awk '{print $NF}')
+        cmd=$(echo "$cmd" | sed "s|\.\./run_base_train_sideguard.0000/$executable|./$executable|")
+
         # Change to the directory and execute the command
         echo "cd $path"
         cd "$path"
         
-        echo "./$cmd"
-        ./$cmd
+        # Run the corrected command
+        echo "./$executable $cmd"
+        ./$executable $cmd
         
         echo ""
     fi
