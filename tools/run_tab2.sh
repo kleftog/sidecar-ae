@@ -154,9 +154,9 @@ for benchmark in "${int_benchmarks[@]}"; do
 
             # Execute the monitor for the mode
             if [ "$mode" == "sidecfi" ]; then
-                monitor_cmd="$sidecfi_dir/sidecfi"
+                monitor_cmd="$sidecfi_dir/monitor"
             elif [ "$mode" == "sidestack" ]; then
-                monitor_cmd="$sidestack_dir/sidestack"
+                monitor_cmd="$sidestack_dir/monitor"
             else
                 echo "Unknown mode: $mode"
                 continue
