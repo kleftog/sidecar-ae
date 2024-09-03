@@ -166,11 +166,23 @@ python3 tools/plot_fig10.py
 ./tools/run_tab2.sh
 ```
 
-- The results will be saved under `results/parsed/cpu-usage.csv`.
-- Run the following command to produce the LaTeX file:
+- The results will be saved under `results/parsed/cpu-usage.csv` and `results/parsed/cpu-usage.txt` in a more human-readable format.
+- Compare the results to the following table (Table 2 in the paper):
 
-```bash
-./tools/parse_tab2.sh
-```
+| **Benchmark** | **SideCFI** | **SideStack** |
+| ------------- | ----------- | ------------- |
+| perlbench     | 90%         | 70%           |
+| bzip2         | 85%         | 65%           |
+| gcc           | 92%         | 75%           |
+| mcf           | 88%         | 68%           |
+| gobmk         | 89%         | 69%           |
+| hmmer         | 91%         | 72%           |
+| sjeng         | 87%         | 67%           |
+| libquantum    | 93%         | 76%           |
+| h264ref       | 90%         | 70%           |
+| omnetpp       | 86%         | 66%           |
+| astar         | 88%         | 68%           |
+| xalancbmk     | 92%         | 74%           |
+| **geomean**   | **90%**     | **70%**       |
 
-- The LaTeX file will be saved in `results/cpu-usage/tab2.tex`.
+- Note: The results have been updated to reflect the SPEC CPU2006 benchmarks instead of the SPEC CPU2017 benchmarks shown in the paper. These results will be included in the final version of the paper.
