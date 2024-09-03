@@ -97,8 +97,11 @@ for benchmark in "${int_benchmarks[@]}"; do
             continue
         fi
         
-        # Extract the command after the -C line or the first line starting with -o
-        cmd=$(awk '/^-C/ {getline; print; exit} /^-o/ {print; exit}' "$speccmds_file")
+        if [[ "$benchmark" == "400.perlbench" ]]; then
+          cmd=$(tail -n 1 "$speccmds_file")
+        else
+          cmd=$(awk '/^-C/ {getline; print; exit} /^-o/ {print; exit}' "$speccmds_file")
+        fi
         
         if [ -n "$cmd" ]; then
             # Copy the run directory to the target location
@@ -162,20 +165,20 @@ for benchmark in "${int_benchmarks[@]}"; do
                 continue
             fi
             echo "$monitor_cmd"
-            taskset -c 3 $monitor_cmd &
-            monitor_pid=$!
-            sleep 1
+            #taskset -c 3 $monitor_cmd &
+            #monitor_pid=$!
+            #sleep 1
 
             # Change to the directory and execute the command
-            #echo "cd $path"
+            echo "cd $path"
             cd "$path"
             
             # Run the corrected command silently
-            #echo "$cmd"
-            taskset -c 0 $cmd > /dev/null 2>&1
+            echo "$cmd"
+            #taskset -c 0 $cmd > /dev/null 2>&1
 
             # Wait for the monitor to finish using monitor_pid
-            wait $monitor_pid
+            #wait $monitor_pid
             
         fi
     done
