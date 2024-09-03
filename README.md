@@ -109,7 +109,7 @@ python3 tools/build_fig9.py
 - Run the following command:
 
 ```bash
-python3 tools/run_sec6.2.sh
+python3 tools/run_sec6.2.py
 ```
 
 - The raw results will be saved under `results/ripe64`.
@@ -120,14 +120,14 @@ python3 tools/run_sec6.2.sh
 - Run the following command:
 
 ```bash
-python3 tools/run_fig9.sh
+python3 tools/run_fig9.py
 ```
 
 - The raw results will be saved under `results/raw`, while the parsed results will be in `results/parsed`.
 - Run the following command to produce Figure 9:
 
 ```bash
-python3 tools/plot_fig9.sh
+python3 tools/plot_fig9.py
 ```
 
 - The plot will be saved in `results/plots/figure9.pdf`.
@@ -141,14 +141,14 @@ python3 tools/plot_fig9.sh
 - Run the following command:
 
 ```bash
-python3 tools/run_fig10.sh
+python3 tools/run_fig10.py
 ```
 
 - The raw results will be saved under `results/raw`, while the parsed results will be in `results/parsed`.
 - Run the following command to produce Figure 10:
 
 ```bash
-python3 tools/plot_fig10.sh
+python3 tools/plot_fig10.py
 ```
 
 - The plot will be saved in `results/plots/figure10.pdf`.
@@ -162,14 +162,14 @@ python3 tools/plot_fig10.sh
 - Run the following command:
 
 ```bash
-python3 tools/run_tab2.sh
+./tools/run_tab2.sh
 ```
 
 - The table will be saved under `results/cpu-usage/tab2.csv`.
 - Run the following command to produce the LaTeX file:
 
 ```bash
-./parse_tab2.sh
+./tools/parse_tab2.sh
 ```
 
 - The LaTeX file will be saved in `results/cpu-usage/tab2.tex`.
