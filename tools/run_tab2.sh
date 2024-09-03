@@ -73,13 +73,16 @@ for benchmark in "${int_benchmarks[@]}"; do
             typemap_file=$(ls "$build_dir/build_base_$mode".*/ | grep -m 1 ".typemap")
             if [ -n "$typemap_file" ]; then
                 typemap_basename=$(basename "$typemap_file")
-                typemap_target_name="${benchmark##*.}_base.$mode.typemap"
+                
+                # Determine the correct binary name based on the actual benchmark
+                binary_name=$(ls "$latest_run_dir" | grep -E ".*_base.$mode" | head -n 1)
+                typemap_target_name="${binary_name}.typemap"
+                
                 cp "$build_dir/build_base_$mode".*/"$typemap_basename" "$target_dir/$typemap_target_name"
                 
-                benchmark_name="${benchmark##*.}_base.$mode"
                 # Change directory to the new folder and run gen_tp.sh
                 cd "$target_dir"
-                ../../../sidecar/tools/gen_tp.sh "$benchmark_name"
+                ../../../sidecar/tools/gen_tp.sh "$binary_name"
             else
                 echo "No typemap file found for $benchmark in $build_dir/build_base_$mode"
             fi
