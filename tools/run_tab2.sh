@@ -94,11 +94,21 @@ for benchmark in "${int_benchmarks[@]}"; do
     done
 done
 
-# Loop over the benchmarks in the order specified and output the commands
 for benchmark in "${int_benchmarks[@]}"; do
     if [ -n "${benchmark_commands[$benchmark]}" ]; then
         echo "running $benchmark"
-        echo -e "${benchmark_commands[$benchmark]}"
+        
+        # Extract the path and command from the associative array
+        path=$(echo -e "${benchmark_commands[$benchmark]}" | grep "path:" | awk '{print $2}')
+        cmd=$(echo -e "${benchmark_commands[$benchmark]}" | grep "cmd:" | cut -d' ' -f2-)
+        
+        # Change to the directory and execute the command
+        echo "cd $path"
+        cd "$path"
+        
+        echo "./$cmd"
+        ./$cmd
+        
         echo ""
     fi
 done
