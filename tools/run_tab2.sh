@@ -29,6 +29,7 @@ declare -A benchmark_commands
 
 # Create the target directory for copying files
 cpu_usage_dir="$SCRIPT_DIR/../build/cpu-usage"
+rm -r "$cpu_usage_dir"
 mkdir -p "$cpu_usage_dir"
 
 # Iterate over each integer benchmark in order
