@@ -210,3 +210,51 @@ for benchmark in "${int_benchmarks[@]}"; do
     echo "$benchmark,$cpu_usage_sidecfi,$cpu_usage_sidestack" >> "$cpu_usage_file"
 done
 
+# Function to calculate geometric mean
+geomean() {
+    nums=("$@")
+    product=1
+    count=${#nums[@]}
+    
+    for num in "${nums[@]}"; do
+        product=$(echo "$product * $num" | bc -l)
+    done
+    
+    # Calculate the nth root of the product
+    geomean=$(echo "$product^(1/$count)" | bc -l)
+    
+    # Format the result to 2 decimal places
+    printf "%.2f" "$geomean"
+}
+
+# Parse the cpu_usage_file and extract the columns for SideCFI and SideStack
+sidecfi_usages=()
+sidestack_usages=()
+
+while IFS=, read -r benchmark sidecfi sidestack; do
+    if [ "$benchmark" != "Benchmark" ]; then
+        sidecfi_usages+=("$sidecfi")
+        sidestack_usages+=("$sidestack")
+    fi
+done < "$cpu_usage_file"
+
+# Calculate the geometric means
+geomean_sidecfi=$(geomean "${sidecfi_usages[@]}")
+geomean_sidestack=$(geomean "${sidestack_usages[@]}")
+
+# Generate the Markdown table
+cpu_usage_clean="$SCRIPT_DIR/../results/parsed/cpu-usage.md"
+
+{
+    echo "| **Benchmark** | **SideCFI** | **SideStack** |"
+    echo "| ------------- | ----------- | ------------- |"
+    while IFS=, read -r benchmark sidecfi sidestack; do
+        if [ "$benchmark" != "Benchmark" ]; then
+            echo "| $benchmark | ${sidecfi}% | ${sidestack}% |"
+        fi
+    done < "$cpu_usage_file"
+    echo "| **geomean** | **${geomean_sidecfi}%** | **${geomean_sidestack}%** |"
+} > "$cpu_usage_clean"
+
+echo "CPU usage results have been saved to $cpu_usage_clean"
+
