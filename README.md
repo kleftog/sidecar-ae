@@ -40,25 +40,25 @@ We use a 24-core Intel i9-13900K at 5.20 GHz to evaluate all the experiments to 
 │   ├── expected_figure10.png    # Expected Figure 10
 │   └── expected_figure9.png     # Expected Figure 9
 ├── sidecar                      # Submodule containing the SideCar project
-├── tools                        # Scripts and tools for building and running experiments
-│   ├── build_bind.sh            # Builds BIND 9 and its dependencies
-│   ├── build_fig9.py            # Builds and installs everything required for running the Fig. 9 experiments
-│   ├── build_httpd.sh           # Builds Apache HTTPD and its dependencies
-│   ├── build_lighttpd.sh        # Builds Lighttpd and its dependencies
-│   ├── build_memcached.sh       # Builds Memcached and its dependencies
-│   ├── plot_fig10.py            # Plots and recreates Figure 10 based on the results
-│   ├── plot_fig9.py             # Plots and recreates Figure 9 based on the results
-│   ├── run_dnsperf_bind.sh      # Runs DNSPerf against BIND for benchmarking
-│   ├── run_dromaeo.sh           # Runs Dromaeo benchmarks for browser performance testing
-│   ├── run_fig10.py             # Runs all experiments for replicating Figure 10
-│   ├── run_fig9.py              # Runs all experiments for replicating Figure 9
-│   ├── run_memtier_memcached.sh # Runs Memtier against Memcached for benchmarking
-│   ├── run_spec06.sh            # Runs SPEC CPU2006 benchmarks
-│   ├── run_spec17.sh            # Runs SPEC CPU2017 benchmarks
-│   ├── run_tab2.sh              # Runs CPU utilization experiments for Table 2
-│   ├── run_wrk.sh               # Runs WRK for HTTP server benchmarking
-│   ├── run_wrk_httpd.sh         # Runs WRK against Apache HTTPD for benchmarking
-│   └── run_wrk_lighttpd.sh      # Runs WRK against Lighttpd for benchmarking
+└── tools                        # Scripts and tools for building and running experiments
+    ├── build_bind.sh            # Builds BIND 9 and its dependencies
+    ├── build_fig9.py            # Builds and installs everything required for running the Fig. 9 experiments
+    ├── build_httpd.sh           # Builds Apache HTTPD and its dependencies
+    ├── build_lighttpd.sh        # Builds Lighttpd and its dependencies
+    ├── build_memcached.sh       # Builds Memcached and its dependencies
+    ├── plot_fig10.py            # Plots and recreates Figure 10 based on the results
+    ├── plot_fig9.py             # Plots and recreates Figure 9 based on the results
+    ├── run_dnsperf_bind.sh      # Runs DNSPerf against BIND for benchmarking
+    ├── run_dromaeo.sh           # Runs Dromaeo benchmarks for browser performance testing
+    ├── run_fig10.py             # Runs all experiments for replicating Figure 10
+    ├── run_fig9.py              # Runs all experiments for replicating Figure 9
+    ├── run_memtier_memcached.sh # Runs Memtier against Memcached for benchmarking
+    ├── run_spec06.sh            # Runs SPEC CPU2006 benchmarks
+    ├── run_spec17.sh            # Runs SPEC CPU2017 benchmarks
+    ├── run_tab2.sh              # Runs CPU utilization experiments for Table 2
+    ├── run_wrk.sh               # Runs WRK for HTTP server benchmarking
+    ├── run_wrk_httpd.sh         # Runs WRK against Apache HTTPD for benchmarking
+    └── run_wrk_lighttpd.sh      # Runs WRK against Lighttpd for benchmarking
 ```
 
 ## Hardware Dependencies
