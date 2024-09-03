@@ -27,10 +27,15 @@ int_benchmarks=("400.perlbench" "401.bzip2" "403.gcc" "429.mcf" "445.gobmk" "456
 # Initialize an associative array to hold the benchmark commands
 declare -A benchmark_commands
 
+# Create the target directory for copying files
+cpu_usage_dir="$SCRIPT_DIR/../build/cpu-usage"
+mkdir -p "$cpu_usage_dir"
+
 # Iterate over each integer benchmark in order
 for benchmark in "${int_benchmarks[@]}"; do
     benchmark_dir="$spec06_dir/benchspec/CPU2006/$benchmark"
     run_dir="$benchmark_dir/run"
+    build_dir="$benchmark_dir/build"
     
     # Check if the benchmark directory exists
     if [ ! -d "$benchmark_dir" ]; then
@@ -61,6 +66,20 @@ for benchmark in "${int_benchmarks[@]}"; do
         
         if [ -n "$cmd" ]; then
             benchmark_commands[$benchmark]="path: $latest_run_dir\ncmd: $cmd"
+            
+            # Copy the run directory to the target location
+            target_dir="$cpu_usage_dir/${benchmark##*.}_$mode"
+            cp -r "$latest_run_dir" "$target_dir"
+            
+            # Find and copy the .typemap file, renaming it
+            typemap_file=$(ls "$build_dir/build_base_$mode".*/ | grep -m 1 ".typemap")
+            if [ -n "$typemap_file" ]; then
+                typemap_basename=$(basename "$typemap_file")
+                typemap_target_name="${benchmark##*.}_base.$mode.typemap"
+                cp "$build_dir/build_base_$mode".*/"$typemap_basename" "$target_dir/$typemap_target_name"
+            else
+                echo "No typemap file found for $benchmark in $build_dir/build_base_$mode"
+            fi
         else
             echo "No command found in speccmds.cmd for $benchmark"
         fi
