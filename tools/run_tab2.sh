@@ -123,7 +123,7 @@ for benchmark in "${int_benchmarks[@]}"; do
         
         # Run the corrected command
         echo "$cmd"
-        #$cmd
+        $cmd
         
         echo ""
     fi
