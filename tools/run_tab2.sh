@@ -46,6 +46,13 @@ for mode in "${modes[@]}"; do
     fi
 done
 
+# Compile the monitors
+cd "$SCRIPT_DIR/../benchmarks/cpu-usage/sidecfi" || exit
+make clean all
+cd "$SCRIPT_DIR/../benchmarks/cpu-usage/sidestack" || exit
+make clean all
+cd "$SCRIPT_DIR" || exit
+
 # List of integer benchmarks in SPEC2006
 int_benchmarks=("400.perlbench" "401.bzip2" "403.gcc" "429.mcf" "445.gobmk" "456.hmmer" "458.sjeng" "462.libquantum" "464.h264ref" "471.omnetpp" "473.astar" "483.xalancbmk")
 
