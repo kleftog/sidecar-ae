@@ -19,13 +19,15 @@ if [ ! -d "$spec06_dir" ]; then
     fi
 fi
 
+echo "SPEC06 directory: $spec06_dir"
+
 # List of integer benchmarks in SPEC2006
 int_benchmarks=("400.perlbench" "401.bzip2" "403.gcc" "429.mcf" "445.gobmk" "456.hmmer" "458.sjeng" "462.libquantum" "464.h264ref" "471.omnetpp" "473.astar" "483.xalancbmk")
 
 # Initialize an associative array to hold the benchmark commands
 declare -A benchmark_commands
 
-# Iterate over each integer benchmark
+# Iterate over each integer benchmark in order
 for benchmark in "${int_benchmarks[@]}"; do
     benchmark_dir="$spec06_dir/benchspec/CPU2006/$benchmark"
     run_dir="$benchmark_dir/run"
@@ -54,8 +56,8 @@ for benchmark in "${int_benchmarks[@]}"; do
             continue
         fi
         
-        # Extract the first command starting with -o
-        cmd=$(grep -m 1 "^-o" "$speccmds_file")
+        # Extract the command after the -C line or the first line starting with -o
+        cmd=$(awk '/^-C/ {getline; print; exit} /^-o/ {print; exit}' "$speccmds_file")
         
         if [ -n "$cmd" ]; then
             benchmark_commands[$benchmark]="path: $latest_run_dir\ncmd: $cmd"
@@ -65,10 +67,12 @@ for benchmark in "${int_benchmarks[@]}"; do
     done
 done
 
-# Loop over the benchmarks and output the commands
-for benchmark in "${!benchmark_commands[@]}"; do
-    echo "running $benchmark"
-    echo -e "${benchmark_commands[$benchmark]}"
-    echo ""
+# Loop over the benchmarks in the order specified and output the commands
+for benchmark in "${int_benchmarks[@]}"; do
+    if [ -n "${benchmark_commands[$benchmark]}" ]; then
+        echo "running $benchmark"
+        echo -e "${benchmark_commands[$benchmark]}"
+        echo ""
+    fi
 done
 
