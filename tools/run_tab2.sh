@@ -39,7 +39,7 @@ fi
 
 # Perform a run to set up the run directories for each mode
 for mode in "${modes[@]}"; do
-    if ! ls "$spec06_dir/benchspec/CPU/400.perlbench/run/run_base_train_$mode".* 1> /dev/null 2>&1; then
+    if ! ls "$spec06_dir/benchspec/CPU2006/400.perlbench/run/run_base_train_$mode".* 1> /dev/null 2>&1; then
         taskset -c 0 runspec --action run --config $mode --size $size \
           --iterations ${laps} --threads 1 --tune base -define gcc_dir=${llvm_path} --output_format csv \
           --noreportable int
