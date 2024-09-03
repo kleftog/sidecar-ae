@@ -166,7 +166,7 @@ python3 tools/plot_fig10.py
 ./tools/run_tab2.sh
 ```
 
-- The table will be saved under `results/cpu-usage/tab2.csv`.
+- The results will be saved under `results/parsed/cpu-usage.csv`.
 - Run the following command to produce the LaTeX file:
 
 ```bash
