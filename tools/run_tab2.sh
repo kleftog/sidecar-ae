@@ -3,7 +3,11 @@
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 
 # Define the modes
-modes=("sideguard")
+modes=("sidecfi" "sidestack")
+
+# Choose size of inputs
+size=train
+laps=1
 
 # Spec2006 directory
 spec06_dir="$SCRIPT_DIR/../benchmarks/spec2006"
@@ -19,7 +23,26 @@ if [ ! -d "$spec06_dir" ]; then
     fi
 fi
 
-echo "SPEC06 directory: $spec06_dir"
+# cd to spec06 directory run ./shrc and then come back
+cd "$spec06_dir" || exit
+source ./shrc
+cd "$SCRIPT_DIR" || exit
+
+llvm_path="$SCRIPT_DIR/../sidecar/install/llvm-sidecar"
+
+# Check if sidecfi.cfg and sidestack.cfg exist under the spec2006 config directory
+if [ ! -f "$spec06_dir/config/sidecfi.cfg" ] || [ ! -f "$spec06_dir/config/sidestack.cfg" ]; then
+    cp "$SCRIPT_DIR/../benchmarks/cpu2006/config/sidecfi.cfg" "$spec06_dir/config/"
+    cp "$SCRIPT_DIR/../benchmarks/cpu2006/config/sidestack.cfg" "$spec06_dir/config/"
+    echo "Config files copied to SPEC CPU2006."
+fi
+
+# Perform a fake run to set up the run directories for each mode
+for mode in "${modes[@]}"; do
+    taskset -c 0 runspec --action run --fake --config $mode --size $size \
+      --iterations ${laps} --threads 1 --tune base -define gcc_dir=${llvm_path} --output_format csv \
+      --noreportable int
+done
 
 # List of integer benchmarks in SPEC2006
 int_benchmarks=("400.perlbench" "401.bzip2" "403.gcc" "429.mcf" "445.gobmk" "456.hmmer" "458.sjeng" "462.libquantum" "464.h264ref" "471.omnetpp" "473.astar" "483.xalancbmk")
@@ -83,7 +106,7 @@ for benchmark in "${int_benchmarks[@]}"; do
                 cp "$build_dir/build_base_$mode".*/"$typemap_basename" "$target_dir/$typemap_target_name"
                 
                 # Store the binary name for later use
-                benchmark_binaries[$benchmark]="$binary_name"
+                benchmark_binaries["$benchmark_$mode"]="$binary_name"
                 
                 # Change directory to the new folder and run gen_tp.sh
                 cd "$target_dir"
@@ -92,7 +115,7 @@ for benchmark in "${int_benchmarks[@]}"; do
                 echo "No typemap file found for $benchmark in $build_dir/build_base_$mode"
             fi
             
-            benchmark_commands[$benchmark]="path: $target_dir\ncmd: $cmd"
+            benchmark_commands["$benchmark_$mode"]="path: $target_dir\ncmd: $cmd"
         else
             echo "No command found in speccmds.cmd for $benchmark"
         fi
@@ -101,31 +124,33 @@ done
 
 # Iterate over benchmarks and run the commands
 for benchmark in "${int_benchmarks[@]}"; do
-    if [ -n "${benchmark_commands[$benchmark]}" ]; then
-        echo "running $benchmark"
-        
-        # Extract the path and command from the associative array
-        path=$(echo -e "${benchmark_commands[$benchmark]}" | grep "path:" | awk '{print $2}')
-        cmd=$(echo -e "${benchmark_commands[$benchmark]}" | grep "cmd:" | cut -d' ' -f2-)
-        
-        # Retrieve the stored binary name
-        binary_name="${benchmark_binaries[$benchmark]}"
-        
-        # Remove -o and -e flags along with their arguments
-        cmd=$(echo "$cmd" | sed 's/-o [^ ]*//g' | sed 's/-e [^ ]*//g')
-        
-        # Modify the command to start with the binary and remove "../run_base_train_sideguard.0000/"
-        cmd=$(echo "$cmd" | sed "s|\.\./run_base_train_sideguard.0000/$binary_name|./$binary_name|")
+    for mode in "${modes[@]}"; do
+        if [ -n "${benchmark_commands["$benchmark_$mode"]}" ]; then
+            echo "running $benchmark in $mode mode"
+            
+            # Extract the path and command from the associative array
+            path=$(echo -e "${benchmark_commands["$benchmark_$mode"]}" | grep "path:" | awk '{print $2}')
+            cmd=$(echo -e "${benchmark_commands["$benchmark_$mode"]}" | grep "cmd:" | cut -d' ' -f2-)
+            
+            # Retrieve the stored binary name
+            binary_name="${benchmark_binaries["$benchmark_$mode"]}"
+            
+            # Remove -o and -e flags along with their arguments
+            cmd=$(echo "$cmd" | sed 's/-o [^ ]*//g' | sed 's/-e [^ ]*//g')
+            
+            # Modify the command to start with the binary and remove "../run_base_train_$mode.0000/"
+            cmd=$(echo "$cmd" | sed "s|\.\./run_base_train_$mode.0000/$binary_name|./$binary_name|")
 
-        # Change to the directory and execute the command
-        echo "cd $path"
-        cd "$path"
-        
-        # Run the corrected command
-        echo "$cmd"
-        $cmd > /dev/null 2>&1
-        
-        echo ""
-    fi
+            # Change to the directory and execute the command
+            echo "cd $path"
+            cd "$path"
+            
+            # Run the corrected command silently
+            echo "$cmd"
+            #$cmd > /dev/null 2>&1
+            
+            echo ""
+        fi
+    done
 done
 
