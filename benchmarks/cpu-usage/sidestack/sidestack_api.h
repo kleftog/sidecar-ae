@@ -82,7 +82,7 @@ void sidestack_pop(uint32_t addr) {
         //printf("%x != %x\n", compare_addr, addr);
         //printf("---------------------------------\n");
         temp_pos = shstk_curr;
-#if 1
+#if 0
         while(temp_pos > shstk_base){
             if(*temp_pos == addr){
                 printf("------------Mismatch-------------\n");
