@@ -76,9 +76,10 @@ for benchmark in "${int_benchmarks[@]}"; do
                 typemap_target_name="${benchmark##*.}_base.$mode.typemap"
                 cp "$build_dir/build_base_$mode".*/"$typemap_basename" "$target_dir/$typemap_target_name"
                 
+                benchmark_name="${benchmark##*.}_base.$mode"
                 # Change directory to the new folder and run gen_tp.sh
                 cd "$target_dir"
-                ../../../sidecar/tools/gen_tp.sh "$typemap_target_name"
+                ../../../sidecar/tools/gen_tp.sh "$benchmark_name"
             else
                 echo "No typemap file found for $benchmark in $build_dir/build_base_$mode"
             fi
