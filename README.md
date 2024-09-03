@@ -158,7 +158,7 @@ python3 tools/plot_fig10.py
 
 ![Description of the image](expected/expected_figure10.png)
 
-#### **(E2): [Reproducing Tab. 2; verifying claim C4] [5 human-minutes + 1 compute-hour]**
+#### **(E2): [Reproducing Tab. 2; verifying claim C4] [5 human-minutes + 10 compute-minutes]**
 
 - Run the following command:
 
