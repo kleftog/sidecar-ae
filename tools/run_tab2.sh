@@ -217,11 +217,16 @@ geomean() {
     count=${#nums[@]}
     
     for num in "${nums[@]}"; do
-        product=$(echo "$product * $num" | bc -l)
+        if [[ "$num" =~ ^[0-9]+([.][0-9]+)?$ ]]; then
+            product=$(echo "$product * $num" | bc -l)
+        else
+            echo "Invalid number detected: $num"
+            return 1
+        fi
     done
     
     # Calculate the nth root of the product
-    geomean=$(echo "$product^(1/$count)" | bc -l)
+    geomean=$(echo "e(l($product)/$count)" | bc -l)
     
     # Format the result to 2 decimal places
     printf "%.2f" "$geomean"
@@ -233,14 +238,26 @@ sidestack_usages=()
 
 while IFS=, read -r benchmark sidecfi sidestack; do
     if [ "$benchmark" != "Benchmark" ]; then
-        sidecfi_usages+=("$sidecfi")
-        sidestack_usages+=("$sidestack")
+        # Remove potential percentage signs and handle empty lines
+        sidecfi="${sidecfi%\%}"
+        sidestack="${sidestack%\%}"
+        
+        if [[ -n "$sidecfi" && -n "$sidestack" ]]; then
+            sidecfi_usages+=("$sidecfi")
+            sidestack_usages+=("$sidestack")
+        fi
     fi
 done < "$cpu_usage_file"
 
 # Calculate the geometric means
 geomean_sidecfi=$(geomean "${sidecfi_usages[@]}")
 geomean_sidestack=$(geomean "${sidestack_usages[@]}")
+
+# Check if geometric means were calculated successfully
+if [[ -z "$geomean_sidecfi" || -z "$geomean_sidestack" ]]; then
+    echo "Failed to calculate geometric means due to invalid input."
+    exit 1
+fi
 
 # Generate the Markdown table
 cpu_usage_clean="$SCRIPT_DIR/../results/parsed/cpu-usage.md"
