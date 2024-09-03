@@ -37,12 +37,13 @@ if [ ! -f "$spec06_dir/config/sidecfi.cfg" ] || [ ! -f "$spec06_dir/config/sides
     echo "Config files copied to SPEC CPU2006."
 fi
 
-# Perform a fake run to set up the run directories for each mode
+# Perform a run to set up the run directories for each mode
 for mode in "${modes[@]}"; do
-    runspec --action build --config $mode --tune base -define gcc_dir=${llvm_path} int
-    taskset -c 0 runspec --action run --fake --config $mode --size $size \
-      --iterations ${laps} --threads 1 --tune base -define gcc_dir=${llvm_path} --output_format csv \
-      --noreportable int
+    if ! ls "$spec06_dir/run/run_base_train_$mode".* 1> /dev/null 2>&1; then
+        taskset -c 0 runspec --action run --config $mode --size $size \
+          --iterations ${laps} --threads 1 --tune base -define gcc_dir=${llvm_path} --output_format csv \
+          --noreportable int
+    fi
 done
 
 # List of integer benchmarks in SPEC2006
