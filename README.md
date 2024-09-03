@@ -55,6 +55,7 @@ We use a 24-core Intel i9-13900K at 5.20 GHz to evaluate all the experiments to 
 │   ├── run_memtier_memcached.sh # Runs Memtier against Memcached for benchmarking
 │   ├── run_spec06.sh            # Runs SPEC CPU2006 benchmarks
 │   ├── run_spec17.sh            # Runs SPEC CPU2017 benchmarks
+│   ├── run_tab2.sh              # Runs CPU utilization experiments for Table 2
 │   ├── run_wrk.sh               # Runs WRK for HTTP server benchmarking
 │   ├── run_wrk_httpd.sh         # Runs WRK against Apache HTTPD for benchmarking
 │   └── run_wrk_lighttpd.sh      # Runs WRK against Lighttpd for benchmarking
