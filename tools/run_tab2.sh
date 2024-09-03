@@ -111,6 +111,9 @@ for benchmark in "${int_benchmarks[@]}"; do
         # Retrieve the stored binary name
         binary_name="${benchmark_binaries[$benchmark]}"
         
+        # Remove -o and -e flags along with their arguments
+        cmd=$(echo "$cmd" | sed 's/-o [^ ]*//g' | sed 's/-e [^ ]*//g')
+        
         # Modify the command to start with the binary and remove "../run_base_train_sideguard.0000/"
         cmd=$(echo "$cmd" | sed "s|\.\./run_base_train_sideguard.0000/$binary_name|./$binary_name|")
 
@@ -119,8 +122,8 @@ for benchmark in "${int_benchmarks[@]}"; do
         cd "$path"
         
         # Run the corrected command
-        echo "./$binary_name $cmd"
-        ./$binary_name $cmd
+        echo "$cmd"
+        #$cmd
         
         echo ""
     fi
