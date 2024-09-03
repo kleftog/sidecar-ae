@@ -149,11 +149,16 @@ for benchmark in "${int_benchmarks[@]}"; do
             # Retrieve the stored binary name
             binary_name="${benchmark_binaries["${benchmark}_${mode}"]}"
             
-            # Remove -o and -e flags along with their arguments
-            cmd=$(echo "$cmd" | sed 's/-o [^ ]*//g' | sed 's/-e [^ ]*//g')
-            
-            # Modify the command to start with the binary and remove "../run_base_train_$mode.0000/"
-            cmd=$(echo "$cmd" | sed "s|\.\./run_base_train_$mode.0000/$binary_name|./$binary_name|")
+            # Modify the command to handle gobmk's input
+            if [[ "$benchmark" == "445.gobmk" ]]; then
+                input_file=$(echo "$cmd" | grep -oP '(?<=-i )[^ ]+')
+                cmd=$(echo "$cmd" | sed 's/-i [^ ]*//g' | sed "s|^\(.*\)$|./$binary_name < $input_file|")
+            else
+                # Remove -o and -e flags along with their arguments
+                cmd=$(echo "$cmd" | sed 's/-o [^ ]*//g' | sed 's/-e [^ ]*//g')
+                # Modify the command to start with the binary and remove "../run_base_train_$mode.0000/"
+                cmd=$(echo "$cmd" | sed "s|\.\./run_base_train_$mode.0000/$binary_name|./$binary_name|")
+            fi
 
             # Execute the monitor for the mode
             if [ "$mode" == "sidecfi" ]; then
