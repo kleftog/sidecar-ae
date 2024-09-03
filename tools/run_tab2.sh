@@ -162,21 +162,21 @@ for benchmark in "${int_benchmarks[@]}"; do
                 continue
             fi
             echo "$monitor_cmd"
-            #taskset -c 3 $monitor_cmd &
-            #monitor_pid=$!
+            taskset -c 3 $monitor_cmd &
+            monitor_pid=$!
+            sleep 1
 
             # Change to the directory and execute the command
-            echo "cd $path"
+            #echo "cd $path"
             cd "$path"
             
             # Run the corrected command silently
-            echo "$cmd"
+            #echo "$cmd"
             taskset -c 0 $cmd > /dev/null 2>&1
 
             # Wait for the monitor to finish using monitor_pid
-            #wait $monitor_pid
+            wait $monitor_pid
             
-            echo ""
         fi
     done
 done
