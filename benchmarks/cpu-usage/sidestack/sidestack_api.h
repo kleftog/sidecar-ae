@@ -30,7 +30,7 @@ void sidestack_initialize(){
 
 void sidestack_cleanup(){
     if (shstk_base != NULL) {
-	    free(shstk_base);
+	    //free(shstk_base);
 	    shstk_base = NULL;
 	    shstk_curr = NULL;
     }
