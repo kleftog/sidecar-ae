@@ -418,10 +418,10 @@ main(int argc, char *argv[])
 	struct sigaction sig;
 	sig.sa_sigaction = signal_handler;
 	sig.sa_flags = SA_SIGINFO;
-  #if CPU_USAGE 
+#if CPU_USAGE 
 	struct timeval start, stop, diff;
 	struct rusage myusage_start, myusage_end;
-  #endif
+#endif
 
 	/* set up signal handler */
 	sigaction(SIGUSR1, &sig, NULL);

@@ -15,6 +15,8 @@
 #include <sys/mman.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
+#include <sys/resource.h>
+#include <sys/time.h>
 
 #include "../../../sidecar/sidecar-driver/x86-64/ptw.h"
 #include "pt_opcodes.h"
@@ -644,10 +646,10 @@ main(int argc, char *argv[])
 	struct sigaction sig;
 	sig.sa_sigaction = signal_handler;
 	sig.sa_flags = SA_SIGINFO;
-  #if CPU_USAGE 
+#if CPU_USAGE 
 	struct timeval start, stop, diff;
 	struct rusage myusage_start, myusage_end;
-  #endif
+#endif
 
 	/* set up signal handler */
 	sigaction(SIGUSR1, &sig, NULL);
