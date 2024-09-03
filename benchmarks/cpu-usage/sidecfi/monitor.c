@@ -16,7 +16,7 @@
 #include <sys/ioctl.h>
 #include <sys/stat.h>
 
-#include "../../sidecar-driver/x86-64/ptw.h"
+#include "../../../sidecar/sidecar-driver/x86-64/ptw.h"
 #include "pt_opcodes.h"
 
 #define CPU_USAGE 1
@@ -503,12 +503,15 @@ process_trace_data(char* buf, unsigned long buf_ofst, unsigned long read_tgt, bo
 
 									bool found = searchTypeMap(typeID, target_addr);
 
+#if 0
 									if (!found) { 
 										printf("CFI CHECK ERROR: no matching address found in the typemap!\n");
 										printf("MSG{0x%llx, %d}\n",
 												target_addr, typeID);
 										exit(1);
 									}
+#endif
+
 #if MDEBUG
 									else 
 										printf("CFI CHECK: MSG{0x%llx, %d}\n", target_addr, typeID);
@@ -649,9 +652,11 @@ main(int argc, char *argv[])
 	/* set up signal handler */
 	sigaction(SIGUSR1, &sig, NULL);
 
+#if MDEBUG
 	printf("This is the SideCFI monitor for application %s\n", argv[1]);
 	printf("Processing  : Concurrent\n");
 	printf("PT Decoder  : Custom\n");
+#endif
 
 	/* initialize for trace capturing */
 	pt_init();

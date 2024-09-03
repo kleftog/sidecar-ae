@@ -1,5 +1,5 @@
 CC=$(CROSS_COMPILE)gcc
-CFLAGS+=-O3 -Wall -I../../sidecar-driver/x86-64
+CFLAGS+=-O3 -Wall -I../../../sidecar/sidecar-driver/x86-64
 LIBS+=-lcrypto
 
 BINS=monitor

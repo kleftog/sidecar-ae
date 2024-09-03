@@ -18,7 +18,7 @@
 #include <sys/resource.h>
 #include <sys/time.h>
 
-#include "../../sidecar-driver/x86-64/ptw.h"
+#include "../../../sidecar/sidecar-driver/x86-64/ptw.h"
 
 #include "sidestack_decode.h"
 
@@ -426,6 +426,7 @@ main(int argc, char *argv[])
 	/* set up signal handler */
 	sigaction(SIGUSR1, &sig, NULL);
 
+#if 0
 	printf("This is the SideStack monitor.\n");
 	printf("Processing  : Concurrent\n");
 	printf("PT Decoder  : Custom\n");
@@ -436,6 +437,7 @@ main(int argc, char *argv[])
 	else{
 		printf("Enforcement : Disabled/Permissive \n");
 	}
+#endif
 
 	/* initialize sidestack */
 	sidestack_init();
