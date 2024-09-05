@@ -72,7 +72,7 @@ if ptw_loaded:
     print(f"{ptw_module} module removed.\n")
 
 ptw_module_path = os.path.abspath(
-    os.path.join(script_dir, "../sidecar/sidecar-driver/x86_64")
+    os.path.join(script_dir, "../sidecar/sidecar-driver/x86-64")
 )
 
 # Build the ptw kernel module
