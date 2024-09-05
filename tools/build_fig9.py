@@ -72,11 +72,20 @@ if ptw_loaded:
     print(f"{ptw_module} module removed.\n")
 
 ptw_module_path = os.path.abspath(
-    os.path.join(script_dir, "../sidecar/sidecar-drivers/x86_64/ptw.ko")
+    os.path.join(script_dir, "../sidecar/sidecar-driver/x86_64")
 )
+
+# Build the ptw kernel module
+print("Building the ptw kernel module...")
+subprocess.run(
+    f"make -C {ptw_module_path} clean && make -C {ptw_module_path}",
+    shell=True,
+    check=True,
+)
+
 # Load the ptw kernel module with sudo
 print("Loading the ptw kernel module...")
-subprocess.run(f"sudo insmod {ptw_module_path}", shell=True, check=True)
+subprocess.run(f"sudo insmod {ptw_module_path}/ptw.ko", shell=True, check=True)
 print("ptw kernel module loaded.\n")
 
 # Loop over each build type and each script
