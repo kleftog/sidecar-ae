@@ -90,7 +90,7 @@ We recommend using [tmux](https://github.com/tmux/tmux/wiki) when running the ex
 - Our server comes with everything prebuilt and preinstalled. There is no need to rebuild anything, but if required, you can run the following commands for building and installing SideCar's LLVM 12, SideCar, benchmarks, all software dependencies and testing tools (wrk, memtier_benchmark, etc.):
 
 ```bash
-./sidecar/tools/install.sh
+./sidecar/tools/install.sh all
 python3 tools/build_fig9.py
 ```
 
