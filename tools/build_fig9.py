@@ -71,12 +71,13 @@ if ptw_loaded:
     subprocess.run(f"rmmod {ptw_module}", shell=True, check=True)
     print(f"{ptw_module} module removed.\n")
 
+ptw_module_path = os.path.abspath(
+    os.path.join(script_dir, "../sidecar/sidecar-drivers/x86_64/ptw.ko")
+)
 # Load the ptw kernel module with sudo
 print("Loading the ptw kernel module...")
-subprocess.run(
-    "sudo insmod sidecar/sidecar-drivers/x86_64/ptw.ko", shell=True, check=True
-)
-print("ptw module loaded.\n")
+subprocess.run(f"sudo insmod {ptw_module_path}", shell=True, check=True)
+print("ptw kernel module loaded.\n")
 
 # Loop over each build type and each script
 for build_type in build_types:
