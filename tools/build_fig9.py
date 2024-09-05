@@ -60,6 +60,24 @@ def get_spec_path():
 
 get_spec_path()
 
+# Check if ptw is already loaded and rmmod
+ptw_module = "ptw"
+ptw_loaded = subprocess.run(
+    f"lsmod | grep {ptw_module}", shell=True, stdout=subprocess.PIPE
+).stdout.decode("utf-8")
+
+if ptw_loaded:
+    print(f"Removing {ptw_module} module...")
+    subprocess.run(f"rmmod {ptw_module}", shell=True, check=True)
+    print(f"{ptw_module} module removed.\n")
+
+# Load the ptw kernel module with sudo
+print("Loading the ptw kernel module...")
+subprocess.run(
+    "sudo insmod sidecar/sidecar-drivers/x86_64/ptw.ko", shell=True, check=True
+)
+print("ptw module loaded.\n")
+
 # Loop over each build type and each script
 for build_type in build_types:
     for build_script in build_scripts:
