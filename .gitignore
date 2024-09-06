@@ -3,6 +3,8 @@ install
 results
 benchmarks/cpu2017/
 benchmarks/bind/cache/
+benchmarks/bind/bind9/autom4te.cache/output.*
+benchmarks/bind/bind9/autom4te.cache/traces.*
 benchmarks/chromium
 benchmarks/depot_tools
 benchmarks/spec2006
