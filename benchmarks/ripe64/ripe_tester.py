@@ -249,7 +249,9 @@ for compiler in compilers:
                             os.system(f"echo {parameters_str} >> /tmp/ripe_log")
 
                             if sidecfi_used:
-                                monitorline = f"{sidecfi_monitor} clang_sidecfi_attack_gen > /tmp/ripe_log_monitor"
+                                monitorline = (
+                                    f"{sidecfi_monitor} > /tmp/ripe_log_monitor"
+                                )
                                 with subprocess.Popen(
                                     monitorline, shell=True
                                 ) as monitor:
@@ -259,7 +261,9 @@ for compiler in compilers:
                                     monitor.wait()
                                     time.sleep(0.3)
                             elif sidestack_used:
-                                monitorline = f"{sidestack_monitor} clang_sidestack_attack_gen > /tmp/ripe_log_monitor"
+                                monitorline = (
+                                    f"{sidestack_monitor} > /tmp/ripe_log_monitor"
+                                )
                                 with subprocess.Popen(
                                     monitorline, shell=True
                                 ) as monitor:
