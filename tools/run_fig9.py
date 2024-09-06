@@ -54,6 +54,7 @@ def prompt_for_env_var(var_name, prompt_message):
         os.environ[var_name] = value
     return value
 
+
 # Define the default paths to check first
 default_chromium_src = "/home/kleftog/repos_other/chromium/src"
 default_depot_tools = "/home/kleftog/repos_other/depot_tools"
@@ -81,6 +82,7 @@ else:
 # Export the variables to the environment
 os.environ["CHROMIUM_SRC"] = chromium_src
 os.environ["DEPOT_TOOLS"] = depot_tools
+
 
 def setup_directories():
     # Create base directories if they don't exist
@@ -153,9 +155,7 @@ def execute_bind(file_path):
 
 def execute_chromium(file_path):
     # Call the bash script and capture its output
-    result = subprocess.run(
-        ["bash", dromaeo_path], stdout=subprocess.PIPE, text=True
-    )
+    result = subprocess.run(["bash", dromaeo_path], stdout=subprocess.PIPE, text=True)
 
 
 def run_placeholder_tasks(run_dir):
@@ -557,9 +557,61 @@ def parse_results(run_dir):
         apps_out.write(geomean_str)
 
 
+def install_ptw_module():
+    # Check if ptw is already loaded and remove it
+    ptw_module = "ptw"
+    ptw_loaded = subprocess.run(
+        f"lsmod | grep {ptw_module}", shell=True, stdout=subprocess.PIPE
+    ).stdout.decode("utf-8")
+
+    if ptw_loaded:
+        print(f"Removing {ptw_module} module...")
+        try:
+            subprocess.run(f"sudo rmmod {ptw_module}", shell=True, check=True)
+            print(f"{ptw_module} module removed.\n")
+        except subprocess.CalledProcessError as e:
+            print(f"Error removing {ptw_module} module: {e}")
+            sys.exit(1)
+
+    # Specify the path to the kernel module
+    ptw_module_path = os.path.abspath(
+        os.path.join(script_dir, "../sidecar/sidecar-driver/x86_64")
+    )
+
+    # Ensure the ptw.ko file exists before trying to load it
+    ptw_ko_path = os.path.join(ptw_module_path, "ptw.ko")
+    if not os.path.exists(ptw_ko_path):
+        print(f"Error: {ptw_ko_path} does not exist.")
+        sys.exit(1)
+
+    # Load the ptw kernel module with sudo and check if it is loaded
+    print("Loading the ptw kernel module...")
+    try:
+        subprocess.run(f"sudo insmod {ptw_ko_path}", shell=True, check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error loading {ptw_module}: {e}")
+        print("Please reboot the system and try again.")
+        sys.exit(1)
+
+    # Verify the module was successfully loaded
+    ptw_loaded = subprocess.run(
+        f"lsmod | grep {ptw_module}", shell=True, stdout=subprocess.PIPE
+    ).stdout.decode("utf-8")
+
+    if not ptw_loaded:
+        print("Error: Failed to load the ptw kernel module.")
+        print("Please reboot the system and try again.")
+        sys.exit(1)
+
+    print("ptw kernel module loaded successfully.\n")
+
+
 def main():
     print("Setting up directories...")
     run_dir = setup_directories()
+
+    print("Installing the ptw kernel module...")
+    install_ptw_module()
 
     print(f"Running tasks for {run_dir}...")
     run_placeholder_tasks(run_dir)
