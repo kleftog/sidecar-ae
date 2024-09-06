@@ -107,9 +107,10 @@ python3 tools/build_fig9.py
 
 #### **(E1): [Reproducing Sec. 6.2; verifying claim C1] [5 human-minutes + 1 compute-hour]**
 
-- Run the following command:
+- Run the following commands:
 
 ```bash
+cd ~/sidecar-ae
 python3 tools/run_sec6.2.py
 ```
 
@@ -118,9 +119,10 @@ python3 tools/run_sec6.2.py
 
 #### **(E2): [Reproducing Fig. 9; verifying claim C2] [5 human-minutes + 34 compute-hours]**
 
-- Run the following command:
+- Run the following commands:
 
 ```bash
+cd ~/sidecar-ae
 python3 tools/run_fig9.py
 ```
 
@@ -139,9 +141,10 @@ python3 tools/plot_fig9.py
 
 #### **(E2): [Reproducing Fig. 10; verifying claim C3] [5 human-minutes + 40 compute-minutes]**
 
-- Run the following command:
+- Run the following commands:
 
 ```bash
+cd ~/sidecar-ae
 python3 tools/run_fig10.py
 ```
 
@@ -160,9 +163,10 @@ python3 tools/plot_fig10.py
 
 #### **(E2): [Reproducing Tab. 2; verifying claim C4] [5 human-minutes + 10 compute-minutes]**
 
-- Run the following command:
+- Run the following commands:
 
 ```bash
+cd ~/sidecar-ae
 ./tools/run_tab2.sh
 ```
 
