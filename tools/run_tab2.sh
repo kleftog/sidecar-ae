@@ -21,7 +21,7 @@ function check_and_remove_ptw {
 }
 
 function load_ptw_module {
-    ptw_module_path="$SCRIPT_DIR/../sidecar/sidecar-driver/x86_64/ptw.ko"
+    ptw_module_path="$SCRIPT_DIR/../sidecar/sidecar-driver/x86-64/ptw.ko"
 
     # Check if the ptw.ko file exists
     if [[ ! -f "$ptw_module_path" ]]; then
