@@ -6,7 +6,7 @@ CFLAGS_COMMON=-fno-stack-protector -z execstack -g -fvisibility=default -flto
 
 # Specific flags for different sanitizers
 CFLAGS_SAFESTACK=-fsanitize=shadow-call-stack
-CFLAGS_SIDESTACK=-fsanitize=shadow-call-stack -fsanitize=sidestack
+CFLAGS_SIDESTACK=-fsanitize=shadow-call-stack -fsanitize-sidestack
 CFLAGS_CFI=-fsanitize=cfi-icall,cfi-vcall -fsanitize-cfi-cross-dso
 CFLAGS_SIDECFI=-fsanitize=cfi-icall,cfi-vcall -fsanitize-cfi-cross-dso -fsanitize-cfi-decouple
 
