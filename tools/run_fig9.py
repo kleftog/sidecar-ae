@@ -607,11 +607,11 @@ def install_ptw_module():
 
 
 def main():
-    print("Setting up directories...")
-    run_dir = setup_directories()
-
     print("Installing the ptw kernel module...")
     install_ptw_module()
+
+    print("Setting up directories...")
+    run_dir = setup_directories()
 
     print(f"Running tasks for {run_dir}...")
     run_placeholder_tasks(run_dir)

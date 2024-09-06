@@ -153,12 +153,65 @@ def save_parsed_spec_results(final_results):
         # Write geomean row
         writer.writerow(["geomean", griffin_geomean, sideguard_geomean])
 
+
 def execute_spec06(file_path):
     # Call the bash script and capture its output
     result = subprocess.run(["bash", spec06_path], stdout=subprocess.PIPE, text=True)
 
 
+def install_ptw_module():
+    # Check if ptw is already loaded and remove it
+    ptw_module = "ptw"
+    ptw_loaded = subprocess.run(
+        f"lsmod | grep {ptw_module}", shell=True, stdout=subprocess.PIPE
+    ).stdout.decode("utf-8")
+
+    if ptw_loaded:
+        print(f"Removing {ptw_module} module...")
+        try:
+            subprocess.run(f"sudo rmmod {ptw_module}", shell=True, check=True)
+            print(f"{ptw_module} module removed.\n")
+        except subprocess.CalledProcessError as e:
+            print(f"Error removing {ptw_module} module: {e}")
+            sys.exit(1)
+
+    # Specify the path to the kernel module
+    ptw_module_path = os.path.abspath(
+        os.path.join(script_dir, "../sidecar/sidecar-driver/x86_64")
+    )
+
+    # Ensure the ptw.ko file exists before trying to load it
+    ptw_ko_path = os.path.join(ptw_module_path, "ptw.ko")
+    if not os.path.exists(ptw_ko_path):
+        print(f"Error: {ptw_ko_path} does not exist.")
+        sys.exit(1)
+
+    # Load the ptw kernel module with sudo and check if it is loaded
+    print("Loading the ptw kernel module...")
+    try:
+        subprocess.run(f"sudo insmod {ptw_ko_path}", shell=True, check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error loading {ptw_module}: {e}")
+        print("Please reboot the system and try again.")
+        sys.exit(1)
+
+    # Verify the module was successfully loaded
+    ptw_loaded = subprocess.run(
+        f"lsmod | grep {ptw_module}", shell=True, stdout=subprocess.PIPE
+    ).stdout.decode("utf-8")
+
+    if not ptw_loaded:
+        print("Error: Failed to load the ptw kernel module.")
+        print("Please reboot the system and try again.")
+        sys.exit(1)
+
+    print("ptw kernel module loaded successfully.\n")
+
+
 def main():
+    print("Installing the ptw kernel module...")
+    install_ptw_module()
+
     print("Setting up directories...")
     run_dir = setup_directories()
 
