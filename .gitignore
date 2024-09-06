@@ -3,3 +3,7 @@ install
 results
 benchmarks/cpu2017/
 benchmarks/bind/cache/
+benchmarks/chromium
+benchmarks/depot_tools
+benchmarks/spec2006
+benchmarks/spec2017
