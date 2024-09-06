@@ -63,19 +63,6 @@ Release
 # /cmake-build-debug/
 /cmake-build-debug/
 
-# /build/
-/build/rules.mk
-/build/config_vars.mk
-/build/apr_common.m4
-/build/find_apr.m4
-/build/find_apu.m4
-/build/ltconfig
-/build/ltmain.sh
-/build/PrintPath
-/build/config.sub
-/build/config.guess
-/build/config_vars.sh
-
 # /build/pkg/
 /build/pkg/pkginfo
 
