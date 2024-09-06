@@ -30,7 +30,27 @@ function load_ptw_module {
     fi
 
     # Try to load the ptw module with sudo
-    echo "Loading the ptw kernel module..."
+    echo "Loading the ptw kernel module with interrupts disabled..."
+    if sudo insmod "$ptw_module_path" pause=0; then
+        echo "ptw kernel module loaded successfully."
+    else
+        echo "Error: Failed to load the ptw kernel module."
+        echo "Please reboot the system and try again."
+        exit 1
+    fi
+}
+
+function load_ptw_module_int {
+    ptw_module_path="$SCRIPT_DIR/../sidecar/sidecar-driver/x86-64/ptw.ko"
+
+    # Check if the ptw.ko file exists
+    if [[ ! -f "$ptw_module_path" ]]; then
+        echo "Error: $ptw_module_path does not exist."
+        exit 1
+    fi
+
+    # Try to load the ptw module with sudo
+    echo "Loading the ptw kernel module with interrupts enabled..."
     if sudo insmod "$ptw_module_path"; then
         echo "ptw kernel module loaded successfully."
     else
@@ -86,6 +106,9 @@ for mode in "${modes[@]}"; do
           --noreportable int
     fi
 done
+
+check_and_remove_ptw
+load_ptw_module_int
 
 # Compile the monitors
 sidecfi_dir="$SCRIPT_DIR/../benchmarks/cpu-usage/sidecfi"
