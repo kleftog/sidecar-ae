@@ -34,7 +34,7 @@ build/clang_cfi_attack_gen: build ./source/attack_gen.c
 
 build/clang_sidecfi_attack_gen: build ./source/attack_gen.c
 	${CLANG} ${CFLAGS_COMMON} ${CFLAGS_SIDECFI} ./source/attack_gen.c -o ./build/clang_sidecfi_attack_gen
-	cp attack_gen.typemap ./build/clang_sidecfi_attack_gen.typemap
+	mv attack_gen.typemap ./build/clang_sidecfi_attack_gen.typemap
 	cd ./build && ../../../sidecar/tools/gen_tp.sh clang_sidecfi_attack_gen
 
 clean:
