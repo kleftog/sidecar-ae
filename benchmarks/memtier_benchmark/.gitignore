@@ -18,3 +18,12 @@ memtier_benchmark-memtier_benchmark.o
 memtier_benchmark-protocol.o
 memtier_benchmark-run_stats.o
 memtier_benchmark-run_stats_types.o
+config.guess
+config.h.in~
+config.sub
+ltmain.sh
+m4/libtool.m4
+m4/ltoptions.m4
+m4/ltsugar.m4
+m4/ltversion.m4
+m4/lt~obsolete.m4
