@@ -104,7 +104,7 @@ build_ssl() {
 	mkdir -p $BUILD_DIR/apache/${MODE}/openssl-1.1.1
 	cd $BUILD_DIR/apache/${MODE}/openssl-1.1.1
 	make distclean
-	rm *.typemap
+	rm -r *.typemap
 	$SRC_DIR/openssl-1.1.1/config --prefix=$OPENSSL_DIR --openssldir=$OPENSSL_DIR shared no-async
 	make -j24
 	make install -j24
@@ -114,7 +114,7 @@ build_apr() {
 	mkdir -p $BUILD_DIR/apache/${MODE}/apr-1.7.4
 	cd $BUILD_DIR/apache/${MODE}/apr-1.7.4
 	make distclean
-	rm *.typemap
+	rm -r *.typemap
 	$SRC_DIR/apr-1.7.4/configure --prefix=$APR_DIR
 	make -j24
 	make install -j24
@@ -124,7 +124,7 @@ build_expat() {
 	mkdir -p $BUILD_DIR/apache/${MODE}/expat-2.5.0
 	cd $BUILD_DIR/apache/${MODE}/expat-2.5.0
 	make distclean
-	rm *.typemap
+	rm -r *.typemap
 	$SRC_DIR/expat-2.5.0/configure --prefix=$EXPAT_DIR
 	make -j24
 	make install -j24
@@ -134,7 +134,7 @@ build_aprutil() {
 	mkdir -p $BUILD_DIR/apache/${MODE}/apr-util-1.6.3
 	cd $BUILD_DIR/apache/${MODE}/apr-util-1.6.3
 	make distclean
-	rm *.typemap
+	rm -r *.typemap
 	$SRC_DIR/apr-util-1.6.3/configure --prefix=$APR_DIR --with-apr=$APR_DIR #--with-expat=$EXPAT_DIR 
 	make -j24
 	make install -j24
@@ -144,7 +144,7 @@ build_pcre() {
 	mkdir -p $BUILD_DIR/apache/${MODE}/pcre-8.45
 	cd $BUILD_DIR/apache/${MODE}/pcre-8.45
 	make distclean
-	rm *.typemap
+	rm -r *.typemap
 	$SRC_DIR/pcre-8.45/configure --prefix=$PCRE_DIR --disable-cpp
 	make -j24
 	make install -j24
@@ -207,7 +207,7 @@ build_app() {
 	mkdir -p $BUILD_DIR/apache/${MODE}/httpd-2.4.58
 	cd $BUILD_DIR/apache/${MODE}/httpd-2.4.58
 	make distclean
-	rm *.typemap
+	rm -r *.typemap
 	$SRC_DIR/httpd-2.4.58/configure --prefix=$APP_DIR \
 		--with-apr=$APR_DIR/bin/apr-1-config  \
 		--with-apr-util=$APR_DIR/bin/apu-1-config \

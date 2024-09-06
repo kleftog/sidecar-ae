@@ -83,10 +83,18 @@ subprocess.run(
     check=True,
 )
 
-# Load the ptw kernel module with sudo
+# Load the ptw kernel module with sudo and check if it is loaded
+# If not loaded, print an error message and exit
 print("Loading the ptw kernel module...")
 subprocess.run(f"sudo insmod {ptw_module_path}/ptw.ko", shell=True, check=True)
-print("ptw kernel module loaded.\n")
+ptw_loaded = subprocess.run(
+    f"lsmod | grep {ptw_module}", shell=True, stdout=subprocess.PIPE
+).stdout.decode("utf-8")
+
+if not ptw_loaded:
+    print("Error: Failed to load the ptw kernel module.")
+    print("Please reboot the system and try again.")
+    sys.exit(1)
 
 # Loop over each build type and each script
 for build_type in build_types:
