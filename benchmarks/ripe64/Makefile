@@ -30,6 +30,7 @@ build/clang_cfi_attack_gen: ./source/attack_gen.c
 
 build/clang_sidecfi_attack_gen: ./source/attack_gen.c
 	${CLANG} ${CFLAGS_COMMON} ${CFLAGS_sidecfi} ./source/attack_gen.c -o ./build/clang_sidecfi_attack_gen
+	cd ./build && ../../sidecar/tools/gen_tp.sh clang_sdcfi_attack_gen
 
 clean:
 	rm -f ./build/*
