@@ -7,3 +7,5 @@ benchmarks/chromium
 benchmarks/depot_tools
 benchmarks/spec2006
 benchmarks/spec2017
+benchmarks/cpu-usage/**/*.o
+benchmarks/cpu-usage/**/monitor
