@@ -68,7 +68,7 @@ ptw_loaded = subprocess.run(
 
 if ptw_loaded:
     print(f"Removing {ptw_module} module...")
-    subprocess.run(f"rmmod {ptw_module}", shell=True, check=True)
+    subprocess.run(f"sudo rmmod {ptw_module}", shell=True, check=True)
     print(f"{ptw_module} module removed.\n")
 
 ptw_module_path = os.path.abspath(
