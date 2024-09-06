@@ -189,7 +189,7 @@ def install_ptw_module():
     # Load the ptw kernel module with sudo and check if it is loaded
     print("Loading the ptw kernel module...")
     try:
-        subprocess.run(f"sudo insmod {ptw_ko_path}", shell=True, check=True)
+        subprocess.run(f"sudo insmod {ptw_ko_path} pause=0", shell=True, check=True)
     except subprocess.CalledProcessError as e:
         print(f"Error loading {ptw_module}: {e}")
         print("Please reboot the system and try again.")

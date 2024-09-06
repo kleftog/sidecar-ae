@@ -2,6 +2,47 @@
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 
+function check_and_remove_ptw {
+    ptw_module="ptw"
+
+    # Check if ptw is loaded
+    ptw_loaded=$(lsmod | grep "$ptw_module")
+
+    if [[ -n "$ptw_loaded" ]]; then
+        echo "Removing $ptw_module module..."
+        # Try to remove the ptw module with sudo
+        if sudo rmmod "$ptw_module"; then
+            echo "$ptw_module module removed."
+        else
+            echo "Error: Failed to remove $ptw_module module."
+            exit 1
+        fi
+    fi
+}
+
+function load_ptw_module {
+    ptw_module_path="$SCRIPT_DIR/../sidecar/sidecar-driver/x86_64/ptw.ko"
+
+    # Check if the ptw.ko file exists
+    if [[ ! -f "$ptw_module_path" ]]; then
+        echo "Error: $ptw_module_path does not exist."
+        exit 1
+    fi
+
+    # Try to load the ptw module with sudo
+    echo "Loading the ptw kernel module..."
+    if sudo insmod "$ptw_module_path"; then
+        echo "ptw kernel module loaded successfully."
+    else
+        echo "Error: Failed to load the ptw kernel module."
+        echo "Please reboot the system and try again."
+        exit 1
+    fi
+}
+
+check_and_remove_ptw
+load_ptw_module
+
 # Define the modes
 modes=("sidecfi" "sidestack")
 

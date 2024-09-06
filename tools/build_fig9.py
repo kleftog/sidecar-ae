@@ -86,7 +86,7 @@ subprocess.run(
 # Load the ptw kernel module with sudo and check if it is loaded
 # If not loaded, print an error message and exit
 print("Loading the ptw kernel module...")
-subprocess.run(f"sudo insmod {ptw_module_path}/ptw.ko", shell=True, check=True)
+subprocess.run(f"sudo insmod {ptw_module_path}/ptw.ko pause=0", shell=True, check=True)
 ptw_loaded = subprocess.run(
     f"lsmod | grep {ptw_module}", shell=True, stdout=subprocess.PIPE
 ).stdout.decode("utf-8")
