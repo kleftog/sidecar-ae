@@ -265,8 +265,6 @@ for compiler in compilers:
                                 monitorline = (
                                     f"{sidecfi_monitor} > /tmp/ripe_log_monitor"
                                 )
-
-                                # Start the monitor process
                                 with subprocess.Popen(
                                     monitorline, shell=True
                                 ) as monitor:
@@ -275,7 +273,8 @@ for compiler in compilers:
 
                                     os.wait()
 
-                                    os.kill(monitor.pid, signal.SIGUSR1)
+                                    if check_error(f"/tmp/ripe_log2{i}"):
+                                        os.kill(monitor.pid, signal.SIGUSR1)
 
                                     # Wait for the monitor to finish before proceeding
                                     monitor.wait()
