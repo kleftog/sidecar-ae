@@ -230,6 +230,19 @@ def analyze_log2(additional_info):
     return additional_info
 
 
+def run_with_timeout(cmd, timeout=1):
+    process = subprocess.Popen(
+        cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
+    try:
+        stdout, stderr = process.communicate(timeout=timeout)
+        return process.returncode, stdout, stderr
+    except subprocess.TimeoutExpired:
+        process.kill()
+        stdout, stderr = process.communicate()
+        return -1, stdout, stderr
+
+
 if not os.path.exists("/tmp/ripe-eval"):
     os.system("mkdir /tmp/ripe-eval")
 
@@ -272,18 +285,24 @@ for compiler in compilers:
                                 ) as monitor:
                                     cmdline = f'echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}'
                                     os.system(cmdline)
-                                    app = subprocess.Popen(cmdline, shell=True)
+                                    returncode, stdout, stderr = run_with_timeout(
+                                        cmdline, timeout=1
+                                    )
 
                                     # check if the main has been terminated
                                     # and if monitor is still running
                                     # and send SIGUSR1 to the monitor
-                                    if app.poll() is not None and psutil.pid_exists(
-                                        monitor.pid
-                                    ):
+                                    if psutil.pid_exists(monitor.pid):
                                         os.kill(monitor.pid, signal.SIGUSR1)
 
                                     # Wait for the monitor to finish before proceeding
                                     monitor.wait()
+                                    try:
+                                        monitor.wait(
+                                            timeout=10
+                                        )  # 10 second timeout for monitor
+                                    except subprocess.TimeoutExpired:
+                                        monitor.kill()
 
                                     # Sleep to avoid overwhelming the system
                                     time.sleep(0.3)
