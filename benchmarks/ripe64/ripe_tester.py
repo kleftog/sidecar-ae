@@ -276,7 +276,9 @@ for compiler in compilers:
                                     # check if the main has been terminated
                                     # and if monitor is still running
                                     # and send SIGUSR1 to the monitor
-                                    if os..poll() is not None and psutil.pid_exists(monitor.pid):
+                                    if os.poll() is not None and psutil.pid_exists(
+                                        monitor.pid
+                                    ):
                                         os.kill(monitor.pid, signal.SIGUSR1)
 
                                     # Wait for the monitor to finish before proceeding
