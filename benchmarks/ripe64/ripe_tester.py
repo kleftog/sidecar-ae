@@ -266,28 +266,20 @@ for compiler in compilers:
                                     f"{sidecfi_monitor} > /tmp/ripe_log_monitor"
                                 )
 
+                                touch_cmd = "touch /tmp/ripe-eval/f_xxxx"
+                                subprocess.Popen(touch_cmd, shell=True, check=True)
+
                                 # Start the monitor process
                                 with subprocess.Popen(
                                     monitorline, shell=True
                                 ) as monitor:
                                     try:
-                                        touch_cmd = "touch /tmp/ripe-eval/f_xxxx"
-                                        subprocess.run(
-                                            touch_cmd, shell=True, check=True
-                                        )
-
                                         # Build the taskset command
                                         cmdline = (
                                             f"taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} "
                                             f">> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}"
                                         )
-
-                                        attack_gen = subprocess.Popen(
-                                            cmdline, shell=True
-                                        )
-
-                                        attack_gen.wait()
-
+                                        attack_gen = subprocess.run(cmdline, shell=True)
                                     except subprocess.CalledProcessError as e:
                                         # Handle errors during the execution of the command
                                         print(f"Error occurred: {e}")
