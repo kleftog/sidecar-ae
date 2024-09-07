@@ -21,6 +21,8 @@ import subprocess
 import sys
 import time
 
+import psutil
+
 # Get the directory of the current script
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
