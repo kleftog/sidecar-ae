@@ -210,7 +210,7 @@ def check_error(log_file):
             "Segmentation fault" in log_content
             or "Bus error" in log_content
             or "Illegal instruction" in log_content
-            or "Error" in log_content
+            or "Impossible" in log_content
         ):
             return True
     return False
