@@ -11,3 +11,5 @@ benchmarks/spec2006
 benchmarks/spec2017
 benchmarks/cpu-usage/**/*.o
 benchmarks/cpu-usage/**/monitor
+benchmarks/cpu-usage/**/*.txt
+benchmarks/ripe64/fscanf_temp_file
