@@ -273,11 +273,11 @@ for compiler in compilers:
                                     cmdline = f'echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}'
                                     os.system(cmdline)
 
-                                    time.sleep(1)
-
-                                    if check_error(f"/tmp/ripe_log2{i}"):
-                                        if psutil.pid_exists(monitor.pid):
-                                            os.kill(monitor.pid, signal.SIGUSR1)
+                                    # check if the main has been terminated
+                                    # and if monitor is still running
+                                    # and send SIGUSR1 to the monitor
+                                    if os..poll() is not None and psutil.pid_exists(monitor.pid):
+                                        os.kill(monitor.pid, signal.SIGUSR1)
 
                                     # Wait for the monitor to finish before proceeding
                                     monitor.wait()
