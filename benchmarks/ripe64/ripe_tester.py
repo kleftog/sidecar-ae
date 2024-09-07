@@ -282,8 +282,11 @@ for compiler in compilers:
                                             f">> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}"
                                         )
 
-                                        # Run the taskset command
-                                        subprocess.run(cmdline, shell=True, check=True)
+                                        attack_gen = subprocess.Popen(
+                                            cmdline, shell=True
+                                        )
+
+                                        attack_gen.wait()
 
                                     except subprocess.CalledProcessError as e:
                                         # Handle errors during the execution of the command
