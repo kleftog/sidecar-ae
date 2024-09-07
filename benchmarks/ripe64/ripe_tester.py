@@ -282,7 +282,6 @@ for compiler in compilers:
                                             cmdline, shell=True, check=True
                                         )
 
-                                        attack_gen.wait()
                                     except subprocess.CalledProcessError as e:
                                         # Handle errors during the execution of the command
                                         print(f"Error occurred: {e}")
