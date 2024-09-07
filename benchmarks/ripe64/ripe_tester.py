@@ -271,6 +271,8 @@ for compiler in compilers:
                                     cmdline = f'echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}'
                                     os.system(cmdline)
 
+                                    os.wait()
+
                                     if check_error(f"/tmp/ripe_log2{i}"):
                                         os.kill(monitor.pid, signal.SIGUSR1)
 
