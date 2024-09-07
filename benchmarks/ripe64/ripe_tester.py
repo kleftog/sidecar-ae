@@ -270,29 +270,12 @@ for compiler in compilers:
                                 with subprocess.Popen(
                                     monitorline, shell=True
                                 ) as monitor:
-                                    try:
-                                        # Run the command using subprocess.run instead of os.system
-                                        cmdline = (
-                                            f'echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen '
-                                            f"{parameters_str} >> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}"
-                                        )
-                                        # Wait for the process to complete
-                                        subprocess.run(cmdline, shell=True, check=True)
-                                    except subprocess.CalledProcessError as e:
-                                        # Handle errors during the execution of the command
-                                        print(f"Error occurred: {e}")
+                                    cmdline = f'echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}'
+                                    os.system(cmdline)
 
-                                        # Log error message in the same file
-                                        with open(
-                                            f"/tmp/ripe_log2{i}", "a"
-                                        ) as log_file:
-                                            log_file.write(
-                                                f"\nBus error occurred. Exit status: {e.returncode}\n"
-                                            )
+                                    os.wait()
 
-                                    # Check for errors in the log after the command completes
-                                    if check_error(f"/tmp/ripe_log2{i}"):
-                                        os.kill(monitor.pid, signal.SIGUSR1)
+                                    os.kill(monitor.pid, signal.SIGUSR1)
 
                                     # Wait for the monitor to finish before proceeding
                                     monitor.wait()
