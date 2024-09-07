@@ -262,26 +262,22 @@ for compiler in compilers:
                             os.system(f"echo {parameters_str} >> /tmp/ripe_log")
 
                             if sidecfi_used:
-                                touch_cmd = "touch /tmp/ripe-eval/f_xxxx"
-                                subprocess.Popen(touch_cmd, shell=True)
-
                                 monitorline = (
                                     f"{sidecfi_monitor} > /tmp/ripe_log_monitor"
                                 )
+
                                 # Start the monitor process
                                 with subprocess.Popen(
                                     monitorline, shell=True
                                 ) as monitor:
                                     try:
-                                        # Build the taskset command
+                                        # Run the command using subprocess.run instead of os.system
                                         cmdline = (
-                                            f"taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} "
-                                            f">> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}"
+                                            f'echo "touch /tmp/ripe-eval/f_xxxx" && taskset -c 0 ./build/{compiler}_attack_gen '
+                                            f"{parameters_str} >> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}"
                                         )
-                                        attack_gen = subprocess.run(
-                                            cmdline, shell=True, check=True
-                                        )
-
+                                        # Wait for the process to complete
+                                        subprocess.run(cmdline, shell=True, check=True)
                                     except subprocess.CalledProcessError as e:
                                         # Handle errors during the execution of the command
                                         print(f"Error occurred: {e}")
