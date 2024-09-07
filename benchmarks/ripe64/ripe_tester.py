@@ -262,13 +262,12 @@ for compiler in compilers:
                             os.system(f"echo {parameters_str} >> /tmp/ripe_log")
 
                             if sidecfi_used:
-                                monitorline = (
-                                    f"{sidecfi_monitor} > /tmp/ripe_log_monitor"
-                                )
-
                                 touch_cmd = "touch /tmp/ripe-eval/f_xxxx"
                                 subprocess.Popen(touch_cmd, shell=True)
 
+                                monitorline = (
+                                    f"{sidecfi_monitor} > /tmp/ripe_log_monitor"
+                                )
                                 # Start the monitor process
                                 with subprocess.Popen(
                                     monitorline, shell=True
@@ -279,7 +278,11 @@ for compiler in compilers:
                                             f"taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} "
                                             f">> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}"
                                         )
-                                        attack_gen = subprocess.run(cmdline, shell=True)
+                                        attack_gen = subprocess.run(
+                                            cmdline, shell=True, check=True
+                                        )
+
+                                        attack_gen.wait()
                                     except subprocess.CalledProcessError as e:
                                         # Handle errors during the execution of the command
                                         print(f"Error occurred: {e}")
@@ -291,13 +294,13 @@ for compiler in compilers:
                                             log_file.write(
                                                 f"\nBus error occurred. Exit status: {e.returncode}\n"
                                             )
-                                    finally:
-                                        # Check for errors in the log after the command completes
-                                        if check_error(f"/tmp/ripe_log2{i}"):
-                                            os.kill(monitor.pid, signal.SIGUSR1)
 
-                                        # Wait for the monitor to finish before proceeding
-                                        monitor.wait()
+                                    # Check for errors in the log after the command completes
+                                    if check_error(f"/tmp/ripe_log2{i}"):
+                                        os.kill(monitor.pid, signal.SIGUSR1)
+
+                                    # Wait for the monitor to finish before proceeding
+                                    monitor.wait()
 
                                     # Sleep to avoid overwhelming the system
                                     time.sleep(0.3)
