@@ -267,7 +267,7 @@ for compiler in compilers:
                                 )
 
                                 touch_cmd = "touch /tmp/ripe-eval/f_xxxx"
-                                subprocess.Popen(touch_cmd, shell=True, check=True)
+                                subprocess.Popen(touch_cmd, shell=True)
 
                                 # Start the monitor process
                                 with subprocess.Popen(
