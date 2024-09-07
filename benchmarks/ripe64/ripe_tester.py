@@ -206,7 +206,11 @@ def analyze_log(log_entry, additional_info):
 def check_error(log_file):
     with open(log_file, "r") as file:
         log_content = file.read()
-        if "Segmentation fault" in log_content or "Bus error" in log_content:
+        if (
+            "Segmentation fault" in log_content
+            or "Bus error" in log_content
+            or "Illegal instruction" in log_content
+        ):
             return True
     return False
 
@@ -270,8 +274,6 @@ for compiler in compilers:
 
                                     if check_error(f"/tmp/ripe_log2{i}"):
                                         os.kill(monitor.pid, signal.SIGUSR1)
-                                    else:
-                                        os.wait()
 
                                     monitor.wait()
                                     time.sleep(0.3)
