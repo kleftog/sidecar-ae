@@ -131,6 +131,8 @@ build_app() {
 	make install -j24
 
 	sed -i "s|^var.basedir = \"\"|var.basedir = \"${ROOT_DIR}/benchmarks\"|" "$LIGHTTPD_CONF"
+	mkdir "${SRC_DIR}/run"
+	mkdir "${SRC_DIR}/uploads"
 }
 
 # Function to run the server
