@@ -271,13 +271,20 @@ for compiler in compilers:
                                     monitorline, shell=True
                                 ) as monitor:
                                     try:
-                                        # Run the command using subprocess.run instead of os.system
-                                        cmdline = (
-                                            f'echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen '
-                                            f"{parameters_str} >> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}"
+                                        touch_cmd = "touch /tmp/ripe-eval/f_xxxx"
+                                        subprocess.run(
+                                            touch_cmd, shell=True, check=True
                                         )
-                                        # Wait for the process to complete
+
+                                        # Build the taskset command
+                                        cmdline = (
+                                            f"taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} "
+                                            f">> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}"
+                                        )
+
+                                        # Run the taskset command
                                         subprocess.run(cmdline, shell=True, check=True)
+
                                     except subprocess.CalledProcessError as e:
                                         # Handle errors during the execution of the command
                                         print(f"Error occurred: {e}")
