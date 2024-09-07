@@ -279,14 +279,21 @@ for compiler in compilers:
                                         # Wait for the process to complete
                                         subprocess.run(cmdline, shell=True, check=True)
 
-                                        # Check for errors in the log after the command completes
-                                        if check_error(f"/tmp/ripe_log2{i}"):
-                                            os.kill(monitor.pid, signal.SIGUSR1)
-
                                     except subprocess.CalledProcessError as e:
                                         # Handle errors during the execution of the command
                                         print(f"Error occurred: {e}")
-                                        os.kill(monitor.pid, signal.SIGUSR1)
+
+                                        # Log error message in the same file
+                                        with open(
+                                            f"/tmp/ripe_log2{i}", "a"
+                                        ) as log_file:
+                                            log_file.write(
+                                                f"\nBus error occurred. Exit status: {e.returncode}\n"
+                                            )
+
+                                        # Check for errors in the log after the command completes
+                                        if check_error(f"/tmp/ripe_log2{i}"):
+                                            os.kill(monitor.pid, signal.SIGUSR1)
 
                                     finally:
                                         # Wait for the monitor to finish before proceeding
