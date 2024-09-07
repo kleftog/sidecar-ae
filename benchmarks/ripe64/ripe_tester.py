@@ -203,6 +203,14 @@ def analyze_log(log_entry, additional_info):
     return additional_info
 
 
+def check_error(log_file):
+    with open(log_file, "r") as file:
+        log_content = file.read()
+        if "Segmentation fault" in log_content or "Bus error" in log_content:
+            return True
+    return False
+
+
 def analyze_log2(additional_info):
     for i in range(1, repeat_times + 1):
         log_entry2 = open(f"/tmp/ripe_log2{i}", "r").read()
