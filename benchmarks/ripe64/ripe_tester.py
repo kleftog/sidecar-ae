@@ -260,8 +260,11 @@ for compiler in compilers:
 
                                     time.sleep(1)
 
-                                    os.kill(monitor.pid, signal.SIGUSR1)
-                                    # os.wait()
+                                    if check_error(f"/tmp/ripe_log2{i}"):
+                                        os.kill(monitor.pid, signal.SIGUSR1)
+                                    else:
+                                        os.wait()
+
                                     monitor.wait()
                                     time.sleep(0.3)
                             elif sidestack_used:
