@@ -274,7 +274,8 @@ for compiler in compilers:
                                     os.wait()
 
                                     if check_error(f"/tmp/ripe_log2{i}"):
-                                        os.kill(monitor.pid, signal.SIGUSR1)
+                                        if psutil.pid_exists(monitor.pid):
+                                            os.kill(monitor.pid, signal.SIGUSR1)
 
                                     # Wait for the monitor to finish before proceeding
                                     monitor.wait()
