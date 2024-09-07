@@ -273,7 +273,7 @@ for compiler in compilers:
                                     try:
                                         # Run the command using subprocess.run instead of os.system
                                         cmdline = (
-                                            f'echo "touch /tmp/ripe-eval/f_xxxx" && taskset -c 0 ./build/{compiler}_attack_gen '
+                                            f'echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen '
                                             f"{parameters_str} >> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}"
                                         )
                                         # Wait for the process to complete
