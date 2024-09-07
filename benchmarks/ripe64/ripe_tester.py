@@ -267,7 +267,7 @@ for compiler in compilers:
                                 with subprocess.Popen(
                                     monitorline, shell=True
                                 ) as monitor:
-                                    cmdline = f'taskset -c 0 echo "touch /tmp/ripe-eval/f_xxxx" | ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}'
+                                    cmdline = f'echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}'
                                     os.system(cmdline)
 
                                     time.sleep(1)
@@ -284,7 +284,7 @@ for compiler in compilers:
                                 with subprocess.Popen(
                                     monitorline, shell=True
                                 ) as monitor:
-                                    cmdline = f'taskset -c 0 echo "touch /tmp/ripe-eval/f_xxxx" | ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}'
+                                    cmdline = f'echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}'
                                     os.system(cmdline)
 
                                     time.sleep(1)
@@ -294,7 +294,7 @@ for compiler in compilers:
                                     monitor.wait()
                                     time.sleep(0.3)
                             else:
-                                cmdline = f'(echo "touch /tmp/ripe-eval/f_xxxx" | ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1) 2> /tmp/ripe_log2{i}'
+                                cmdline = f'(echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1) 2> /tmp/ripe_log2{i}'
                                 os.system(cmdline)
 
                             log_entry = open("/tmp/ripe_log", "r").read()
