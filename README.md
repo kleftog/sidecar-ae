@@ -53,6 +53,7 @@ We use a 24-core Intel i9-13900K at 5.20 GHz to evaluate all the experiments to 
     ├── run_fig10.py             # Runs all experiments for replicating Figure 10
     ├── run_fig9.py              # Runs all experiments for replicating Figure 9
     ├── run_memtier_memcached.sh # Runs Memtier against Memcached for benchmarking
+    ├── run_sec6.2.sh            # Runs the RIPE64 experiments for Section 6.2
     ├── run_spec06.sh            # Runs SPEC CPU2006 benchmarks
     ├── run_spec17.sh            # Runs SPEC CPU2017 benchmarks
     ├── run_tab2.sh              # Runs CPU utilization experiments for Table 2
@@ -111,11 +112,11 @@ python3 tools/build_fig9.py
 
 ```bash
 cd ~/sidecar-ae
-python3 tools/run_sec6.2.py
+./tools/run_sec6.2.sh
 ```
 
-- The raw results will be saved under `results/ripe64`.
-- The complete RIPE64 logs are stored in `results/ripe64/results.log`, and the final stats can be found in `results/ripe64/stats.log`.
+- The raw results will be saved under `results/parsed/ripe64_results.txt`.
+- The complete RIPE64 logs are stored in `results/raw` under the latest `RunXXX` folder.
 
 #### **(E2): [Reproducing Fig. 9; verifying claim C2] [5 human-minutes + 34 compute-hours]**
 
