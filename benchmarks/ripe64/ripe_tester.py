@@ -205,19 +205,6 @@ def analyze_log(log_entry, additional_info):
     return additional_info
 
 
-def check_error(log_file):
-    with open(log_file, "r") as file:
-        log_content = file.read()
-        if (
-            "Segmentation fault" in log_content
-            or "Bus error" in log_content
-            or "Illegal instruction" in log_content
-            or "Impossible" in log_content
-        ):
-            return True
-    return False
-
-
 def analyze_log2(additional_info):
     for i in range(1, repeat_times + 1):
         log_entry2 = open(f"/tmp/ripe_log2{i}", "r").read()
@@ -300,12 +287,23 @@ for compiler in compilers:
                                 ) as monitor:
                                     cmdline = f'echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}'
                                     os.system(cmdline)
+                                    os.wait()
 
-                                    time.sleep(1)
+                                    # check if the main has been terminated
+                                    # and if monitor is still running
+                                    # and send SIGUSR1 to the monitor
+                                    if psutil.pid_exists(monitor.pid):
+                                        os.kill(monitor.pid, signal.SIGUSR1)
 
-                                    os.kill(monitor.pid, signal.SIGUSR1)
-                                    # os.wait()
+                                    # Wait for the monitor to finish before proceeding
                                     monitor.wait()
+                                    try:
+                                        monitor.wait(
+                                            timeout=2
+                                        )  # 10 second timeout for monitor
+                                    except subprocess.TimeoutExpired:
+                                        os.kill(monitor.pid, signal.SIGUSR1)
+
                                     time.sleep(0.3)
                             else:
                                 cmdline = f'(echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1) 2> /tmp/ripe_log2{i}'
