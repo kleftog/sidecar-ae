@@ -230,19 +230,6 @@ def analyze_log2(additional_info):
     return additional_info
 
 
-def run_with_timeout(cmd, timeout=1):
-    process = subprocess.Popen(
-        cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
-    try:
-        stdout, stderr = process.communicate(timeout=timeout)
-        return process.returncode, stdout, stderr
-    except subprocess.TimeoutExpired:
-        process.kill()
-        stdout, stderr = process.communicate()
-        return -1, stdout, stderr
-
-
 if not os.path.exists("/tmp/ripe-eval"):
     os.system("mkdir /tmp/ripe-eval")
 
