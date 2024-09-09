@@ -75,12 +75,14 @@ modes=("clang_cfi" "clang_sidecfi" "clang_safestack" "clang_sidestack")
 
 check_and_remove_ptw
 load_ptw_module_int
+  
+cd "$RIPE_PATH" || exit 1
+make clean all
 
 # Loop through the modes and run ripe_tester for each mode
 for mode in "${modes[@]}"; do
     echo "Running ripe_tester for mode: $mode"
     log_file="${CUR_RUN_DIR}/ripe_${mode}.log"
-    cd "$RIPE_PATH" || exit 1
     if python3 ripe_tester.py both 1 "$mode" > "$log_file" 2>&1; then
         echo "Successfully ran ripe_tester for mode: $mode. Log saved to $log_file."
     else
