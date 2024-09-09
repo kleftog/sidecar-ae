@@ -285,9 +285,7 @@ for compiler in compilers:
                                 ) as monitor:
                                     cmdline = f'echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}'
                                     os.system(cmdline)
-                                    returncode, stdout, stderr = run_with_timeout(
-                                        cmdline, timeout=2
-                                    )
+                                    os.wait()
 
                                     # check if the main has been terminated
                                     # and if monitor is still running
