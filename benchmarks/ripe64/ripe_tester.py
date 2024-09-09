@@ -286,7 +286,7 @@ for compiler in compilers:
                                     cmdline = f'echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1 2> /tmp/ripe_log2{i}'
                                     os.system(cmdline)
                                     returncode, stdout, stderr = run_with_timeout(
-                                        cmdline, timeout=1
+                                        cmdline, timeout=2
                                     )
 
                                     # check if the main has been terminated
@@ -299,10 +299,10 @@ for compiler in compilers:
                                     monitor.wait()
                                     try:
                                         monitor.wait(
-                                            timeout=10
+                                            timeout=2
                                         )  # 10 second timeout for monitor
                                     except subprocess.TimeoutExpired:
-                                        monitor.kill()
+                                        os.kill(monitor.pid, signal.SIGUSR1)
 
                                     # Sleep to avoid overwhelming the system
                                     time.sleep(0.3)
