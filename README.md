@@ -115,8 +115,9 @@ cd ~/sidecar-ae
 ./tools/run_sec6.2.sh
 ```
 
-- The raw results will be saved under `results/parsed/ripe64_results.txt`.
-- The complete RIPE64 logs are stored in `results/raw` under the latest `RunXXX` folder.
+- The raw RIPE64 logs are stored in `results/raw` under the latest `RunXXX` folder.
+- The finals results will be saved under `results/parsed/ripe64_results.txt`.
+- Compare the results for sidecfi to cfi and sidestack to safestack.
 
 #### **(E2): [Reproducing Fig. 9; verifying claim C2] [5 human-minutes + 34 compute-hours]**
 
