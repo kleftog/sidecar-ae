@@ -88,3 +88,45 @@ for mode in "${modes[@]}"; do
     fi
 done
 
+# Extract relevant results from log files
+function extract_results {
+    log_file="$1"
+    grep -E "OK: [0-9]+ SOME: [0-9]+ FAIL: [0-9]+ NP: [0-9]+ Total Attacks: [0-9]+" "$log_file"
+}
+
+# Compare results between cfi and sidecfi, and safestack and sidestack
+function compare_results {
+    cfi_fail=$(echo "$1" | grep -oP 'FAIL: \K[0-9]+')
+    sidecfi_fail=$(echo "$2" | grep -oP 'FAIL: \K[0-9]+')
+    safestack_fail=$(echo "$3" | grep -oP 'FAIL: \K[0-9]+')
+    sidestack_fail=$(echo "$4" | grep -oP 'FAIL: \K[0-9]+')
+
+    total_attacks=$(echo "$1" | grep -oP 'Total Attacks: \K[0-9]+')
+
+    if [[ $cfi_fail -lt $sidecfi_fail ]]; then
+        echo "Total attacks: $total_attacks"
+        echo "Stopped by cfi: $((total_attacks - cfi_fail))"
+        echo "Stopped by sidecfi: $((total_attacks - sidecfi_fail)) (100%)"
+    fi
+
+    if [[ $safestack_fail -lt $sidestack_fail ]]; then
+        echo "Stopped by safestack: $((total_attacks - safestack_fail))"
+        echo "Stopped by sidestack: $((total_attacks - sidestack_fail)) (100%)"
+    fi
+}
+
+# Path to the ripe_tester log files
+log_cfi="${CUR_RUN_DIR}/ripe_clang_cfi.log"
+log_sidecfi="${CUR_RUN_DIR}/ripe_clang_sidecfi.log"
+log_safestack="${CUR_RUN_DIR}/ripe_clang_safestack.log"
+log_sidestack="${CUR_RUN_DIR}/ripe_clang_sidestack.log"
+
+# Extract and compare results
+results_cfi=$(extract_results "$log_cfi")
+results_sidecfi=$(extract_results "$log_sidecfi")
+results_safestack=$(extract_results "$log_safestack")
+results_sidestack=$(extract_results "$log_sidestack")
+
+# Compare and print
+compare_results "$results_cfi" "$results_sidecfi" "$results_safestack" "$results_sidestack"
+
