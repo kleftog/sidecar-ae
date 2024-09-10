@@ -68,6 +68,15 @@ function load_ptw_module_int {
     fi
 }
 
+# Compile the monitors
+sidecfi_dir="$SCRIPT_DIR/../sidecar-monitor/sidecfi"
+sidestack_dir="$SCRIPT_DIR/../sidecar-monitor/sidestack"
+cd "$sidecfi_dir" || exit
+make clean all
+cd "$sidestack_dir" || exit
+make clean all
+cd "$SCRIPT_DIR" || exit
+
 # Path to the ripe_tester.py script
 RIPE_PATH="$SCRIPT_DIR/../benchmarks/ripe64"
 
