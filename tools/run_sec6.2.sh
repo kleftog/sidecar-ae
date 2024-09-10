@@ -72,7 +72,7 @@ function load_ptw_module_int {
 RIPE_PATH="$SCRIPT_DIR/../benchmarks/ripe64"
 
 # Define the modes
-modes=("clang_cfi" "clang_sidecfi" "clang_safestack" "clang_sidestack")
+modes=("clang" "clang_cfi" "clang_sidecfi" "clang_safestack" "clang_sidestack")
 
 check_and_remove_ptw
 load_ptw_module_int
@@ -84,7 +84,7 @@ make clean all
 for mode in "${modes[@]}"; do
     echo "Running ripe_tester for mode: $mode"
     log_file="${CUR_RUN_DIR}/ripe_${mode}.log"
-    if python3 ripe_tester.py both 3 "$mode" > "$log_file" 2>&1; then
+    if python3 ripe_tester.py both 3 "$mode" --only-summary --format-bash > "$log_file" 2>&1; then
         echo "Successfully ran ripe_tester for mode: $mode. Log saved to $log_file."
     else
         echo "Error: ripe_tester failed for mode: $mode. Check $log_file for details."
@@ -120,6 +120,7 @@ function compare_results {
 }
 
 # Path to the ripe_tester log files
+log="${CUR_RUN_DIR}/ripe_clang.log"
 log_cfi="${CUR_RUN_DIR}/ripe_clang_cfi.log"
 log_sidecfi="${CUR_RUN_DIR}/ripe_clang_sidecfi.log"
 log_safestack="${CUR_RUN_DIR}/ripe_clang_safestack.log"
