@@ -99,27 +99,14 @@ python3 tools/build_fig9.py
 
 ### Major Claims
 
-- **(C1): Section 6.2**: We show that SIDECAR is able to detect a wide range of attacks by testing it against RIPE64, which can imitate up to 850 attacks.
-- **(C2): Figure 9**: We find that SIDECFI outperforms LLVM-CFI on real-world applications and that SIDECAR performs reasonably well on SPEC CPU2017.
-- **(C3): Figure 10**: We find that SIDEGUARD is slower but on par with GRIFFIN, which requires a large amount of resources.
-- **(C4): Table 2**: We show the average CPU utilization for SIDECFI and SIDESTACK and argue that it is considerably lower than GRIFFIN, which requires a minimum of 6 cores.
+- **(C1): Figure 9**: We find that SIDECFI outperforms LLVM-CFI on real-world applications and that SIDECAR performs reasonably well on SPEC CPU2017.
+- **(C2): Figure 10**: We find that SIDEGUARD is slower but on par with GRIFFIN, which requires a large amount of resources.
+- **(C3): Table 2**: We show the average CPU utilization for SIDECFI and SIDESTACK and argue that it is considerably lower than GRIFFIN, which requires a minimum of 6 cores.
+- **(C4): Section 6.2**: We show that SIDECAR is able to detect a wide range of attacks by testing it against RIPE64, which can imitate up to 850 attacks.
 
 ### Experiments
 
-#### **(E1): [Reproducing Sec. 6.2; verifying claim C1] [5 human-minutes + 1 compute-hour]**
-
-- Run the following commands:
-
-```bash
-cd ~/sidecar-ae
-./tools/run_sec6.2.sh
-```
-
-- The raw RIPE64 logs are stored in `results/raw` under the latest `RunXXX` folder.
-- The finals results will be saved under `results/parsed/ripe64_results.txt`.
-- Compare the results for sidecfi to cfi and sidestack to safestack.
-
-#### **(E2): [Reproducing Fig. 9; verifying claim C2] [5 human-minutes + 34 compute-hours]**
+#### **(E1): [Reproducing Fig. 9; verifying claim C1] [5 human-minutes + 34 compute-hours]**
 
 - Run the following commands:
 
@@ -141,7 +128,7 @@ python3 tools/plot_fig9.py
 
 ![Description of the image](expected/expected_figure9.png)
 
-#### **(E2): [Reproducing Fig. 10; verifying claim C3] [5 human-minutes + 40 compute-minutes]**
+#### **(E2): [Reproducing Fig. 10; verifying claim C2] [5 human-minutes + 40 compute-minutes]**
 
 - Run the following commands:
 
@@ -163,7 +150,7 @@ python3 tools/plot_fig10.py
 
 ![Description of the image](expected/expected_figure10.png)
 
-#### **(E2): [Reproducing Tab. 2; verifying claim C4] [5 human-minutes + 10 compute-minutes]**
+#### **(E3): [Reproducing Tab. 2; verifying claim C3] [5 human-minutes + 10 compute-minutes]**
 
 - Run the following commands:
 
@@ -192,3 +179,16 @@ cd ~/sidecar-ae
 | **geomean**   | **8.36%**   | **11.54%**    |
 
 - Note: The results have been updated to reflect the SPEC CPU2006 benchmarks instead of the SPEC CPU2017 benchmarks shown in the paper. These results will be included in the final version of the paper.
+
+#### **(E4): [Reproducing Sec. 6.2; verifying claim C4] [5 human-minutes + 4 compute-hour]**
+
+- Run the following commands:
+
+```bash
+cd ~/sidecar-ae
+./tools/run_sec6.2.sh
+```
+
+- The raw RIPE64 logs are stored in `results/raw` under the latest `RunXXX` folder.
+- The finals results will be saved under `results/parsed/ripe64_results.txt`.
+- Compare the results for sidecfi to cfi and sidestack to safestack.
