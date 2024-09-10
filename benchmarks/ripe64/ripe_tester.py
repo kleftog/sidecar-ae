@@ -418,7 +418,6 @@ if "bash" in summary_format:
             results[compiler]["total_ok"]
             + results[compiler]["total_some"]
             + results[compiler]["total_fail"]
-            + results[compiler]["total_np"]
         )
         print(
             "OK: %s SOME: %s FAIL: %s NP: %s Total Attacks: %s\n\n"
