@@ -108,14 +108,14 @@ function compare_results {
     total_attacks=$(echo "$1" | grep -oP 'Total Attacks: \K[0-9]+')
 
     if [[ $cfi_fail -lt $sidecfi_fail ]]; then
-        echo "Total attacks: $total_attacks" >> PARSE_DIR/ripe64_results.txt
-        echo "Stopped by cfi: $((total_attacks - cfi_fail))" >> PARSE_DIR/ripe64_results.txt
-        echo "Stopped by sidecfi: $((total_attacks - sidecfi_fail)) (100%)" >> PARSE_DIR/ripe64_results.txt
+        echo "Total attacks: $total_attacks" >> ${PARSE_DIR}/ripe64_results.txt
+        echo "Stopped by cfi: $((total_attacks - cfi_fail))" >> ${PARSE_DIR}/ripe64_results.txt
+        echo "Stopped by sidecfi: $((total_attacks - sidecfi_fail)) (100%)" >> ${PARSE_DIR}/ripe64_results.txt
     fi
 
     if [[ $safestack_fail -lt $sidestack_fail ]]; then
-        echo "Stopped by safestack: $((total_attacks - safestack_fail))" >> PARSE_DIR/ripe64_results.txt
-        echo "Stopped by sidestack: $((total_attacks - sidestack_fail)) (100%)" >> PARSE_DIR/ripe64_results.txt
+        echo "Stopped by safestack: $((total_attacks - safestack_fail))" >> ${PARSE_DIR}/ripe64_results.txt
+        echo "Stopped by sidestack: $((total_attacks - sidestack_fail)) (100%)" >> ${PARSE_DIR}/ripe64_results.txt
     fi
 }
 
@@ -132,6 +132,6 @@ results_safestack=$(extract_results "$log_safestack")
 results_sidestack=$(extract_results "$log_sidestack")
 
 # Compare and print
-rm -r PARSE_DIR/ripe64_results.txt
+rm -r ${PARSE_DIR}/ripe64_results.txt
 compare_results "$results_cfi" "$results_sidecfi" "$results_safestack" "$results_sidestack"
 
