@@ -102,7 +102,7 @@ python3 tools/build_fig9.py
 - **(C1): Figure 9**: We find that SIDECFI outperforms LLVM-CFI on real-world applications and that SIDECAR performs reasonably well on SPEC CPU2017.
 - **(C2): Figure 10**: We find that SIDEGUARD is slower but on par with GRIFFIN, which requires a large amount of resources.
 - **(C3): Table 2**: We show the average CPU utilization for SIDECFI and SIDESTACK and argue that it is considerably lower than GRIFFIN, which requires a minimum of 6 cores.
-- **(C4): Section 6.2**: We show that SIDECAR is able to detect a wide range of attacks by testing it against RIPE64, which can imitate up to 850 attacks.
+- **(C4): Section 6.2**: We show that SIDECAR is able to detect a wide range of attacks by testing it against RIPE64, which can imitate up to 2050 attacks.
 
 ### Experiments
 
