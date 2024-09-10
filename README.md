@@ -180,7 +180,7 @@ cd ~/sidecar-ae
 
 - Note: The results have been updated to reflect the SPEC CPU2006 benchmarks instead of the SPEC CPU2017 benchmarks shown in the paper. These results will be included in the final version of the paper.
 
-#### **(E4): [Reproducing Sec. 6.2; verifying claim C4] [5 human-minutes + 4 compute-hour]**
+#### **(E4): [Reproducing Sec. 6.2; verifying claim C4] [2 human-minutes + 4 compute-minutes]**
 
 - Run the following commands:
 
