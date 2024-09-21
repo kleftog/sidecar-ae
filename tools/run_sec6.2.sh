@@ -107,26 +107,38 @@ function extract_results {
     grep -E "OK: [0-9]+ SOME: [0-9]+ FAIL: [0-9]+ NP: [0-9]+ Total Attacks: [0-9]+" "$log_file"
 }
 
-# Compare results between cfi and sidecfi, and safestack and sidestack
+
 function compare_results {
     cfi_fail=$(echo "$1" | grep -oP 'FAIL: \K[0-9]+')
+    cfi_ok=$(echo "$1" | grep -oP 'OK: \K[0-9]+')
+    
     sidecfi_fail=$(echo "$2" | grep -oP 'FAIL: \K[0-9]+')
+    sidecfi_ok=$(echo "$2" | grep -oP 'OK: \K[0-9]+')
+    
     safestack_fail=$(echo "$3" | grep -oP 'FAIL: \K[0-9]+')
+    safestack_ok=$(echo "$3" | grep -oP 'OK: \K[0-9]+')
+    
     sidestack_fail=$(echo "$4" | grep -oP 'FAIL: \K[0-9]+')
+    sidestack_ok=$(echo "$4" | grep -oP 'OK: \K[0-9]+')
 
     total_attacks=$(echo "$1" | grep -oP 'Total Attacks: \K[0-9]+')
 
-    if [[ $cfi_fail -lt $sidecfi_fail ]]; then
-        echo "Total attacks: $total_attacks" >> ${PARSE_DIR}/ripe64_results.txt
-        echo "Stopped by cfi: $((cfi_fail))" >> ${PARSE_DIR}/ripe64_results.txt
-        echo "Stopped by sidecfi: $((cfi_fail)) (100%)" >> ${PARSE_DIR}/ripe64_results.txt
-    fi
+    # Calculate percentages relative to Clang CFI and SafeStack
+    sidecfi_percentage=$(echo "scale=2; ($sidecfi_fail / $cfi_fail) * 100" | bc)
+    sidestack_percentage=$(echo "scale=2; ($sidestack_fail / $safestack_fail) * 100" | bc)
 
-    if [[ $safestack_fail -lt $sidestack_fail ]]; then
-        echo "Stopped by safestack: $((safestack_fail))" >> ${PARSE_DIR}/ripe64_results.txt
-        echo "Stopped by sidestack: $((safestack_fail)) (100%)" >> ${PARSE_DIR}/ripe64_results.txt
-    fi
+    # Write the results to the output file
+    echo "Total attacks: $total_attacks" >> ${PARSE_DIR}/ripe64_results.txt
+    echo "Stopped by Clang CFI: $cfi_fail" >> ${PARSE_DIR}/ripe64_results.txt
+    echo "Stopped by SideCFI: $sidecfi_fail ($sidecfi_percentage%)" >> ${PARSE_DIR}/ripe64_results.txt
+    echo "Attacks passed Clang CFI: $cfi_ok" >> ${PARSE_DIR}/ripe64_results.txt
+    echo "Attacks passed SideCFI: $sidecfi_ok" >> ${PARSE_DIR}/ripe64_results.txt
+    echo "Stopped by Clang SafeStack: $safestack_fail" >> ${PARSE_DIR}/ripe64_results.txt
+    echo "Stopped by SideStack: $sidestack_fail ($sidestack_percentage%)" >> ${PARSE_DIR}/ripe64_results.txt
+    echo "Attacks passed Clang SafeStack: $safestack_ok" >> ${PARSE_DIR}/ripe64_results.txt
+    echo "Attacks passed SideStack: $sidestack_ok" >> ${PARSE_DIR}/ripe64_results.txt
 }
+
 
 # Path to the ripe_tester log files
 log="${CUR_RUN_DIR}/ripe_clang.log"
