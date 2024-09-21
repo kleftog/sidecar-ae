@@ -38,7 +38,7 @@ function check_and_remove_ptw {
     if [[ -n "$ptw_loaded" ]]; then
         echo "Removing $ptw_module module..."
         # Try to remove the ptw module with sudo
-        if sudo rmmod "$ptw_module"; then
+        if sudo rmmod "$ptw_module" --force; then
             echo "$ptw_module module removed."
         else
             echo "Error: Failed to remove $ptw_module module."
