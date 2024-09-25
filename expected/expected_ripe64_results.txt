@@ -1,0 +1,9 @@
+Total attacks: 2854
+Stopped by Clang CFI: 2162
+Stopped by SideCFI: 2403 (111.00%)
+Attacks passed Clang CFI: 649
+Attacks passed SideCFI: 344
+Stopped by Clang SafeStack: 1818
+Stopped by SideStack: 2398 (131.00%)
+Attacks passed Clang SafeStack: 1000
+Attacks passed SideStack: 443
