@@ -38,7 +38,8 @@ We use a 24-core Intel i9-13900K at 5.20 GHz to evaluate all the experiments to 
 │       └── wrk
 ├── expected                     # Expected results for comparison
 │   ├── expected_figure10.png    # Expected Figure 10
-│   └── expected_figure9.png     # Expected Figure 9
+│   ├── expected_figure9.png     # Expected Figure 9
+│   └── expected_ripe64.txt      # Expected RIPE64 results
 ├── sidecar                      # Submodule containing the SideCar project
 └── tools                        # Scripts and tools for building and running experiments
     ├── build_bind.sh            # Builds BIND 9 and its dependencies
@@ -191,4 +192,4 @@ cd ~/sidecar-ae
 
 - The raw RIPE64 logs are stored in `results/raw` under the latest `RunXXX` folder.
 - The finals results will be saved under `results/parsed/ripe64_results.txt`.
-- Compare the results for sidecfi to cfi and sidestack to safestack.
+- Compare the results to the expected results in `expected/expected_ripe64.txt`.
