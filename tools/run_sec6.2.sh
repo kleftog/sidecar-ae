@@ -13,11 +13,11 @@ mkdir -p "${RAW_DIR}"
 last_run=$(ls -1 "${RAW_DIR}" | grep -E '^Run[0-9]{3}$' | sort -V | tail -n 1)
 
 if [ -z "$last_run" ]; then
-    next_run="Run000"
+    CUR_DIR="Run000"
 else
     # Extract the numeric part, increment it, and handle wrap-around using modulo 1000
     run_number=$(( (10#${last_run:3} + 1) % 1000 ))
-    next_run=$(printf "Run%03d" "$run_number")
+    CUR_DIR=$(printf "Run%03d" "$run_number")
 fi
 
 # Create the new directory
