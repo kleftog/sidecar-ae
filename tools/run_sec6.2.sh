@@ -107,35 +107,59 @@ function extract_results {
 
 
 function compare_results {
-    cfi_fail=$(echo "$1" | grep -oP 'FAIL|SOME: \K[0-9]+')
+    # Extract FAIL and SOME counts for Clang CFI
+    cfi_fail=$(echo "$1" | grep -oP 'FAIL: \K[0-9]+' | paste -sd+ - | bc)
+    cfi_some=$(echo "$1" | grep -oP 'SOME: \K[0-9]+' | paste -sd+ - | bc)
+    cfi_fail=$((cfi_fail + cfi_some))
     cfi_ok=$(echo "$1" | grep -oP 'OK: \K[0-9]+')
     
-    sidecfi_fail=$(echo "$2" | grep -oP '(FAIL|SOME): \K[0-9]+')
+    # Extract FAIL and SOME counts for SideCFI
+    sidecfi_fail=$(echo "$2" | grep -oP 'FAIL: \K[0-9]+' | paste -sd+ - | bc)
+    sidecfi_some=$(echo "$2" | grep -oP 'SOME: \K[0-9]+' | paste -sd+ - | bc)
+    sidecfi_fail=$((sidecfi_fail + sidecfi_some))
     sidecfi_ok=$(echo "$2" | grep -oP 'OK: \K[0-9]+')
     
-    safestack_fail=$(echo "$3" | grep -oP 'FAIL|SOME: \K[0-9]+')
+    # Extract FAIL and SOME counts for Clang SafeStack
+    safestack_fail=$(echo "$3" | grep -oP 'FAIL: \K[0-9]+' | paste -sd+ - | bc)
+    safestack_some=$(echo "$3" | grep -oP 'SOME: \K[0-9]+' | paste -sd+ - | bc)
+    safestack_fail=$((safestack_fail + safestack_some))
     safestack_ok=$(echo "$3" | grep -oP 'OK: \K[0-9]+')
     
-    sidestack_fail=$(echo "$4" | grep -oP 'FAIL|SOME: \K[0-9]+')
+    # Extract FAIL and SOME counts for SideStack
+    sidestack_fail=$(echo "$4" | grep -oP 'FAIL: \K[0-9]+' | paste -sd+ - | bc)
+    sidestack_some=$(echo "$4" | grep -oP 'SOME: \K[0-9]+' | paste -sd+ - | bc)
+    sidestack_fail=$((sidestack_fail + sidestack_some))
     sidestack_ok=$(echo "$4" | grep -oP 'OK: \K[0-9]+')
 
+    # Extract the total number of attacks
     total_attacks=$(echo "$1" | grep -oP 'Total Attacks: \K[0-9]+')
 
     # Calculate percentages relative to Clang CFI and SafeStack
     sidecfi_percentage=$(echo "scale=2; ($sidecfi_fail / $cfi_fail) * 100" | bc)
     sidestack_percentage=$(echo "scale=2; ($sidestack_fail / $safestack_fail) * 100" | bc)
 
-    # Write the results to the output file
-    echo "Total attacks: $total_attacks" >> ${PARSE_DIR}/ripe64_results.txt
-    echo "Stopped by Clang CFI: $cfi_fail" >> ${PARSE_DIR}/ripe64_results.txt
-    echo "Stopped by SideCFI: $sidecfi_fail ($sidecfi_percentage%)" >> ${PARSE_DIR}/ripe64_results.txt
-    echo "Attacks passed Clang CFI: $cfi_ok" >> ${PARSE_DIR}/ripe64_results.txt
-    echo "Attacks passed SideCFI: $sidecfi_ok" >> ${PARSE_DIR}/ripe64_results.txt
-    echo "Stopped by Clang SafeStack: $safestack_fail" >> ${PARSE_DIR}/ripe64_results.txt
-    echo "Stopped by SideStack: $sidestack_fail ($sidestack_percentage%)" >> ${PARSE_DIR}/ripe64_results.txt
-    echo "Attacks passed Clang SafeStack: $safestack_ok" >> ${PARSE_DIR}/ripe64_results.txt
-    echo "Attacks passed SideStack: $sidestack_ok" >> ${PARSE_DIR}/ripe64_results.txt
+    # Write the results to the output file in a visually appealing way
+    {
+        echo "========================================="
+        echo "             Attack Results              "
+        echo "========================================="
+        printf "%-30s : %s\n" "Total attacks" "$total_attacks"
+        echo "-----------------------------------------"
+        printf "%-30s : %s\n" "Stopped by Clang CFI" "$cfi_fail"
+        printf "%-30s : %s (%s%%)\n" "Stopped by SideCFI" "$sidecfi_fail" "$sidecfi_percentage"
+        echo "-----------------------------------------"
+        printf "%-30s : %s\n" "Attacks passed Clang CFI" "$cfi_ok"
+        printf "%-30s : %s\n" "Attacks passed SideCFI" "$sidecfi_ok"
+        echo "-----------------------------------------"
+        printf "%-30s : %s\n" "Stopped by Clang SafeStack" "$safestack_fail"
+        printf "%-30s : %s (%s%%)\n" "Stopped by SideStack" "$sidestack_fail" "$sidestack_percentage"
+        echo "-----------------------------------------"
+        printf "%-30s : %s\n" "Attacks passed Clang SafeStack" "$safestack_ok"
+        printf "%-30s : %s\n" "Attacks passed SideStack" "$sidestack_ok"
+        echo "========================================="
+    } >> ${PARSE_DIR}/ripe64_results.txt
 }
+
 
 
 # Path to the ripe_tester log files
