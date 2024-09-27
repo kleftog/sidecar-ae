@@ -107,16 +107,16 @@ function extract_results {
 
 
 function compare_results {
-    cfi_fail=$(echo "$1" | grep -oP 'FAIL: \K[0-9]+')
+    cfi_fail=$(echo "$1" | grep -oP 'FAIL|SOME: \K[0-9]+')
     cfi_ok=$(echo "$1" | grep -oP 'OK: \K[0-9]+')
     
-    sidecfi_fail=$(echo "$2" | grep -oP 'FAIL: \K[0-9]+')
+    sidecfi_fail=$(echo "$2" | grep -oP '(FAIL|SOME): \K[0-9]+')
     sidecfi_ok=$(echo "$2" | grep -oP 'OK: \K[0-9]+')
     
-    safestack_fail=$(echo "$3" | grep -oP 'FAIL: \K[0-9]+')
+    safestack_fail=$(echo "$3" | grep -oP 'FAIL|SOME: \K[0-9]+')
     safestack_ok=$(echo "$3" | grep -oP 'OK: \K[0-9]+')
     
-    sidestack_fail=$(echo "$4" | grep -oP 'FAIL: \K[0-9]+')
+    sidestack_fail=$(echo "$4" | grep -oP 'FAIL|SOME: \K[0-9]+')
     sidestack_ok=$(echo "$4" | grep -oP 'OK: \K[0-9]+')
 
     total_attacks=$(echo "$1" | grep -oP 'Total Attacks: \K[0-9]+')
