@@ -227,7 +227,12 @@ for compiler in compilers:
     total_np = 0
     for tech in techniques:
         for loc in locations:
-            for ptr in code_ptr:
+            if compiler in ["clang_safestack", "clang_sidestack"]:
+                code_ptr_filtered = ["ret"]
+            else:
+                code_ptr_filtered = code_ptr
+
+            for ptr in code_ptr_filtered:
                 for attack in attacks:
                     for func in funcs:
                         i = 0
@@ -258,13 +263,17 @@ for compiler in compilers:
                                     monitorline, shell=True
                                 ) as monitor:
                                     cmdline = f'(echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1) 2> /tmp/ripe_log2{i}'
-                                    process = subprocess.Popen(cmdline, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                                    process = subprocess.Popen(
+                                        cmdline,
+                                        shell=True,
+                                        stdout=subprocess.PIPE,
+                                        stderr=subprocess.PIPE,
+                                    )
 
                                     try:
                                         process.communicate(timeout=2)
                                     except subprocess.TimeoutExpired:
                                         os.kill(process.pid, signal.SIGTERM)
-
 
                                     # check if the main has been terminated
                                     # and if monitor is still running
@@ -291,7 +300,12 @@ for compiler in compilers:
                                     monitorline, shell=True
                                 ) as monitor:
                                     cmdline = f'(echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1) 2> /tmp/ripe_log2{i}'
-                                    process = subprocess.Popen(cmdline, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                                    process = subprocess.Popen(
+                                        cmdline,
+                                        shell=True,
+                                        stdout=subprocess.PIPE,
+                                        stderr=subprocess.PIPE,
+                                    )
 
                                     try:
                                         process.communicate(timeout=2)
@@ -316,13 +330,17 @@ for compiler in compilers:
                                     # time.sleep(0.3)
                             else:
                                 cmdline = f'(echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1) 2> /tmp/ripe_log2{i}'
-                                process = subprocess.Popen(cmdline, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                                process = subprocess.Popen(
+                                    cmdline,
+                                    shell=True,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE,
+                                )
 
                                 try:
                                     process.communicate(timeout=2)
                                 except subprocess.TimeoutExpired:
                                     os.kill(process.pid, signal.SIGTERM)
-
 
                             log_entry = open("/tmp/ripe_log", "r").read()
                             if "Impossible" in log_entry:
