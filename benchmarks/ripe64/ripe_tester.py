@@ -225,13 +225,16 @@ for compiler in compilers:
     total_fail = 0
     total_some = 0
     total_np = 0
-    for tech in techniques:
-        for loc in locations:
-            if compiler in ["clang_safestack", "clang_sidestack"]:
-                code_ptr_filtered = ["ret"]
-            else:
-                code_ptr_filtered = code_ptr
 
+    if compiler in ["clang_safestack", "clang_sidestack"]:
+        code_ptr_filtered = ["ret"]
+        locations_filtered = ["stack"]
+    else:
+        code_ptr_filtered = code_ptr
+        locations_filtered = locations
+
+    for tech in techniques:
+        for loc in locations_filtered:
             for ptr in code_ptr_filtered:
                 for attack in attacks:
                     for func in funcs:
@@ -299,35 +302,17 @@ for compiler in compilers:
                                 with subprocess.Popen(
                                     monitorline, shell=True
                                 ) as monitor:
-                                    cmdline = f'(echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1) 2> /tmp/ripe_log2{i}'
-                                    process = subprocess.Popen(
-                                        cmdline,
-                                        shell=True,
-                                        stdout=subprocess.PIPE,
-                                        stderr=subprocess.PIPE,
+                                    cmdline = (
+                                        '(echo "touch /tmp/ripe-eval/f_xxxx" | ./build/'
+                                        + compiler
+                                        + "_attack_gen "
+                                        + parameters_str
+                                        + " >> /tmp/ripe_log 2>&1) 2> /tmp/ripe_log2"
+                                        + str(i)
                                     )
-
-                                    try:
-                                        process.communicate(timeout=2)
-                                    except subprocess.TimeoutExpired:
-                                        os.kill(process.pid, signal.SIGTERM)
-
-                                    # check if the main has been terminated
-                                    # and if monitor is still running
-                                    # and send SIGUSR1 to the monitor
-                                    if psutil.pid_exists(monitor.pid):
-                                        os.kill(monitor.pid, signal.SIGUSR1)
-
-                                    # Wait for the monitor to finish before proceeding
+                                    os.system(cmdline)
+                                    os.wait()
                                     monitor.wait()
-                                    try:
-                                        monitor.wait(
-                                            timeout=2
-                                        )  # 10 second timeout for monitor
-                                    except subprocess.TimeoutExpired:
-                                        os.kill(monitor.pid, signal.SIGUSR1)
-
-                                    # time.sleep(0.3)
                             else:
                                 cmdline = f'(echo "touch /tmp/ripe-eval/f_xxxx" | taskset -c 0 ./build/{compiler}_attack_gen {parameters_str} >> /tmp/ripe_log 2>&1) 2> /tmp/ripe_log2{i}'
                                 process = subprocess.Popen(
