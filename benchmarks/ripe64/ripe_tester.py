@@ -65,7 +65,21 @@ code_ptr = [
     "longjmpdata",
 ]
 
+code_ptr_fwd = [
+    "funcptrstackvar",
+    "funcptrstackparam",
+    "funcptrheap",
+    "funcptrbss",
+    "funcptrdata",
+    "structfuncptrstack",
+    "structfuncptrheap",
+    "structfuncptrbss",
+    "structfuncptrdata",
+]
+
 attacks = ["nonop", "simplenop", "simplenopequival", "r2libc", "rop"]
+
+attacks_fwd = ["nonop", "simplenop", "simplenopequival"]
 
 funcs = [
     "memcpy",
@@ -226,15 +240,20 @@ for compiler in compilers:
     total_some = 0
     total_np = 0
 
-    if compiler in ["clang_safestack", "clang_sidestack"]:
+    if compiler in ["clang_cfi", "clang_sidecfi"]:
+        code_ptr_filtered = code_ptr_fwd
+        attacks_filtered = attacks_fwd
+    elif compiler in ["clang_safestack", "clang_sidestack"]:
         code_ptr_filtered = ["ret"]
+        attacks_filtered = attacks
     else:
         code_ptr_filtered = code_ptr
+        attacks_filtered = attacks
 
     for tech in techniques:
         for loc in locations:
             for ptr in code_ptr_filtered:
-                for attack in attacks:
+                for attack in attacks_filtered:
                     for func in funcs:
                         i = 0
                         s_attempts = 0
