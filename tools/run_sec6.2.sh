@@ -12,14 +12,12 @@ mkdir -p "${RAW_DIR}"
 # Get the latest Runxxx folder, or create Run000 if none exists
 last_run=$(ls -1 "${RAW_DIR}" | grep -E '^Run[0-9]{3}$' | sort | tail -n 1)
 
-if [[ -z "$last_run" ]]; then
-    # No Runxxx directories found, create Run000
-    CUR_DIR="Run000"
+if [ -z "$last_run" ]; then
+    next_run="Run000"
 else
-    # Extract the number from the last Runxxx and increment it
-    last_run_num=$(echo "$last_run" | sed 's/Run\([0-9]\+\)/\1/')
-    new_run_num=$(printf "%03d" $((last_run_num + 1)))
-    CUR_DIR="Run${new_run_num}"
+    # Extract the numeric part, increment it, and handle wrap-around using modulo 1000
+    run_number=$(( (10#${last_run:3} + 1) % 1000 ))
+    next_run=$(printf "Run%03d" "$run_number")
 fi
 
 # Create the new directory
@@ -81,7 +79,7 @@ cd "$SCRIPT_DIR" || exit
 RIPE_PATH="$SCRIPT_DIR/../benchmarks/ripe64"
 
 # Define the modes
-modes=("clang" "clang_cfi" "clang_sidecfi" "clang_safestack" "clang_sidestack")
+modes=("clang_cfi" "clang_sidecfi" "clang_safestack" "clang_sidestack")
 
 check_and_remove_ptw
 load_ptw_module_int
