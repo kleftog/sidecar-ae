@@ -105,7 +105,6 @@ function extract_results {
     grep -E "OK: [0-9]+ SOME: [0-9]+ FAIL: [0-9]+ NP: [0-9]+ Total Attacks: [0-9]+" "$log_file"
 }
 
-
 function compare_results {
     # Extract FAIL and SOME counts for Clang CFI
     cfi_fail=$(echo "$1" | grep -oP 'FAIL: \K[0-9]+' | paste -sd+ - | bc)
@@ -131,8 +130,9 @@ function compare_results {
     sidestack_fail=$((sidestack_fail + sidestack_some))
     sidestack_ok=$(echo "$4" | grep -oP 'OK: \K[0-9]+')
 
-    # Extract the total number of attacks
-    total_attacks=$(echo "$1" | grep -oP 'Total Attacks: \K[0-9]+')
+    # Extract the total number of attacks for CFI and SafeStack
+    total_attacks_cfi=$((cfi_fail + cfi_ok))
+    total_attacks_safestack=$((safestack_fail + safestack_ok))
 
     # Calculate percentages relative to Clang CFI and SafeStack
     sidecfi_percentage=$(echo "scale=2; ($sidecfi_fail / $cfi_fail) * 100" | bc)
@@ -143,7 +143,8 @@ function compare_results {
         echo "========================================="
         echo "             Attack Results              "
         echo "========================================="
-        printf "%-30s : %s\n" "Total attacks" "$total_attacks"
+        printf "%-30s : %s\n" "Total attacks (Clang CFI)" "$total_attacks_cfi"
+        printf "%-30s : %s\n" "Total attacks (SafeStack)" "$total_attacks_safestack"
         echo "-----------------------------------------"
         printf "%-30s : %s\n" "Stopped by Clang CFI" "$cfi_fail"
         printf "%-30s : %s (%s%%)\n" "Stopped by SideCFI" "$sidecfi_fail" "$sidecfi_percentage"
@@ -159,8 +160,6 @@ function compare_results {
         echo "========================================="
     } >> ${PARSE_DIR}/ripe64_results.txt
 }
-
-
 
 # Path to the ripe_tester log files
 log="${CUR_RUN_DIR}/ripe_clang.log"
