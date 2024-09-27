@@ -357,16 +357,24 @@ for compiler in compilers:
                                 os.system("rm -f /tmp/ripe_log_monitor")
 
                             if os.path.exists("/tmp/ripe-eval/f_xxxx"):
-                                os.remove("/tmp/ripe-eval/f_xxxx")
+                                os.system("rm -f /tmp/ripe-eval/f_xxxx")
                                 if (
                                     sidecfi_used
                                     and "CFI CHECK ERROR" not in monitor_log
                                 ):
                                     s_attempts += 1
-                                elif (
-                                    sidestack_used and "-Violation-" not in monitor_log
-                                ):
-                                    s_attempts += 1
+                                elif sidestack_used:
+                                    additional_info = analyze_log2(
+                                        additional_info
+                                    )  # Analyze additional info for errors
+
+                                    if (
+                                        "-Violation-" not in monitor_log
+                                        and "SEGFAULT" not in additional_info
+                                        and "BUSERROR" not in additional_info
+                                        and "SIGILL" not in additional_info
+                                    ):
+                                        s_attempts += 1
                                 elif not sidecfi_used and not sidestack_used:
                                     s_attempts += 1
 
