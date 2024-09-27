@@ -228,13 +228,11 @@ for compiler in compilers:
 
     if compiler in ["clang_safestack", "clang_sidestack"]:
         code_ptr_filtered = ["ret"]
-        locations_filtered = ["stack"]
     else:
         code_ptr_filtered = code_ptr
-        locations_filtered = locations
 
     for tech in techniques:
-        for loc in locations_filtered:
+        for loc in locations:
             for ptr in code_ptr_filtered:
                 for attack in attacks:
                     for func in funcs:
