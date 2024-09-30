@@ -67,8 +67,8 @@ function load_ptw_module_int {
 }
 
 # Compile the monitors
-sidecfi_dir="$SCRIPT_DIR/../sidecar/sidecar-monitors/sidecfi"
-sidestack_dir="$SCRIPT_DIR/../sidecar/sidecar-monitors/sidestack"
+sidecfi_dir="$SCRIPT_DIR/../sidecar/sidecar-monitors/sidecfi/x86-64"
+sidestack_dir="$SCRIPT_DIR/../sidecar/sidecar-monitors/sidestack/x86-64"
 cd "$sidecfi_dir" || exit
 make clean all
 cd "$sidestack_dir" || exit
