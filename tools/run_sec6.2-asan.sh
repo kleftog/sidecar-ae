@@ -87,7 +87,6 @@ rm -r "$PARSE_DIR/lit_results.txt"
 
 echo "Running ASAN LIT tests."
 
-: <<'EOF'
 pass_count=0
 fail_count=0
 
@@ -124,7 +123,7 @@ done >> $CUR_RUN_DIR/lit-asan.log
 
 echo "ASAN Total Passed: $pass_count" >> "$PARSE_DIR/lit_results.txt"
 echo "ASAN Total Failed: $fail_count" >> "$PARSE_DIR/lit_results.txt"
-EOF
+
 check_and_remove_ptw
 load_ptw_module_int
 
@@ -136,7 +135,7 @@ fail_count=0
 
 # Loop through original asan LIT
 cd "$SIDECAR_BUILD" || exit 1
-: <<'EOF'
+
 for test_file in "$LIT_SRC/TestCasesDecoupled/Linux/"*; do
 	file_name=$(basename "$test_file")
 
@@ -150,7 +149,7 @@ for test_file in "$LIT_SRC/TestCasesDecoupled/Linux/"*; do
 	fi
 	echo "$output"
 done >> $CUR_RUN_DIR/lit-sideasan.log
-EOF
+
 for test_file in "$LIT_SRC/TestCasesDecoupled/Base/"*; do
 	file_name=$(basename "$test_file")
 
