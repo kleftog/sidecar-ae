@@ -185,6 +185,8 @@ cd ~/sidecar-ae
 
 #### **(E4): [Reproducing Sec. 6.2; verifying claim C4] [2 human-minutes + 5 compute-minutes]**
 
+##### RIPE64
+
 - Run the following commands:
 
 ```bash
@@ -196,7 +198,9 @@ cd ~/sidecar-ae
 - The final results will be saved under `results/parsed/ripe64_results.txt`.
 - Compare the results to the expected results in `expected/expected_ripe64.txt`.
 
-- For LIT run the following commands:
+##### LIT
+
+- Run the following commands:
 
 ```bash
 cd ~/sidecar-ae
