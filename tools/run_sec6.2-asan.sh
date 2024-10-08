@@ -128,6 +128,7 @@ check_and_remove_ptw
 load_ptw_module_int
 
 cp "$LIT_SRC/lit.cfg.py.sidecar" "$LIT_SRC/lit.cfg.py"
+find "$LIT_SRC/TestCasesDecoupled" -type f -exec sed -i 's|SIDECAR_BASE|'$ROOT_DIR'|g' {} +
 echo "Running SideASAN LIT tests."
 
 pass_count=0
