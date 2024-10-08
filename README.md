@@ -39,6 +39,7 @@ We use a 24-core Intel i9-13900K at 5.20 GHz to evaluate all the experiments to 
 ├── expected                     # Expected results for comparison
 │   ├── expected_figure10.png    # Expected Figure 10
 │   ├── expected_figure9.png     # Expected Figure 9
+│   ├── expected_lit.txt         # Expected ASan LIT results
 │   └── expected_ripe64.txt      # Expected RIPE64 results
 ├── sidecar                      # Submodule containing the SideCar project
 └── tools                        # Scripts and tools for building and running experiments
@@ -54,6 +55,7 @@ We use a 24-core Intel i9-13900K at 5.20 GHz to evaluate all the experiments to 
     ├── run_fig10.py             # Runs all experiments for replicating Figure 10
     ├── run_fig9.py              # Runs all experiments for replicating Figure 9
     ├── run_memtier_memcached.sh # Runs Memtier against Memcached for benchmarking
+    ├── run_sec6.2-lit.sh        # Runs the LIT experiments for Section 6.2
     ├── run_sec6.2.sh            # Runs the RIPE64 experiments for Section 6.2
     ├── run_spec06.sh            # Runs SPEC CPU2006 benchmarks
     ├── run_spec17.sh            # Runs SPEC CPU2017 benchmarks
@@ -181,7 +183,9 @@ cd ~/sidecar-ae
 
 - Note: The results have been updated to reflect the SPEC CPU2006 benchmarks instead of the SPEC CPU2017 benchmarks shown in the paper. These results will be included in the final version of the paper.
 
-#### **(E4): [Reproducing Sec. 6.2; verifying claim C4] [2 human-minutes + 4 compute-minutes]**
+#### **(E4): [Reproducing Sec. 6.2; verifying claim C4] [2 human-minutes + 5 compute-minutes]**
+
+##### RIPE64
 
 - Run the following commands:
 
@@ -191,5 +195,18 @@ cd ~/sidecar-ae
 ```
 
 - The raw RIPE64 logs are stored in `results/raw` under the latest `RunXXX` folder.
-- The finals results will be saved under `results/parsed/ripe64_results.txt`.
+- The final results will be saved under `results/parsed/ripe64_results.txt`.
 - Compare the results to the expected results in `expected/expected_ripe64.txt`.
+
+##### LIT
+
+- Run the following commands:
+
+```bash
+cd ~/sidecar-ae
+./tools/run_sec6.2-lit.sh
+```
+
+- The raw LIT logs are stored in `results/raw` under the latest `RunXXX` folder.
+- The final results will be saved under `results/parsed/lit_results.txt`.
+- Compare the results to the expected results in `expected/expected_lit.txt`.
