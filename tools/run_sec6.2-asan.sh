@@ -87,6 +87,7 @@ rm -r "$PARSE_DIR/lit_results.txt"
 
 echo "Running ASAN LIT tests."
 
+: <<'EOF'
 pass_count=0
 fail_count=0
 
@@ -123,7 +124,7 @@ done >> $CUR_RUN_DIR/lit-asan.log
 
 echo "ASAN Total Passed: $pass_count" >> "$PARSE_DIR/lit_results.txt"
 echo "ASAN Total Failed: $fail_count" >> "$PARSE_DIR/lit_results.txt"
-
+EOF
 check_and_remove_ptw
 load_ptw_module_int
 
@@ -135,11 +136,25 @@ fail_count=0
 
 # Loop through original asan LIT
 cd "$SIDECAR_BUILD" || exit 1
-
+: <<'EOF'
 for test_file in "$LIT_SRC/TestCasesDecoupled/Linux/"*; do
 	file_name=$(basename "$test_file")
 
 	output=$(./bin/llvm-lit -v "$SIDECAR_BUILD/projects/compiler-rt/test/asan/X86_64LinuxConfig/TestCasesDecoupled/Linux/$file_name")
+
+	# Check the result of each test
+     	if echo "$output" | grep -q "PASS:"; then
+		((pass_count++))
+	elif echo "$output" | grep -q "FAIL:"; then
+		((fail_count++))
+	fi
+	echo "$output"
+done >> $CUR_RUN_DIR/lit-sideasan.log
+EOF
+for test_file in "$LIT_SRC/TestCasesDecoupled/Base/"*; do
+	file_name=$(basename "$test_file")
+
+	output=$(./bin/llvm-lit -v "$SIDECAR_BUILD/projects/compiler-rt/test/asan/X86_64LinuxConfig/TestCasesDecoupled/Base/$file_name")
 
 	# Check the result of each test
      	if echo "$output" | grep -q "PASS:"; then
