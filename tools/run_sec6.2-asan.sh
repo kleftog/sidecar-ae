@@ -8,6 +8,7 @@ PARSE_DIR=${RES_DIR}/parsed
 
 mkdir -p "${RES_DIR}"
 mkdir -p "${RAW_DIR}"
+mkdir -p "${PARSE_DIR}"
 
 # Get the latest Runxxx folder, or start from Run000 if none exists
 last_run=$(ls -1 "${RAW_DIR}" | grep -E '^Run[0-9]{3}$' | sort -V | tail -n 1)
