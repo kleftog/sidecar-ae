@@ -21,7 +21,7 @@ else
 fi
 
 # Create the new directory
-echo mkdir -p "${RAW_DIR}/${CUR_DIR}"
+mkdir -p "${RAW_DIR}/${CUR_DIR}"
 
 echo "New directory created: ${RAW_DIR}/${CUR_DIR}"
 
@@ -47,17 +47,20 @@ function check_and_remove_ptw {
 
 
 function load_ptw_module_int {
-    ptw_module_path="$SCRIPT_DIR/../sidecar/sidecar-driver/x86-64/ptw.ko"
+    ptw_module_path="$SCRIPT_DIR/../sidecar/sidecar-driver/x86-64"
+    cd "$ptw_module_path" || exit
+    make
+    make clean all
 
     # Check if the ptw.ko file exists
-    if [[ ! -f "$ptw_module_path" ]]; then
-        echo "Error: $ptw_module_path does not exist."
+    if [[ ! -f "$ptw_module_path/ptw.ko" ]]; then
+        echo "Error: $ptw_module_path/ptw.ko does not exist."
         exit 1
     fi
 
     # Try to load the ptw module with sudo
     echo "Loading the ptw kernel module with interrupts enabled..."
-    if sudo insmod "$ptw_module_path"; then
+    if sudo insmod "$ptw_module_path/ptw.ko"; then
         echo "ptw kernel module loaded successfully."
     else
         echo "Error: Failed to load the ptw kernel module."
@@ -78,6 +81,7 @@ LIT_SRC="$SCRIPT_DIR/../sidecar/sidecar-llvm/compiler-rt/test/asan"
 cp "$LIT_SRC/lit.cfg.py.original" "$LIT_SRC/lit.cfg.py"
 
 rm -r "$ORIG_BUILD/projects/compiler-rt/test/asan/X86_64LinuxConfig/TestCasesOriginal/Linux/"
+rm -r "$SIDECAR_BUILD/projects/compiler-rt/test/asan/X86_64LinuxConfig/TestCasesDecoupled/Linux/"
 rm -r "$PARSE_DIR/lit_results.txt"
 
 echo "Running ASAN LIT tests."
@@ -100,7 +104,7 @@ for test_file in "$LIT_SRC/TestCasesOriginal/Linux/"*; do
 		((fail_count++))
 	fi
 	echo "$output"
-done >> $CUR_RUN_DIR/lit-original.log
+done >> $CUR_RUN_DIR/lit-asan.log
 
 for test_file in "$LIT_SRC/TestCasesOriginal/Base/"*; do
 	file_name=$(basename "$test_file")
@@ -114,13 +118,37 @@ for test_file in "$LIT_SRC/TestCasesOriginal/Base/"*; do
 		((fail_count++))
 	fi
 	echo "$output"
-done >> $CUR_RUN_DIR/lit-original.log
+done >> $CUR_RUN_DIR/lit-asan.log
 
 echo "ASAN Total Passed: $pass_count" >> "$PARSE_DIR/lit_results.txt"
 echo "ASAN Total Failed: $fail_count" >> "$PARSE_DIR/lit_results.txt"
 
-exit 1
-
 check_and_remove_ptw
 load_ptw_module_int
+
+cp "$LIT_SRC/lit.cfg.py.sidecar" "$LIT_SRC/lit.cfg.py"
+echo "Running SideASAN LIT tests."
+
+pass_count=0
+fail_count=0
+
+# Loop through original asan LIT
+cd "$SIDECAR_BUILD" || exit 1
+
+for test_file in "$LIT_SRC/TestCasesDecoupled/Linux/"*; do
+	file_name=$(basename "$test_file")
+
+	output=$(./bin/llvm-lit -v "$SIDECAR_BUILD/projects/compiler-rt/test/asan/X86_64LinuxConfig/TestCasesDecoupled/Linux/$file_name")
+
+	# Check the result of each test
+     	if echo "$output" | grep -q "PASS:"; then
+		((pass_count++))
+	elif echo "$output" | grep -q "FAIL:"; then
+		((fail_count++))
+	fi
+	echo "$output"
+done >> $CUR_RUN_DIR/lit-sideasan.log
+
+echo "SideASAN Total Passed: $pass_count" >> "$PARSE_DIR/lit_results.txt"
+echo "SideASAN Total Failed: $fail_count" >> "$PARSE_DIR/lit_results.txt"
 
