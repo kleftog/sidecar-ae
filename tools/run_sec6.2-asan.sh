@@ -21,7 +21,7 @@ else
 fi
 
 # Create the new directory
-mkdir -p "${RAW_DIR}/${CUR_DIR}"
+echo mkdir -p "${RAW_DIR}/${CUR_DIR}"
 
 echo "New directory created: ${RAW_DIR}/${CUR_DIR}"
 
@@ -78,12 +78,16 @@ LIT_SRC="$SCRIPT_DIR/../sidecar/sidecar-llvm/compiler-rt/test/asan"
 cp "$LIT_SRC/lit.cfg.py.original" "$LIT_SRC/lit.cfg.py"
 
 rm -r "$ORIG_BUILD/projects/compiler-rt/test/asan/X86_64LinuxConfig/TestCasesOriginal/Linux/"
+rm -r "$PARSE_DIR/lit_results.txt"
+
+echo "Running ASAN LIT tests."
 
 pass_count=0
 fail_count=0
 
-cd "$ORIG_BUILD" || exit 1
 # Loop through original asan LIT
+cd "$ORIG_BUILD" || exit 1
+
 for test_file in "$LIT_SRC/TestCasesOriginal/Linux/"*; do
 	file_name=$(basename "$test_file")
 
@@ -96,10 +100,24 @@ for test_file in "$LIT_SRC/TestCasesOriginal/Linux/"*; do
 		((fail_count++))
 	fi
 	echo "$output"
-done
+done >> $CUR_RUN_DIR/lit-original.log
 
-echo "ASAN Total Passed: $pass_count"
-echo "ASAN Total Failed: $fail_count"
+for test_file in "$LIT_SRC/TestCasesOriginal/Base/"*; do
+	file_name=$(basename "$test_file")
+
+	output=$(./bin/llvm-lit -v "$ORIG_BUILD/projects/compiler-rt/test/asan/X86_64LinuxConfig/TestCasesOriginal/Base/$file_name")
+
+	# Check the result of each test
+     	if echo "$output" | grep -q "PASS:"; then
+		((pass_count++))
+	elif echo "$output" | grep -q "FAIL:"; then
+		((fail_count++))
+	fi
+	echo "$output"
+done >> $CUR_RUN_DIR/lit-original.log
+
+echo "ASAN Total Passed: $pass_count" >> "$PARSE_DIR/lit_results.txt"
+echo "ASAN Total Failed: $fail_count" >> "$PARSE_DIR/lit_results.txt"
 
 exit 1
 
